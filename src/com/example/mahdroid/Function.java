@@ -19,13 +19,9 @@ public class Function {
 	}
 	
 	public static boolean triple(Hand h){
-		int i = 0;
-		boolean canTriple = false;
-		while (i < h.getSize() - 2 && !canTriple && h.getSize() > 2) {
-			if (h.tileAt(i).equals(h.tileAt(i+1)) &&
-					h.tileAt(i).equals(h.tileAt(i+2)))
-				return true;
-			i++;
+		for (int i = 0; i< h.getSize() - 2; i++) {
+			if (h.tileAt(i).equals(h.tileAt(i+2)))
+					return true;
 		}
 		return false;
 	}

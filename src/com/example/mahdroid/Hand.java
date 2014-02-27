@@ -15,8 +15,8 @@ public class Hand {
 		this.size = 0;
 	}
 	
-	public void evaluate(){
-		
+	public String evaluate(){
+		return "";
 		
 	}
 	
