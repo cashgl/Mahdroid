@@ -18,6 +18,7 @@ public class MainMenu extends Activity {
 	EditText suitField, valueField;
 	TextView txt;
 	Hand hand;
+	/////
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
