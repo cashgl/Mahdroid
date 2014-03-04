@@ -5,3 +5,4 @@ bin
 *.log
 .classpath
 gen\com\example\mahdroid\BuildConfig.java
+gen/com/example/mahdroid/BuildConfig.java
