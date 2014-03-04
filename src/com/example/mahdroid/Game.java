@@ -23,7 +23,7 @@ public class Game extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_menu);
+        setContentView(R.layout.activity_game);
         
         txt = (TextView) findViewById(R.id.textView1);
         Button addButton = (Button) findViewById(R.id.addButton);
