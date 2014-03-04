@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class MainMenu extends Activity {
+public class Game extends Activity {
 	
 	EditText suitField, valueField;
 	TextView txt;
