@@ -84,6 +84,9 @@ public class Game extends Activity {
 		else
 			txt.append("false\n");
 		txt.append("\n");
+		
+		Deck deck = new Deck();
+		txt.append(deck.getSize() + "");
     }
 
 

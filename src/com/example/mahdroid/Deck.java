@@ -2,6 +2,7 @@ package com.example.mahdroid;
 
 import java.util.ArrayList;
 import java.util.Queue;
+import java.util.Random;
 
 import android.widget.ImageView;
 
@@ -16,9 +17,35 @@ public class Deck {
 	private ArrayList<Integer> defaultSuit;
 	
 	public Deck() {
-		// TODO Auto-generated constructor stub
+		ArrayList<Tile> tempDeck = new ArrayList<Tile>();
+		//Creates 4 copies of all tiles
+		for (int i = 1; i<= 4; i++){
+			//Creating the standard tiles
+			for (int suit = 0; suit <= 2; suit++) {
+				for (int value = 1; value <= 9; value++) {
+					tempDeck.add(new Tile(suit,value));
+				}
+			}
+			//Creating the wind tiles
+			for (int value = 1; value <= 4; value++) {
+				tempDeck.add(new Tile(3,value));
+			}
+			//Creating the dragon tiles
+			for (int value = 1; value <= 3; value++) {
+				tempDeck.add(new Tile(4,value));
+			}
+		}
+		
+		Random rand = new Random();
+		int sizeLeft = 136;
+		
+		while (tempDeck.size() != 0) {
+			deck.offer(tempDeck.remove(rand.nextInt(sizeLeft)));
+			sizeLeft--;
+			this.size++;
+		}
 	}
-	
+
 	
 	public Tile draw(Tile tile){
 		
@@ -39,5 +66,9 @@ public class Deck {
 	public void shuffle(){
 		
 		
+	}
+	
+	public int getSize() {
+		return this.size;
 	}
 }
