@@ -1,6 +1,7 @@
 package com.example.mahdroid;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
 
@@ -17,6 +18,7 @@ public class Deck {
 	private ArrayList<Integer> defaultSuit;
 	
 	public Deck() {
+		deck = new LinkedList<Tile>();
 		ArrayList<Tile> tempDeck = new ArrayList<Tile>();
 		//Creates 4 copies of all tiles
 		for (int i = 1; i<= 4; i++){
