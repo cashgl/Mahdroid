@@ -73,4 +73,12 @@ public class Deck {
 	public int getSize() {
 		return this.size;
 	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		while (!this.deck.isEmpty()) {
+			sb.append(deck.poll().toString() + "\n");
+		}
+		return sb.toString();
+	}
 }

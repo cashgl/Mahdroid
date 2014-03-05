@@ -86,7 +86,7 @@ public class Game extends Activity {
 		txt.append("\n");
 		
 		Deck deck = new Deck();
-		txt.append(deck.getSize() + "");
+		txt.setText(deck.toString());
     }
 
 
