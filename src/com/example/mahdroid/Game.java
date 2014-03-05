@@ -1,9 +1,10 @@
-//Goals: player discard, make functions work, get deck working, have evaluate work together
+//Goals: player discard, make functions work, have evaluate work together
 //
 package com.example.mahdroid;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,6 +27,7 @@ public class Game extends Activity {
         setContentView(R.layout.activity_game);
         
         txt = (TextView) findViewById(R.id.textView1);
+        txt.setMovementMethod(new ScrollingMovementMethod());
         Button addButton = (Button) findViewById(R.id.addButton);
         suitField = (EditText) findViewById(R.id.suitField);
         valueField = (EditText) findViewById(R.id.valueField);
