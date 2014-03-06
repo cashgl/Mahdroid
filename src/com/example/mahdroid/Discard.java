@@ -13,9 +13,12 @@ public class Discard {
 		this.size = 0;
 	}
 	
-	public void add(Tile tile){
-		this.pile.push(tile);
-		this.size++;
+	public boolean add(Tile tile){
+		if (this.pile.push(tile).equals(tile)) {
+			this.size++;
+			return true;
+		}
+		return false;
 	}
 
 	public Tile remove(Tile tile){
