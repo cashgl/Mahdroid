@@ -4,7 +4,8 @@ public class Function {
 
 	public static boolean eat(Hand h){
 		for (int i = 0; i< h.getSize() - 2; i++) {
-			if (h.tileAt(i).getValue() == h.tileAt(i+1).getValue() && h.tileAt(i+1).getValue() == h.tileAt(i+2).getValue())
+			if (h.tileAt(i).getValue() == h.tileAt(i+1).getValue() && 
+					h.tileAt(i+1).getValue() == h.tileAt(i+2).getValue())
 				return true;
 		}
 		return false;

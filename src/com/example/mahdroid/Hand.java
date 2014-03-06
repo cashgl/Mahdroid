@@ -5,14 +5,15 @@ import java.util.ArrayList;
 
 public class Hand {
 	
-	private ArrayList<Tile> exposedHand;
-	private ArrayList<Tile> hiddenHand;
-	private int size;
+	private ArrayList<Tile> activeHand;
+	private ArrayList<Tile> functionedHand;
+	private int activeSize, functionedSize;
 
 	public Hand() {
-		this.exposedHand = new ArrayList<Tile>();
-		this.hiddenHand = new ArrayList<Tile>();
-		this.size = 0;
+		this.activeHand = new ArrayList<Tile>();
+		this.functionedHand = new ArrayList<Tile>();
+		this.activeSize = 0;
+		this.functionedSize = 0;
 	}
 	
 	public String evaluate(){
@@ -21,8 +22,20 @@ public class Hand {
 	}
 	
 	public boolean remove(Tile tile){
-		size--;
-		return exposedHand.remove(tile);
+		if (activeHand.remove(tile)) {
+			activeSize--;
+			return true;
+		}
+		return false;
+	}
+	
+	public Tile removeAt(int i) {
+		if (i >= activeHand.size())
+			return null;
+		else {
+			activeSize--;
+			return activeHand.remove(i);
+		}
 	}
 	
 	public void add(Tile add){
@@ -33,11 +46,11 @@ public class Hand {
 		Tile temp = add;
 		int i = 0;
 		
-		while (temp != null && i < size) {
-			if (exposedHand.get(i).getSuit() >= suit) {
-				if (exposedHand.get(i).getValue() >= value) {
-					exposedHand.add(i, temp);
-					size++;
+		while (temp != null && i < activeSize) {
+			if (activeHand.get(i).getSuit() >= suit) {
+				if (activeHand.get(i).getValue() >= value) {
+					activeHand.add(i, temp);
+					activeSize++;
 					temp = null;
 				}
 			}
@@ -46,24 +59,41 @@ public class Hand {
 		//If we look through the entire hand and it's greater than all values,
 		//we add the tile to the end of the hand
 		if (temp != null) {
-			exposedHand.add(add);
-			size++;
+			activeHand.add(add);
+			activeSize++;
 		}
-		
 	}
 	
+	public boolean functionedTiles(int a, int b) {
+		if (b < a || a < 0 || b < 0 || b >= activeHand.size())
+			return false;
+		else {
+			for (int i = a; i <= (b-a); i++) {
+				functionedHand.add(activeHand.remove(a));
+				activeSize--;
+				functionedSize++;
+			}
+			return true;
+		}
+	}
+	
+	/*public ArrayList<Tile> seeFunctionedTiles() {
+		ArrayList<Tile> temp = (ArrayList<Tile>) functionedHand.clone();
+		return temp;
+	}*/
+	
 	public int getSize() {
-		return this.size;
+		return this.activeSize;
 	}
 	
 	public Tile tileAt(int i) {
-		return exposedHand.get(i);
+		return activeHand.get(i);
 	}
 	
 	public String toString() {
 		StringBuilder s = new StringBuilder();
-		for (int i = 0; i < this.size; i++) {
-			Tile temp = exposedHand.get(i);
+		for (int i = 0; i < this.activeSize; i++) {
+			Tile temp = activeHand.get(i);
 			s.append("Suit: " + temp.getSuit() + ", Value: " + temp.getValue() + "\n");
 		}
 		return s.toString();
