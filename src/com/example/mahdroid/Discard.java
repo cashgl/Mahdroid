@@ -21,7 +21,7 @@ public class Discard {
 		return false;
 	}
 
-	public Tile remove(Tile tile){
+	public Tile remove(){
 		this.size--;
 		return pile.pop();
 	}
