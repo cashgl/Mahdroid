@@ -72,11 +72,11 @@ public class Deck {
 	
 	//DON'T ADD THIS METHOD UNLESS TESTING!!!
 	//THIS METHOD IS UNSTABLE
-	/*public String toString() {
+	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		while (!this.deck.isEmpty()) {
 			sb.append(deck.poll().toString() + "\n");
 		}
 		return sb.toString();
-	}*/
+	}
 }
