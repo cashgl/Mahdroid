@@ -30,6 +30,10 @@ public class Discard {
 		return this.size;
 	}
 	
+	public Tile grabLast() {
+		return null;
+	}
+	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < this.size; i++) {

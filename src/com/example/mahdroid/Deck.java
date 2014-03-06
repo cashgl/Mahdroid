@@ -59,7 +59,7 @@ public class Deck {
 	 */
 	public void shuffle(){
 		
-		
+		//Do to save on memory / garbage collection
 	}
 	
 	/**
@@ -70,13 +70,7 @@ public class Deck {
 		return this.size;
 	}
 	
-	//DON'T ADD THIS METHOD UNLESS TESTING!!!
-	//THIS METHOD IS UNSTABLE
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		while (!this.deck.isEmpty()) {
-			sb.append(deck.poll().toString() + "\n");
-		}
-		return sb.toString();
+		return deck.toString();
 	}
 }

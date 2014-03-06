@@ -29,7 +29,7 @@ public class Hand {
 		return false;
 	}
 	
-	public Tile removeAt(int i) {
+	private Tile removeAt(int i) {
 		if (i >= activeHand.size())
 			return null;
 		else {
