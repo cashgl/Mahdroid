@@ -19,6 +19,7 @@ public class Game extends Activity {
 	EditText suitField, valueField;
 	TextView txt;
 	Hand hand;
+	Tile t;
 	/////
 
     @Override
@@ -74,14 +75,14 @@ public class Game extends Activity {
 		
 		
 		
-		if (Function.triple(hand))
+		if (Function.triple(hand, t))
 			txt.append("true");
 		else
 			txt.append("false");
 		txt.append("\n");
 
 		hand.remove(tile3);
-		if (Function.triple(hand))
+		if (Function.triple(hand, t))
 			txt.append("true\n");
 		else
 			txt.append("false\n");
