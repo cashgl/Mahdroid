@@ -34,8 +34,7 @@ public class Tile {
 	**/
 	
 	public String toString() {
-		//return "Suit: " + this.suit + ", Value: " + this.value;
-		return this.suit + "," + this.value;
+		return "Suit: " + this.suit + ", Value: " + this.value;
 	}
 	
 }

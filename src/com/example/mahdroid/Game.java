@@ -51,23 +51,23 @@ public class Game extends Activity {
 		});*/
         
         hand = new Hand();
-		Tile tile11 = new Tile(1, 1);
-		Tile tile12 = new Tile(3, 5);
-		Tile tile13 = new Tile(1, 2);
+		Tile tile111 = new Tile(1, 1);
+		Tile tile112 = new Tile(3, 5);
+		Tile tile113 = new Tile(1, 2);
 		Tile tile14 = new Tile(2, 3);
 		Tile tile15 = new Tile(1, 2);
 		Tile tile16 = new Tile(2, 2);
 		Tile tile17 = new Tile(2, 4);
 		
-		hand.add(tile11);
-		hand.add(tile12);
-		hand.add(tile13);
+		hand.add(tile111);
+		hand.add(tile112);
+		hand.add(tile113);
 		hand.add(tile14);
 		hand.add(tile15);
 		hand.add(tile16);
 		hand.add(tile17);
-		Tile tile8 = new Tile(1, 2);
-		hand.add(tile8);
+		Tile tile18 = new Tile(1, 2);
+		hand.add(tile18);
 		txt.append(hand.toString());
 		
 		
@@ -79,14 +79,14 @@ public class Game extends Activity {
 			txt.append("false");
 		txt.append("\n");
 
-		hand.remove(tile13);
+		hand.remove(tile113);
 		if (Function.triple(hand, t))
 			txt.append("true\n");
 		else
 			txt.append("false\n");
 		txt.append("\n");
 		
-		//Deck deck = new Deck();
+		Deck deck = new Deck();
 		//txt.append(deck.toString());
 		
 		ArrayList<Button> tilesInHand = new ArrayList<Button>();
@@ -100,10 +100,27 @@ public class Game extends Activity {
 		tilesInHand.add(tile3);
 		Button tile4 = (Button) findViewById(R.id.button4);
 		tilesInHand.add(tile4);
+		Button tile5 = (Button) findViewById(R.id.button5);
+		tilesInHand.add(tile5);
+		Button tile6 = (Button) findViewById(R.id.button6);
+		tilesInHand.add(tile6);
+		Button tile7 = (Button) findViewById(R.id.button7);
+		tilesInHand.add(tile7);
+		Button tile8 = (Button) findViewById(R.id.button8);
+		tilesInHand.add(tile8);
+		Button tile9 = (Button) findViewById(R.id.button9);
+		tilesInHand.add(tile9);
+		Button tile10 = (Button) findViewById(R.id.button10);
+		tilesInHand.add(tile10);
+		Button tile11 = (Button) findViewById(R.id.button11);
+		tilesInHand.add(tile11);
+		Button tile12 = (Button) findViewById(R.id.button12);
+		tilesInHand.add(tile12);
 		
-		Deck deck = new Deck();
+		deck = new Deck();
 		for (int i = 0; i<tilesInHand.size(); i++) {
-			tilesInHand.get(i).setText(deck.draw().toString());
+			Tile ti = deck.draw();
+			tilesInHand.get(i).setText(ti.getSuit() + "\n" + ti.getValue());
 		}
     }
 
