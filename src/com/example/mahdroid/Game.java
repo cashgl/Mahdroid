@@ -87,7 +87,7 @@ public class Game extends Activity {
 		txt.append("\n");
 		
 		Deck deck = new Deck();
-		//txt.append(deck.toString());
+		txt.append(deck.toString());
 		
 		ArrayList<Button> tilesInHand = new ArrayList<Button>();
 		Button tile0 = (Button) findViewById(R.id.button0);

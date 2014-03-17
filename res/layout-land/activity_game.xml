@@ -19,11 +19,11 @@
         android:scrollbars="vertical" />
 
     <LinearLayout
+        android:id="@+id/playerHand"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/textView1"
-        android:layout_alignLeft="@+id/textView1"
-        android:id="@+id/playerHand" >
+        android:layout_alignLeft="@layout/activity_game" >
 
         <Button
             android:id="@+id/button0"
