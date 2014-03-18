@@ -1,5 +1,3 @@
-//Goals: player discard, make functions work, have evaluate work together
-//
 package com.example.mahdroid;
 
 import java.util.ArrayList;
@@ -13,25 +11,30 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class Game extends Activity {
-	
+
 	EditText suitField, valueField;
 	TextView txt;
 	Hand hand;
 	/////
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game);
-        
-        txt = (TextView) findViewById(R.id.textView1);
-        txt.setMovementMethod(new ScrollingMovementMethod());
-        //Button addButton = (Button) findViewById(R.id.addButton);
-        //suitField = (EditText) findViewById(R.id.suitField);
-        //valueField = (EditText) findViewById(R.id.valueField);
-        
-        /*addButton.setOnClickListener(new OnClickListener() {
-			
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_game);
+
+		setupStuff();
+
+	}
+
+	public void setupStuff() {
+		txt = (TextView) findViewById(R.id.textView1);
+		txt.setMovementMethod(new ScrollingMovementMethod());
+		//Button addButton = (Button) findViewById(R.id.addButton);
+		//suitField = (EditText) findViewById(R.id.suitField);
+		//valueField = (EditText) findViewById(R.id.valueField);
+
+		/*addButton.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				if(suitField.getText().length()==0){
@@ -42,15 +45,15 @@ public class Game extends Activity {
 				else {
 					int suit = Integer.parseInt(suitField.getText().toString());
 					int value = Integer.parseInt(valueField.getText().toString());
-					
+
 					Tile temp = new Tile(suit,value);
 					hand.add(temp);
 					txt.setText("\n" + hand + "\n");
 				}
 			}
 		});*/
-        
-        hand = new Hand();
+
+		hand = new Hand();
 		Tile tile111 = new Tile(1, 1);
 		Tile tile112 = new Tile(3, 5);
 		Tile tile113 = new Tile(1, 2);
@@ -58,7 +61,7 @@ public class Game extends Activity {
 		Tile tile15 = new Tile(1, 2);
 		Tile tile16 = new Tile(2, 2);
 		Tile tile17 = new Tile(2, 4);
-		
+
 		hand.add(tile111);
 		hand.add(tile112);
 		hand.add(tile113);
@@ -69,8 +72,8 @@ public class Game extends Activity {
 		Tile tile18 = new Tile(1, 2);
 		hand.add(tile18);
 		txt.append(hand.toString());
-		
-		
+
+
 
 		Tile t = new Tile(1,2);
 		if (Function.triple(hand, t))
@@ -85,10 +88,10 @@ public class Game extends Activity {
 		else
 			txt.append("false\n");
 		txt.append("\n");
-		
+
 		Deck deck = new Deck();
 		txt.append(deck.toString());
-		
+
 		ArrayList<Button> tilesInHand = new ArrayList<Button>();
 		Button tile0 = (Button) findViewById(R.id.button0);
 		tilesInHand.add(tile0);
@@ -116,21 +119,14 @@ public class Game extends Activity {
 		tilesInHand.add(tile11);
 		Button tile12 = (Button) findViewById(R.id.button12);
 		tilesInHand.add(tile12);
-		
+
 		deck = new Deck();
 		for (int i = 0; i<tilesInHand.size(); i++) {
 			Tile ti = deck.draw();
 			tilesInHand.get(i).setText(ti.getSuit() + "\n" + ti.getValue());
 		}
-    }
+
+	}
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return true;
-    }
-    
-    
 }
