@@ -3,10 +3,13 @@
 
     <string name="app_name">Mahdroid</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Go to the Game!</string>
+    <string name="mainTitle">Mahdroid</string>
+    <string name="startGame">Start Game</string>
+    <string name="goToInstructions">Instructions</string>
     <string name="addButtonName">Add</string>
     <string name="valueFieldHint">value</string>
     <string name="suitFieldHint">suit</string>
     <string name="title_activity_game">Game</string>
+    
 
 </resources>

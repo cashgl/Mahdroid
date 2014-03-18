@@ -29,6 +29,7 @@ public class Game extends Activity {
 	public void setupStuff() {
 		txt = (TextView) findViewById(R.id.textView1);
 		txt.setMovementMethod(new ScrollingMovementMethod());
+		
 		//Button addButton = (Button) findViewById(R.id.addButton);
 		//suitField = (EditText) findViewById(R.id.suitField);
 		//valueField = (EditText) findViewById(R.id.valueField);
