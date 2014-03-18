@@ -4,7 +4,7 @@ public class Function {
 
 
 	public static boolean eat(Hand activeHand, Tile t){
-		for (int i = 0; i< activeHand.getSize()-2; i++) {
+		for (int i = 0; i< activeHand.getSize()-1; i++) {
 			//eg. when u have 3 & 4 and u pick up 5, then 5 will be added to the end 
 			if (activeHand.tileAt(i).getValue()+1 == activeHand.tileAt(i+1).getValue() && activeHand.tileAt(i+1).getValue()+1 == t.getValue() && activeHand.tileAt(i).getSuit() == t.getSuit())
 				return true;
