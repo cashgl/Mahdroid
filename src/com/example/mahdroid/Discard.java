@@ -31,6 +31,8 @@ public class Discard {
 	}
 	
 	public Tile grabLast() {
+		if (pile.size() != 0)
+			return pile.peek();
 		return null;
 	}
 	

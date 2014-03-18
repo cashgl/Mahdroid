@@ -1,5 +1,7 @@
 package com.example.mahdroid;
 
+import java.util.ArrayList;
+
 public class Function {
 
 
@@ -19,10 +21,20 @@ public class Function {
 		}
 		return false;
 	}
+	
+	public static ArrayList<Tile> performEat(Hand activeHand, Tile t) {
+		ArrayList<Tile> hiddenHand = new ArrayList<Tile>();
+		//manipulate here
+		
+		//return hidden hand
+		return hiddenHand;
+	}
 
 	public static boolean dou(Hand activeHand, Tile t){
 		for (int i = 0; i< activeHand.getSize() - 2; i++) {
-			if (activeHand.tileAt(i).equals(activeHand.tileAt(i+1)) && t.getSuit() == activeHand.tileAt(i).getSuit() && t.getValue() == activeHand.tileAt(i).getValue())
+			if (activeHand.tileAt(i).equals(activeHand.tileAt(i+1)) && 
+					t.getSuit() == activeHand.tileAt(i).getSuit() && 
+					t.getValue() == activeHand.tileAt(i).getValue())
 				return true;
 		}
 		return false;
