@@ -26,15 +26,13 @@ public class Game extends Activity {
 		setContentView(R.layout.activity_game);
 
 		buttons = new ArrayList<Button>();
-		for (int i = 0x7f080002; i <= 0x7f080010; i++) {
+		for (int i = 0x7f080001; i <= 0x7f08000e; i++) {
 			buttons.add((Button)findViewById(i));
 		}
 		for (int i = 0; i <= 13; i++) {
 			buttons.get(i).setOnClickListener(myListener);		
 		}
 		
-		
-		Button tempTile = (Button) findViewById(R.id.button14);
 		
 		Button mid = (Button) findViewById(R.id.button14);
 		
@@ -110,31 +108,31 @@ public class Game extends Activity {
 		txt.append(deck.toString());
 
 		ArrayList<Button> tilesInHand = new ArrayList<Button>();
-		Button tile0 = (Button) findViewById(R.id.button0);
+		Button tile0 = (Button) findViewById(R.id.playerTile0);
 		tilesInHand.add(tile0);
-		Button tile1 = (Button) findViewById(R.id.button1);
+		Button tile1 = (Button) findViewById(R.id.playerTile1);
 		tilesInHand.add(tile1);
-		Button tile2 = (Button) findViewById(R.id.button2);
+		Button tile2 = (Button) findViewById(R.id.playerTile2);
 		tilesInHand.add(tile2);
-		Button tile3 = (Button) findViewById(R.id.button3);
+		Button tile3 = (Button) findViewById(R.id.playerTile3);
 		tilesInHand.add(tile3);
-		Button tile4 = (Button) findViewById(R.id.button4);
+		Button tile4 = (Button) findViewById(R.id.playerTile4);
 		tilesInHand.add(tile4);
-		Button tile5 = (Button) findViewById(R.id.button5);
+		Button tile5 = (Button) findViewById(R.id.playerTile5);
 		tilesInHand.add(tile5);
-		Button tile6 = (Button) findViewById(R.id.button6);
+		Button tile6 = (Button) findViewById(R.id.playerTile6);
 		tilesInHand.add(tile6);
-		Button tile7 = (Button) findViewById(R.id.button7);
+		Button tile7 = (Button) findViewById(R.id.playerTile7);
 		tilesInHand.add(tile7);
-		Button tile8 = (Button) findViewById(R.id.button8);
+		Button tile8 = (Button) findViewById(R.id.playerTile8);
 		tilesInHand.add(tile8);
-		Button tile9 = (Button) findViewById(R.id.button9);
+		Button tile9 = (Button) findViewById(R.id.playerTile9);
 		tilesInHand.add(tile9);
-		Button tile10 = (Button) findViewById(R.id.button10);
+		Button tile10 = (Button) findViewById(R.id.playerTile10);
 		tilesInHand.add(tile10);
-		Button tile11 = (Button) findViewById(R.id.button11);
+		Button tile11 = (Button) findViewById(R.id.playerTile11);
 		tilesInHand.add(tile11);
-		Button tile12 = (Button) findViewById(R.id.button12);
+		Button tile12 = (Button) findViewById(R.id.playerTile12);
 		tilesInHand.add(tile12);
 
 		deck = new Deck();

@@ -24,26 +24,27 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f080014;
-        public static final int button0=0x7f080002;
-        public static final int button1=0x7f080003;
-        public static final int button10=0x7f08000c;
-        public static final int button11=0x7f08000d;
-        public static final int button12=0x7f08000e;
-        public static final int button13=0x7f08000f;
-        public static final int button14=0x7f080010;
-        public static final int button2=0x7f080004;
-        public static final int button3=0x7f080005;
-        public static final int button4=0x7f080006;
-        public static final int button5=0x7f080007;
-        public static final int button6=0x7f080008;
-        public static final int button7=0x7f080009;
-        public static final int button8=0x7f08000a;
-        public static final int button9=0x7f08000b;
-        public static final int goToInstructions=0x7f080013;
-        public static final int playerHand=0x7f080001;
-        public static final int startGame=0x7f080012;
-        public static final int textView1=0x7f080000;
+        public static final int action_settings=0x7f080015;
+        public static final int botHand1=0x7f080010;
+        public static final int button14=0x7f08000f;
+        public static final int goToInstructions=0x7f080014;
+        public static final int playerHand=0x7f080000;
+        public static final int playerTile0=0x7f080001;
+        public static final int playerTile1=0x7f080002;
+        public static final int playerTile10=0x7f08000b;
+        public static final int playerTile11=0x7f08000c;
+        public static final int playerTile12=0x7f08000d;
+        public static final int playerTile2=0x7f080003;
+        public static final int playerTile3=0x7f080004;
+        public static final int playerTile4=0x7f080005;
+        public static final int playerTile5=0x7f080006;
+        public static final int playerTile6=0x7f080007;
+        public static final int playerTile7=0x7f080008;
+        public static final int playerTile8=0x7f080009;
+        public static final int playerTile9=0x7f08000a;
+        public static final int playerTileTemp=0x7f08000e;
+        public static final int startGame=0x7f080013;
+        public static final int textView1=0x7f080012;
         public static final int webView1=0x7f080011;
     }
     public static final class layout {
