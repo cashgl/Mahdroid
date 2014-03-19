@@ -26,7 +26,7 @@ public class Game extends Activity {
 		setContentView(R.layout.activity_game);
 
 		buttons = new ArrayList<Button>();
-		for (int i = 0x7f080001; i <= 0x7f08000e; i++) {
+		for (int i = 0x7f090001; i <= 0x7f09000e; i++) {
 			buttons.add((Button)findViewById(i));
 		}
 		for (int i = 0; i <= 13; i++) {

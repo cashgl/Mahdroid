@@ -12,5 +12,9 @@
     <string name="title_activity_game">Game</string>
     <string name="title_activity_instructions">Instructions</string>
     <string name="hello_world">Hello world!</string>
+    <color name="purple">#7F00FF</color>
+    <color name="white">#FFFFFF</color>
+    <color name="red">#FA1D2F</color>
+    <color name="blue">#00B2EE</color>
 
 </resources>
