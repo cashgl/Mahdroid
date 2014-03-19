@@ -10,6 +10,7 @@
     <string name="valueFieldHint">value</string>
     <string name="suitFieldHint">suit</string>
     <string name="title_activity_game">Game</string>
-    
+    <string name="title_activity_instructions">Instructions</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

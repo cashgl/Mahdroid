@@ -15,7 +15,7 @@ public class MainMenu extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main_menu);
 		
-		Button goToGame = (Button) findViewById(R.id.button1);
+		Button goToGame = (Button) findViewById(R.id.startGame);
 		goToGame.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -25,14 +25,16 @@ public class MainMenu extends Activity {
 				
 			}
 		});
+		
+		Button goToInstructions = (Button) findViewById(R.id.goToInstructions);
+		goToInstructions.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MainMenu.this, Instructions.class);
+				startActivity(intent);
+				
+			}
+		});
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main_menu, menu);
-		return true;
-	}
-	
-
 }

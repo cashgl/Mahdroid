@@ -3,9 +3,11 @@ package com.example.mahdroid;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
-import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -15,6 +17,7 @@ public class Game extends Activity {
 	EditText suitField, valueField;
 	TextView txt;
 	Hand hand;
+	ArrayList<Button> buttons;
 	/////
 
 	@Override
@@ -22,7 +25,20 @@ public class Game extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game);
 
-		setupStuff();
+		buttons = new ArrayList<Button>();
+		for (int i = 0x7f080002; i <= 0x7f080010; i++) {
+			buttons.add((Button)findViewById(i));
+		}
+		for (int i = 0; i <= 13; i++) {
+			buttons.get(i).setOnClickListener(myListener);		
+		}
+		
+		
+		Button tempTile = (Button) findViewById(R.id.button14);
+		
+		Button mid = (Button) findViewById(R.id.button14);
+		
+		//setupStuff();
 
 	}
 
@@ -128,6 +144,26 @@ public class Game extends Activity {
 		}
 
 	}
-
+	private OnClickListener myListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			Button temp = (Button) v;
+			if (temp.getText().equals("") || 
+					temp.getText().equals("R")) {
+				temp.setBackgroundColor(Color.GREEN);
+				temp.setText("G");
+			}
+			else if (temp.getText().equals("G")) {
+				temp.setBackgroundColor(Color.rgb(255, 105, 180));
+				temp.setText("P");
+			}
+			else {
+				temp.setText("R");
+				temp.setBackgroundColor(Color.RED);
+			}
+			
+		}
+	};
 
 }

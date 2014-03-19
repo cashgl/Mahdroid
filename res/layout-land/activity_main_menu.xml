@@ -18,7 +18,7 @@
         android:text="@string/mainTitle" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/startGame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView1"
@@ -26,10 +26,10 @@
         android:text="@string/startGame" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/goToInstructions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button1"
+        android:layout_below="@+id/startGame"
         android:layout_centerHorizontal="true"
         android:text="@string/goToInstructions" />
 
