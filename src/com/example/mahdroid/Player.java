@@ -41,6 +41,10 @@ public class Player {
 		}
 	}
 	
+	/**
+	 * @param discardTile
+	 * @return
+	 */
 	public String evaluate(Tile discardTile){
 		StringBuilder s = new StringBuilder();
 		if (Function.eat(hand, discardTile))

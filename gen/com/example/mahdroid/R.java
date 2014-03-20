@@ -12,6 +12,7 @@ public final class R {
     }
     public static final class color {
         public static final int blue=0x7f060003;
+        public static final int orange=0x7f060004;
         public static final int purple=0x7f060000;
         public static final int red=0x7f060002;
         public static final int white=0x7f060001;
@@ -30,33 +31,48 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int Button01=0x7f09001c;
-        public static final int Button02=0x7f090025;
-        public static final int Button03=0x7f09001d;
-        public static final int Button04=0x7f090022;
-        public static final int Button05=0x7f090023;
-        public static final int Button06=0x7f090024;
-        public static final int Button07=0x7f09001e;
-        public static final int Button08=0x7f09001f;
-        public static final int Button09=0x7f090020;
-        public static final int Button10=0x7f090021;
-        public static final int action_settings=0x7f09002d;
+        public static final int action_settings=0x7f09003d;
         public static final int botHand1=0x7f090010;
         public static final int botHand2=0x7f09001b;
-        public static final int button1=0x7f090011;
-        public static final int button10=0x7f09001a;
+        public static final int botHand3=0x7f090029;
+        public static final int botTile1_0=0x7f090011;
+        public static final int botTile1_1=0x7f090012;
+        public static final int botTile1_2=0x7f090013;
+        public static final int botTile1_3=0x7f090014;
+        public static final int botTile1_4=0x7f090015;
+        public static final int botTile1_5=0x7f090016;
+        public static final int botTile1_6=0x7f090017;
+        public static final int botTile1_7=0x7f090018;
+        public static final int botTile1_8=0x7f090019;
+        public static final int botTile1_9=0x7f09001a;
+        public static final int botTile2_0=0x7f09001c;
+        public static final int botTile2_1=0x7f09001d;
+        public static final int botTile2_10=0x7f090026;
+        public static final int botTile2_11=0x7f090027;
+        public static final int botTile2_12=0x7f090028;
+        public static final int botTile2_2=0x7f09001e;
+        public static final int botTile2_3=0x7f09001f;
+        public static final int botTile2_4=0x7f090020;
+        public static final int botTile2_5=0x7f090021;
+        public static final int botTile2_6=0x7f090022;
+        public static final int botTile2_7=0x7f090023;
+        public static final int botTile2_8=0x7f090024;
+        public static final int botTile2_9=0x7f090025;
+        public static final int botTile3_0=0x7f09002a;
+        public static final int botTile3_1=0x7f09002b;
+        public static final int botTile3_2=0x7f09002c;
+        public static final int botTile3_3=0x7f09002d;
+        public static final int botTile3_4=0x7f09002e;
+        public static final int botTile3_5=0x7f09002f;
+        public static final int botTile3_6=0x7f090030;
+        public static final int botTile3_7=0x7f090031;
+        public static final int botTile3_8=0x7f090032;
+        public static final int botTile3_9=0x7f090033;
         public static final int button14=0x7f09000f;
-        public static final int button2=0x7f090012;
-        public static final int button3=0x7f090013;
-        public static final int button4=0x7f090014;
-        public static final int button5=0x7f090015;
-        public static final int button6=0x7f090016;
-        public static final int button7=0x7f090017;
-        public static final int button8=0x7f090018;
-        public static final int button9=0x7f090019;
-        public static final int doubleButton=0x7f090027;
-        public static final int eatButton=0x7f090026;
-        public static final int goToInstructions=0x7f09002c;
+        public static final int doubleButton=0x7f090036;
+        public static final int eatButton=0x7f090035;
+        public static final int functionButtons=0x7f090034;
+        public static final int goToInstructions=0x7f09003c;
         public static final int playerHand=0x7f090000;
         public static final int playerTile0=0x7f090001;
         public static final int playerTile1=0x7f090002;
@@ -72,10 +88,11 @@ public final class R {
         public static final int playerTile8=0x7f090009;
         public static final int playerTile9=0x7f09000a;
         public static final int playerTileTemp=0x7f09000e;
-        public static final int startGame=0x7f09002b;
-        public static final int textView1=0x7f09002a;
-        public static final int tripleButton=0x7f090028;
-        public static final int webView1=0x7f090029;
+        public static final int startGame=0x7f09003b;
+        public static final int textView1=0x7f09003a;
+        public static final int tripleButton=0x7f090037;
+        public static final int webView1=0x7f090039;
+        public static final int winButton=0x7f090038;
     }
     public static final class layout {
         public static final int activity_game=0x7f030000;
