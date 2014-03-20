@@ -22,18 +22,40 @@ public class Game extends Activity {
 	EditText suitField, valueField;
 	Hand hand;
 	ArrayList<Button> buttons;
+	Deck deck;
+	Hand playerHand;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game);
+		
+		deck = new Deck();
+		playerHand = new Hand();
 
 		buttons = new ArrayList<Button>();
 		for (int i = 0x7f090001; i <= 0x7f09000e; i++) {
 			buttons.add((Button)findViewById(i));
 		}
 		for (int i = 0; i <= 13; i++) {
-			buttons.get(i).setOnClickListener(colorListener);		
+			playerHand.add(deck.draw());
+		}
+		for (int i = 0; i <= 12; i++) {
+			Tile tempT = playerHand.tileAt(i);
+			Button tempB = buttons.get(i);
+			if (tempT.getSuit() == 0) 
+				tempB.setBackgroundColor(Color.CYAN);
+			else if (tempT.getSuit() == 1)
+				tempB.setBackgroundColor(Color.YELLOW);
+			else if (tempT.getSuit() == 2)
+				tempB.setBackgroundColor(Color.GREEN);
+			else if (tempT.getSuit() == 3)
+				tempB.setBackgroundColor(Color.RED);
+			else if (tempT.getSuit() == 4)
+				tempB.setBackgroundColor(Color.GRAY);
+			tempB.setText("" + tempT.getValue());
+			tempB.setOnClickListener(suit_valueListener);
+			//buttons.get(i).setOnClickListener(colorListener);		
 		}
 		
 		Button eatButton = (Button) findViewById(R.id.eatButton);
@@ -50,24 +72,19 @@ public class Game extends Activity {
 
 	}
 	
-	private OnClickListener colorListener = new OnClickListener() {
+	private OnClickListener suit_valueListener = new OnClickListener() {
 		
 		@Override
 		public void onClick(View v) {
 			Button temp = (Button) v;
-			if (temp.getText().equals("") || 
-					temp.getText().equals("R")) {
-				temp.setBackgroundColor(Color.GREEN);
-				temp.setText("G");
-			}
-			else if (temp.getText().equals("G")) {
-				temp.setBackgroundColor(Color.rgb(255, 105, 180));
-				temp.setText("P");
-			}
-			else {
-				temp.setText("R");
-				temp.setBackgroundColor(Color.RED);
-			}
+			int j = buttons.indexOf(temp);
+			AlertDialog.Builder builder = new AlertDialog.Builder(Game.this);
+	        builder.setTitle("Suit: " + playerHand.tileAt(j).getSuit() + 
+	        		", Value: " + playerHand.tileAt(j).getValue());
+	        builder.setPositiveButton("OK", null);
+
+	        AlertDialog ad = builder.create();
+	        ad.show();
 			
 		}
 	};
