@@ -3,11 +3,16 @@ package com.example.mahdroid;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -34,7 +39,17 @@ public class Game extends Activity {
 		}
 		
 		
-		Button mid = (Button) findViewById(R.id.button14);
+		Button eatButton = (Button) findViewById(R.id.eatButton);
+		eatButton.setOnTouchListener(functionOnTouch);
+		
+		Button doubleButton = (Button) findViewById(R.id.doubleButton);
+		doubleButton.setOnTouchListener(functionOnTouch);
+		
+		Button tripleButton = (Button) findViewById(R.id.tripleButton);
+		tripleButton.setOnTouchListener(functionOnTouch);
+		
+		Button winButton = (Button) findViewById(R.id.winButton);
+		winButton.setOnTouchListener(functionOnTouch);
 		
 		//setupStuff();
 
@@ -161,6 +176,42 @@ public class Game extends Activity {
 				temp.setBackgroundColor(Color.RED);
 			}
 			
+		}
+	};
+	
+	private OnTouchListener functionOnTouch = new OnTouchListener() {
+		
+		@Override
+		public boolean onTouch(View v, MotionEvent event) {
+			Button temp = (Button) v;
+			ColorDrawable d = (ColorDrawable) temp.getBackground();
+			switch(event.getAction()){
+		    case MotionEvent.ACTION_DOWN:
+		        temp.setTextColor(d.getColor());
+		        break;
+
+		    case MotionEvent.ACTION_MOVE:
+		        break;
+
+		    case MotionEvent.ACTION_UP:
+		        temp.setTextColor(Color.WHITE);
+
+		        float x = v.getX(),y = v.getY();
+		       // if (Math.abs(x - event.getX()) > 550 ||
+		        		//Math.abs(y - event.getY()) < 100  ) {
+		        String funct = temp.getText() + "";
+
+		        AlertDialog.Builder builder = new AlertDialog.Builder(Game.this);
+		        builder.setTitle("Action performed: " + funct)
+		        .setMessage("" + Math.abs(y - event.getY()));
+		        builder.setPositiveButton("OK", null);
+
+		        AlertDialog ad = builder.create();
+		        ad.show();
+		       // }
+		        break;
+		    }
+		    return true;
 		}
 	};
 
