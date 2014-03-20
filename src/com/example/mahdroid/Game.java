@@ -101,27 +101,29 @@ public class Game extends Activity {
 		        break;
 
 		    case MotionEvent.ACTION_MOVE:
-		        break;
+		    	break;
 
 		    case MotionEvent.ACTION_UP:
-		        temp.setTextColor(Color.WHITE);
+		    	temp.setTextColor(Color.WHITE);
 
-		        float x = v.getX(),y = v.getY();
-		       // if (Math.abs(x - event.getX()) > 550 ||
-		        		//Math.abs(y - event.getY()) < 100  ) {
-		        String funct = temp.getText() + "";
+		    	float x = Math.abs(event.getX()),y = Math.abs(event.getY());
+		    	double dist = Math.sqrt( Math.pow(x, 2) + Math.pow(y, 2) );
+		    	if (dist < 300) {
+		    		String funct = temp.getText() + "";
 
-		        AlertDialog.Builder builder = new AlertDialog.Builder(Game.this);
-		        builder.setTitle("Action performed: " + funct)
-		        .setMessage("" + Math.abs(y - event.getY()));
-		        builder.setPositiveButton("OK", null);
+		    		AlertDialog.Builder builder = new AlertDialog.Builder(Game.this);
+		    		builder.setTitle("Action performed: " + funct)
+		    		// .setMessage(Math.abs(x - event.getX()) + ", " + Math.abs(y - event.getY()));
+		    		//.setMessage(x + ", " + y);
+		    		.setMessage(dist + "");
+		    		builder.setPositiveButton("OK", null);
 
-		        AlertDialog ad = builder.create();
-		        ad.show();
-		       // }
-		        break;
-		    }
-		    return true;
+		    		AlertDialog ad = builder.create();
+		    		ad.show();
+		    	}
+		    	break;
+			}
+			return true;
 		}
 	};
 
