@@ -113,9 +113,7 @@ public class Game extends Activity {
 
 		    		AlertDialog.Builder builder = new AlertDialog.Builder(Game.this);
 		    		builder.setTitle("Action performed: " + funct)
-		    		// .setMessage(Math.abs(x - event.getX()) + ", " + Math.abs(y - event.getY()));
-		    		//.setMessage(x + ", " + y);
-		    		.setMessage(dist + "");
+		    			.setMessage(dist + "");
 		    		builder.setPositiveButton("OK", null);
 
 		    		AlertDialog ad = builder.create();
