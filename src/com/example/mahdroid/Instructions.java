@@ -1,8 +1,7 @@
 package com.example.mahdroid;
 
-import android.os.Bundle;
 import android.app.Activity;
-import android.view.Menu;
+import android.os.Bundle;
 import android.webkit.WebView;
 
 public class Instructions extends Activity {
