@@ -12,6 +12,7 @@ public final class R {
     }
     public static final class color {
         public static final int blue=0x7f060003;
+        public static final int chartreuse3=0x7f060006;
         public static final int light_gray=0x7f060005;
         public static final int orange=0x7f060004;
         public static final int purple=0x7f060000;
@@ -32,7 +33,7 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f09003d;
+        public static final int action_settings=0x7f09003e;
         public static final int botHand1=0x7f090010;
         public static final int botHand2=0x7f09001b;
         public static final int botHand3=0x7f090029;
@@ -70,10 +71,10 @@ public final class R {
         public static final int botTile3_8=0x7f090032;
         public static final int botTile3_9=0x7f090033;
         public static final int button14=0x7f09000f;
-        public static final int doubleButton=0x7f090036;
-        public static final int eatButton=0x7f090035;
+        public static final int doubleButton=0x7f090037;
+        public static final int eatButton=0x7f090036;
         public static final int functionButtons=0x7f090034;
-        public static final int goToInstructions=0x7f09003c;
+        public static final int goToInstructions=0x7f09003d;
         public static final int playerHand=0x7f090000;
         public static final int playerTile0=0x7f090001;
         public static final int playerTile1=0x7f090002;
@@ -89,11 +90,12 @@ public final class R {
         public static final int playerTile8=0x7f090009;
         public static final int playerTile9=0x7f09000a;
         public static final int playerTileTemp=0x7f09000e;
-        public static final int startGame=0x7f09003b;
-        public static final int textView1=0x7f09003a;
-        public static final int tripleButton=0x7f090037;
-        public static final int webView1=0x7f090039;
-        public static final int winButton=0x7f090038;
+        public static final int skipButton=0x7f090035;
+        public static final int startGame=0x7f09003c;
+        public static final int textView1=0x7f09003b;
+        public static final int tripleButton=0x7f090038;
+        public static final int webView1=0x7f09003a;
+        public static final int winButton=0x7f090039;
     }
     public static final class layout {
         public static final int activity_game=0x7f030000;

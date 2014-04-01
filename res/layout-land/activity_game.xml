@@ -463,6 +463,15 @@
         android:orientation="horizontal" >
 
         <Button
+            android:id="@+id/skipButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:background="@color/chartreuse3"
+            android:textColor="@color/white"
+            android:text="skip" />
+
+        <Button
             android:id="@+id/eatButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
