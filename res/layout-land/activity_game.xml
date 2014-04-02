@@ -243,12 +243,8 @@
     
     <Button 
         android:id="@+id/lineBot1"
-        style="@style/line_vert"
-        android:layout_marginLeft="3dp"
-        android:layout_marginRight="3dp"
-        android:layout_toLeftOf="@+id/botHand1"
-        android:layout_height="fill_parent"
-        android:background="@color/black"/>
+        style="@style/line_divider_vert"
+        android:layout_toLeftOf="@+id/botHand1" />
 
     <LinearLayout
         android:id="@+id/botHand2"
@@ -345,6 +341,13 @@
             android:id="@+id/botTile2_12"
             style="@style/bot2Button" />
     </LinearLayout>
+    
+    <Button
+        android:id="@+id/lineBot2"
+        style="@style/line_divider_horiz"
+        android:layout_toLeftOf="@+id/lineBot1"
+        android:layout_toRightOf="@+id/lineBot3"
+        android:layout_below="@+id/botHand2" />
 
     <LinearLayout
         android:id="@+id/botHand3"
@@ -443,12 +446,8 @@
     
     <Button 
         android:id="@+id/lineBot3"
-        style="@style/line_vert"
-        android:layout_marginLeft="3dp"
-        android:layout_marginRight="3dp"
-        android:layout_toRightOf="@+id/botHand3"
-        android:layout_height="fill_parent"
-        android:background="@color/black"/>
+        style="@style/line_divider_vert"
+        android:layout_toRightOf="@+id/botHand3" />
 
     <RelativeLayout
         android:id="@+id/functionButtons"
@@ -512,7 +511,7 @@
     <RelativeLayout
         android:id="@+id/discards"
         android:layout_above="@+id/playerHand"
-        android:layout_below="@+id/botHand2"
+        android:layout_below="@+id/lineBot2"
         android:layout_toRightOf="@+id/lineBot3"
         android:layout_toLeftOf="@+id/lineBot1"
         android:layout_width="wrap_content"
@@ -544,7 +543,6 @@
             android:layout_alignParentTop="true"
             android:layout_toLeftOf="@+id/botDiscard1"
             android:layout_toRightOf="@+id/botDiscard3"
-            android:layout_marginTop="3dp"
             android:layout_marginBottom="3dp"
             android:background="@color/light_green" >
 
@@ -563,7 +561,6 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="3dp"
             android:layout_marginBottom="3dp"
             android:layout_marginLeft="3dp"
             android:background="@color/light_pink" >
@@ -583,7 +580,6 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="3dp"
             android:layout_marginBottom="3dp"
             android:layout_marginRight="3dp"
             android:background="@color/light_blue" >
