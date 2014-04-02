@@ -191,19 +191,6 @@ public class Game extends Activity {
 		bot1Buttons.add((Button)findViewById(R.id.botTile1_11));
 		bot1Buttons.add((Button)findViewById(R.id.botTile1_12));
 
-		for (int i = 0; i <= 12; i++) {
-			Button temp = bot1Buttons.get(i);
-			if (i % 2 == 0) {
-				temp.setBackgroundColor(Color.MAGENTA);
-				temp.setText("2");
-			}
-			else {
-				temp.setBackgroundColor(Color.BLUE);
-				temp.setText("1");
-			}
-			bot1Buttons.add(temp);
-		}
-
 		bot2Buttons = new ArrayList<Button>();
 		bot2Buttons.add((Button)findViewById(R.id.botTile2_0));
 		bot2Buttons.add((Button)findViewById(R.id.botTile2_1));
@@ -219,19 +206,6 @@ public class Game extends Activity {
 		bot2Buttons.add((Button)findViewById(R.id.botTile2_11));
 		bot2Buttons.add((Button)findViewById(R.id.botTile2_12));
 
-		for (int i = 0; i <= 12; i++) {
-			Button temp = bot2Buttons.get(i);
-			if (i % 2 == 0) {
-				temp.setBackgroundColor(Color.MAGENTA);
-				temp.setText("2");
-			}
-			else {
-				temp.setBackgroundColor(Color.BLUE);
-				temp.setText("1");
-			}
-			bot2Buttons.add(temp);
-		}
-
 		bot3Buttons = new ArrayList<Button>();
 		bot3Buttons.add((Button)findViewById(R.id.botTile3_0));
 		bot3Buttons.add((Button)findViewById(R.id.botTile3_1));
@@ -246,21 +220,6 @@ public class Game extends Activity {
 		bot3Buttons.add((Button)findViewById(R.id.botTile3_10));
 		bot3Buttons.add((Button)findViewById(R.id.botTile3_11));
 		bot3Buttons.add((Button)findViewById(R.id.botTile3_12));
-
-		for (int i = 0; i <= 12; i++) {
-			Button temp = bot3Buttons.get(i);
-			if (i % 2 == 0) {
-				temp.setBackgroundColor(Color.MAGENTA);
-				temp.setText("2");
-			}
-			else {
-				temp.setBackgroundColor(Color.BLUE);
-				temp.setText("1");
-			}
-			bot3Buttons.add(temp);
-		}
-
-
 	}
 
 }
