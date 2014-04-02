@@ -205,7 +205,7 @@ public class Game extends Activity {
 		.show();
 	}
 
-	public class SuitValueListener implements OnClickListener {
+	private class SuitValueListener implements OnClickListener {
 		int suit, value;
 
 		public SuitValueListener(int s, int v) {
