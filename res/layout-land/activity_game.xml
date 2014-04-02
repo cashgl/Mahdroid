@@ -13,134 +13,133 @@
         android:id="@+id/playerHand"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/lineBot3"
+        android:layout_toLeftOf="@+id/lineBot1"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="25dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
         android:background="@color/light_gray"
         android:padding="1dp" >
 
         <Button
             android:id="@+id/playerTile0"
-            style="?android:attr/buttonStyleSmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="-2dp"
             android:layout_weight="1" />
+        
+        <Button 
+            style="@style/line_vert" />
 
         <Button
             android:id="@+id/playerTile1"
-            style="?android:attr/buttonStyleSmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="-2dp"
-            android:layout_marginRight="-2dp"
             android:layout_weight="1" />
+        
+        <Button 
+            style="@style/line_vert" />
 
         <Button
             android:id="@+id/playerTile2"
-            style="?android:attr/buttonStyleSmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="-2dp"
-            android:layout_marginRight="-2dp"
             android:layout_weight="1" />
+        
+        <Button 
+            style="@style/line_vert" />
 
         <Button
             android:id="@+id/playerTile3"
-            style="?android:attr/buttonStyleSmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="-2dp"
-            android:layout_marginRight="-2dp"
             android:layout_weight="1" />
+        
+        <Button 
+            style="@style/line_vert" />
 
         <Button
             android:id="@+id/playerTile4"
-            style="?android:attr/buttonStyleSmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="-2dp"
-            android:layout_marginRight="-2dp"
             android:layout_weight="1" />
+        
+        <Button 
+            style="@style/line_vert" />
 
         <Button
             android:id="@+id/playerTile5"
-            style="?android:attr/buttonStyleSmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="-2dp"
-            android:layout_marginRight="-2dp"
             android:layout_weight="1" />
+        
+        <Button 
+            style="@style/line_vert" />
 
         <Button
             android:id="@+id/playerTile6"
-            style="?android:attr/buttonStyleSmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="-2dp"
-            android:layout_marginRight="-2dp"
             android:layout_weight="1" />
+        
+        <Button 
+            style="@style/line_vert" />
 
         <Button
             android:id="@+id/playerTile7"
-            style="?android:attr/buttonStyleSmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="-2dp"
-            android:layout_marginRight="-2dp"
             android:layout_weight="1" />
+        
+        <Button 
+            style="@style/line_vert" />
 
         <Button
             android:id="@+id/playerTile8"
-            style="?android:attr/buttonStyleSmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="-2dp"
-            android:layout_marginRight="-2dp"
             android:layout_weight="1" />
+        
+        <Button 
+            style="@style/line_vert" />
 
         <Button
             android:id="@+id/playerTile9"
-            style="?android:attr/buttonStyleSmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="-2dp"
-            android:layout_marginRight="-2dp"
             android:layout_weight="1" />
+        
+        <Button 
+            style="@style/line_vert" />
 
         <Button
             android:id="@+id/playerTile10"
-            style="?android:attr/buttonStyleSmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="-2dp"
-            android:layout_marginRight="-2dp"
             android:layout_weight="1" />
+        
+        <Button 
+            style="@style/line_vert" />
 
         <Button
             android:id="@+id/playerTile11"
-            style="?android:attr/buttonStyleSmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="-2dp"
-            android:layout_marginRight="-2dp"
             android:layout_weight="1" />
+        
+        <Button 
+            style="@style/line_vert" />
 
         <Button
             android:id="@+id/playerTile12"
-            style="?android:attr/buttonStyleSmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="-2dp"
-            android:layout_marginRight="4dp"
             android:layout_weight="1" />
+        
 
         <Button
             android:id="@+id/playerTileTemp"
-            style="?android:attr/buttonStyleSmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
             android:layout_marginRight="4dp"
             android:layout_weight="1"
             android:text="t" />
@@ -148,89 +147,108 @@
 
     <LinearLayout
         android:id="@+id/botHand1"
-        android:layout_width="50dp"
-        android:layout_height="fill_parent"
+		style="@style/sideHand"
         android:layout_alignParentRight="true"
         android:orientation="vertical" >
 
         <Button
             android:id="@+id/botTile1_0"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginBottom="-3dp"
-            android:layout_weight="1" />
+            style="@style/sideButton" />
+        
+        <Button
+            style="@style/line_horiz" />
 
         <Button
             android:id="@+id/botTile1_1"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginBottom="-3dp"
-            android:layout_marginTop="-3dp"
-            android:layout_weight="1" />
+            style="@style/sideButton" />
+        
+        <Button
+            style="@style/line_horiz" />
 
         <Button
             android:id="@+id/botTile1_2"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginBottom="-3dp"
-            android:layout_marginTop="-3dp"
-            android:layout_weight="1" />
+            style="@style/sideButton" />
+        
+        <Button
+            style="@style/line_horiz" />
 
         <Button
             android:id="@+id/botTile1_3"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginBottom="-3dp"
-            android:layout_marginTop="-3dp"
-            android:layout_weight="1" />
+            style="@style/sideButton" />
+        
+        <Button
+            style="@style/line_horiz" />
 
         <Button
             android:id="@+id/botTile1_4"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginBottom="-3dp"
-            android:layout_marginTop="-3dp"
-            android:layout_weight="1" />
+            style="@style/sideButton" />
+        
+        <Button
+            style="@style/line_horiz" />
 
         <Button
             android:id="@+id/botTile1_5"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginBottom="-3dp"
-            android:layout_marginTop="-3dp"
-            android:layout_weight="1" />
+            style="@style/sideButton" />
+        
+        <Button
+            style="@style/line_horiz" />
 
         <Button
             android:id="@+id/botTile1_6"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginBottom="-3dp"
-            android:layout_marginTop="-3dp"
-            android:layout_weight="1" />
+            style="@style/sideButton" />
+        
+        <Button
+            style="@style/line_horiz" />
 
         <Button
             android:id="@+id/botTile1_7"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginBottom="-3dp"
-            android:layout_marginTop="-3dp"
-            android:layout_weight="1" />
+            style="@style/sideButton" />
+        
+        <Button
+            style="@style/line_horiz" />
 
         <Button
             android:id="@+id/botTile1_8"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginBottom="-3dp"
-            android:layout_marginTop="-3dp"
-            android:layout_weight="1" />
+            style="@style/sideButton" />
+        
+        <Button
+            style="@style/line_horiz" />
 
         <Button
             android:id="@+id/botTile1_9"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginTop="-3dp"
-            android:layout_weight="1" />
+            style="@style/sideButton" />
+        
+        <Button
+            style="@style/line_horiz" />
+        
+        <Button
+            android:id="@+id/botTile1_10"
+            style="@style/sideButton" />
+        
+        <Button
+            style="@style/line_horiz" />
+        
+        <Button
+            android:id="@+id/botTile1_11"
+            style="@style/sideButton" />
+        
+        <Button
+            style="@style/line_horiz" />
+        
+        <Button
+            android:id="@+id/botTile1_12"
+            style="@style/sideButton" />
+        
     </LinearLayout>
+    
+    <Button 
+        android:id="@+id/lineBot1"
+        style="@style/line_vert"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:layout_toLeftOf="@+id/botHand1"
+        android:layout_height="fill_parent"
+        android:background="@color/black"/>
 
     <LinearLayout
         android:id="@+id/botHand2"
@@ -241,214 +259,204 @@
 
         <Button
             android:id="@+id/botTile2_0"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="-2dp"
-            android:layout_weight="1" />
+            style="@style/bot2Button" />
+        
+        <Button 
+            style="@style/line_vert" />
 
         <Button
             android:id="@+id/botTile2_1"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="-2dp"
-            android:layout_marginRight="-2dp"
-            android:layout_weight="1" />
+            style="@style/bot2Button" />
+        
+        <Button 
+            style="@style/line_vert" />
 
         <Button
             android:id="@+id/botTile2_2"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="-2dp"
-            android:layout_marginRight="-2dp"
-            android:layout_weight="1" />
+            style="@style/bot2Button" />
+        
+        <Button 
+            style="@style/line_vert" />
 
         <Button
             android:id="@+id/botTile2_3"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="-2dp"
-            android:layout_marginRight="-2dp"
-            android:layout_weight="1" />
+            style="@style/bot2Button" />
+        
+        <Button 
+            style="@style/line_vert" />
 
         <Button
             android:id="@+id/botTile2_4"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="-2dp"
-            android:layout_marginRight="-2dp"
-            android:layout_weight="1" />
+            style="@style/bot2Button" />
+        
+        <Button 
+            style="@style/line_vert" />
 
         <Button
             android:id="@+id/botTile2_5"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="-2dp"
-            android:layout_marginRight="-2dp"
-            android:layout_weight="1" />
+            style="@style/bot2Button" />
+        
+        <Button 
+            style="@style/line_vert" />
 
         <Button
             android:id="@+id/botTile2_6"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="-2dp"
-            android:layout_marginRight="-2dp"
-            android:layout_weight="1" />
+            style="@style/bot2Button" />
+        
+        <Button 
+            style="@style/line_vert" />
 
         <Button
             android:id="@+id/botTile2_7"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="-2dp"
-            android:layout_marginRight="-2dp"
-            android:layout_weight="1" />
+            style="@style/bot2Button" />
+        
+        <Button 
+            style="@style/line_vert" />
 
         <Button
             android:id="@+id/botTile2_8"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="-2dp"
-            android:layout_marginRight="-2dp"
-            android:layout_weight="1" />
+            style="@style/bot2Button" />
+        
+        <Button 
+            style="@style/line_vert" />
 
         <Button
             android:id="@+id/botTile2_9"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="-2dp"
-            android:layout_marginRight="-2dp"
-            android:layout_weight="1" />
+            style="@style/bot2Button" />
+        
+        <Button 
+            style="@style/line_vert" />
 
         <Button
             android:id="@+id/botTile2_10"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="-2dp"
-            android:layout_marginRight="-2dp"
-            android:layout_weight="1" />
+            style="@style/bot2Button" />
+        
+        <Button 
+            style="@style/line_vert" />
 
         <Button
             android:id="@+id/botTile2_11"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="-2dp"
-            android:layout_marginRight="-2dp"
-            android:layout_weight="1" />
+            style="@style/bot2Button" />
+        
+        <Button 
+            style="@style/line_vert" />
 
         <Button
             android:id="@+id/botTile2_12"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="-2dp"
-            android:layout_marginRight="4dp"
-            android:layout_weight="1" />
+            style="@style/bot2Button" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/botHand3"
-        android:layout_width="50dp"
-        android:layout_height="fill_parent"
+        style="@style/sideHand"
         android:layout_alignParentLeft="true"
         android:orientation="vertical" >
 
         <Button
             android:id="@+id/botTile3_0"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginBottom="-3dp"
-            android:layout_weight="1" />
+			style="@style/sideButton" />
+        
+        <Button
+            style="@style/line_horiz" />
 
         <Button
             android:id="@+id/botTile3_1"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginBottom="-3dp"
-            android:layout_marginTop="-3dp"
-            android:layout_weight="1" />
+            style="@style/sideButton" />
+        
+        <Button
+            style="@style/line_horiz" />
 
         <Button
             android:id="@+id/botTile3_2"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginBottom="-3dp"
-            android:layout_marginTop="-3dp"
-            android:layout_weight="1" />
+            style="@style/sideButton" />
+        
+        <Button
+            style="@style/line_horiz" />
 
         <Button
             android:id="@+id/botTile3_3"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginBottom="-3dp"
-            android:layout_marginTop="-3dp"
-            android:layout_weight="1" />
+            style="@style/sideButton" />
+        
+        <Button
+            style="@style/line_horiz" />
 
         <Button
             android:id="@+id/botTile3_4"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginBottom="-3dp"
-            android:layout_marginTop="-3dp"
-            android:layout_weight="1" />
+            style="@style/sideButton" />
+        
+        <Button
+            style="@style/line_horiz" />
 
         <Button
             android:id="@+id/botTile3_5"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginBottom="-3dp"
-            android:layout_marginTop="-3dp"
-            android:layout_weight="1" />
+            style="@style/sideButton" />
+        
+        <Button
+            style="@style/line_horiz" />
 
         <Button
             android:id="@+id/botTile3_6"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginBottom="-3dp"
-            android:layout_marginTop="-3dp"
-            android:layout_weight="1" />
+            style="@style/sideButton" />
+        
+        <Button
+            style="@style/line_horiz" />
 
         <Button
             android:id="@+id/botTile3_7"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginBottom="-3dp"
-            android:layout_marginTop="-3dp"
-            android:layout_weight="1" />
+            style="@style/sideButton" />
+        
+        <Button
+            style="@style/line_horiz" />
 
         <Button
             android:id="@+id/botTile3_8"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginBottom="-3dp"
-            android:layout_marginTop="-3dp"
-            android:layout_weight="1" />
+            style="@style/sideButton" />
+        
+        <Button
+            style="@style/line_horiz" />
 
         <Button
             android:id="@+id/botTile3_9"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginTop="-3dp"
-            android:layout_weight="1" />
+            style="@style/sideButton" />
+        
+        <Button
+            style="@style/line_horiz" />
+
+        <Button
+            android:id="@+id/botTile3_10"
+            style="@style/sideButton" />
+        
+        <Button
+            style="@style/line_horiz" />
+
+        <Button
+            android:id="@+id/botTile3_11"
+            style="@style/sideButton" />
+        
+        <Button
+            style="@style/line_horiz" />
+
+        <Button
+            android:id="@+id/botTile3_12"
+            style="@style/sideButton" />
     </LinearLayout>
+    
+    <Button 
+        android:id="@+id/lineBot3"
+        style="@style/line_vert"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:layout_toRightOf="@+id/botHand3"
+        android:layout_height="fill_parent"
+        android:background="@color/black"/>
 
     <RelativeLayout
         android:id="@+id/functionButtons"
         android:layout_width="fill_parent"
         android:layout_height="23dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
+        android:layout_toRightOf="@+id/lineBot3"
+		android:layout_toLeftOf="@+id/lineBot1"
         android:orientation="horizontal" >
 
         <Button
@@ -505,8 +513,8 @@
         android:id="@+id/discards"
         android:layout_above="@+id/playerHand"
         android:layout_below="@+id/botHand2"
-        android:layout_toRightOf="@+id/botHand3"
-        android:layout_toLeftOf="@+id/botHand1"
+        android:layout_toRightOf="@+id/lineBot3"
+        android:layout_toLeftOf="@+id/lineBot1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
 
@@ -558,7 +566,6 @@
             android:layout_marginTop="3dp"
             android:layout_marginBottom="3dp"
             android:layout_marginLeft="3dp"
-            android:layout_marginRight="3dp"
             android:background="@color/light_pink" >
 
             <Button
@@ -578,7 +585,6 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="3dp"
             android:layout_marginBottom="3dp"
-            android:layout_marginLeft="3dp"
             android:layout_marginRight="3dp"
             android:background="@color/light_blue" >
 

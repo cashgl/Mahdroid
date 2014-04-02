@@ -23,5 +23,41 @@
     <color name="light_red">#EEB4B4</color>
     <color name="light_green">#C5E3BF</color>
     <color name="light_pink">#EED2EE</color>
+    <color name="black">#000000</color>
+    
+    <style name="sideHand">
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_alignParentTop">true</item>
+    </style>
+    
+    <style name="sideButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@color/blue</item>
+        <item name="android:text">@string/suitFieldHint</item>
+    </style>
+    
+    <style name="bot2Button">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+ 		<item name="android:layout_weight">1</item>  
+ 		<item name="android:background">@color/orange</item> 
+ 		<item name="android:text">@string/suitFieldHint</item>    
+    </style>
+    
+    <style name="line_vert">
+        <item name="android:layout_width">1dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/light_gray</item>
+    </style>
+    
+    <style name="line_horiz">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/light_gray</item>
+    </style>
 
 </resources>
