@@ -107,6 +107,7 @@ public class Game extends Activity {
 		}
 
 		//Creates the function buttons and associates their action listener
+		OnTouchListener functionOnTouch = new FunctionOnTouch();
 		Button eatButton = (Button) findViewById(R.id.eatButton);
 		eatButton.setOnTouchListener(functionOnTouch);
 
@@ -227,7 +228,7 @@ public class Game extends Activity {
 
 	}
 
-	private OnTouchListener functionOnTouch = new OnTouchListener() {
+	private class FunctionOnTouch implements OnTouchListener {
 
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
@@ -261,6 +262,7 @@ public class Game extends Activity {
 			}
 			return true;
 		}
-	};
+		
+	}
 
 }
