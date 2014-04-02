@@ -5,6 +5,7 @@ import java.util.Random;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -14,8 +15,6 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
 
 public class Game extends Activity {
 
@@ -33,12 +32,31 @@ public class Game extends Activity {
 
 		deck = new Deck();
 
+		//Randomly generates a player to start the game
 		currentPlayer = randomPlayer();
 
 		//Fix this method so that it distributes 
 		//cards one by one to each player
 		createHands();
 
+	}
+	
+	@Override
+	public void onBackPressed() {
+	    new AlertDialog.Builder(this)
+	        .setIcon(android.R.drawable.ic_dialog_alert)
+	        .setTitle("Quitting Game")
+	        .setMessage("Are you sure you want to quit the game?\nThis will erase all progress")
+	        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+	        @Override
+	        public void onClick(DialogInterface dialog, int which) {
+	            finish();    
+	        }
+
+	    })
+	    .setNegativeButton("No", null)
+	    .setCancelable(false)
+	    .show();
 	}
 
 	private OnClickListener suit_valueListener = new OnClickListener() {
@@ -95,20 +113,25 @@ public class Game extends Activity {
 	};
 
 	private void createHands() {
+		//Associates the buttons to a player's hand
 		associateHands();
 
+		//Instantiates the players' hands
 		playerHand = new Hand();
 		bot1Hand = new Hand();
 		bot2Hand = new Hand();
 		bot3Hand = new Hand();
 		
-		for (int i = 0; i <= 13; i++) {
+		//Deals the tiles to each player
+		for (int i = 0; i <= 12; i++) {
 			playerHand.add(deck.draw());
 			bot1Hand.add(deck.draw());
 			bot2Hand.add(deck.draw());
 			bot3Hand.add(deck.draw());
 		}
 
+		//This outer loop controls the deal for each player
+//////////This won't stay since we won't be seeing other players' hands
 		for (int k = 0; k <= 3; k++) {
 			Tile tempT;
 			Button tempB;
@@ -142,6 +165,7 @@ public class Game extends Activity {
 			}
 		}
 
+		//Creates the function buttons and associates their action listener
 		Button eatButton = (Button) findViewById(R.id.eatButton);
 		eatButton.setOnTouchListener(functionOnTouch);
 
