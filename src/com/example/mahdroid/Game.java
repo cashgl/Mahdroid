@@ -43,6 +43,7 @@ public class Game extends Activity {
 	
 	@Override
 	public void onBackPressed() {
+		//This method confirms if the user wants to exit the activity
 	    new AlertDialog.Builder(this)
 	        .setIcon(android.R.drawable.ic_dialog_alert)
 	        .setTitle("Quitting Game")
@@ -52,7 +53,6 @@ public class Game extends Activity {
 	        public void onClick(DialogInterface dialog, int which) {
 	            finish();    
 	        }
-
 	    })
 	    .setNegativeButton("No", null)
 	    .setCancelable(false)
