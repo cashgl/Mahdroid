@@ -14,12 +14,14 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 
 public class Game extends Activity {
 
 	EditText suitField, valueField;
 	Hand hand;
-	ArrayList<Button> buttons;
+	ArrayList<Button> playerButtons;
 	Deck deck;
 	Hand playerHand;
 	int currentRound, currentPlayer;
@@ -45,7 +47,7 @@ public class Game extends Activity {
 		@Override
 		public void onClick(View v) {
 			Button temp = (Button) v;
-			int j = buttons.indexOf(temp);
+			int j = playerButtons.indexOf(temp);
 			AlertDialog.Builder builder = new AlertDialog.Builder(Game.this);
 	        builder.setTitle("Suit: " + playerHand.tileAt(j).getSuit() + 
 	        		", Value: " + playerHand.tileAt(j).getValue());
@@ -94,16 +96,18 @@ public class Game extends Activity {
 	};
 	
 	private void createHands() {
-		buttons = new ArrayList<Button>();
+		playerButtons = new ArrayList<Button>();
+		
+		
 		for (int i = 0x7f090001; i <= 0x7f09000e; i++) {
-			buttons.add((Button)findViewById(i));
+			playerButtons.add((Button)findViewById(i));
 		}
 		for (int i = 0; i <= 13; i++) {
 			playerHand.add(deck.draw());
 		}
 		for (int i = 0; i <= 12; i++) {
 			Tile tempT = playerHand.tileAt(i);
-			Button tempB = buttons.get(i);
+			Button tempB = playerButtons.get(i);
 			if (tempT.getSuit() == 0) 
 				tempB.setBackgroundColor(Color.CYAN);
 			else if (tempT.getSuit() == 1)
