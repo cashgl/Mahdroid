@@ -524,7 +524,6 @@
             android:layout_alignLeft="@+id/botDiscard2"
             android:layout_alignParentBottom="true"
             android:layout_alignRight="@+id/botDiscard2"
-            android:layout_below="@+id/botDiscard2"
             android:layout_marginBottom="3dp"
             android:background="@color/light_red" >
 
@@ -547,7 +546,7 @@
             android:background="@color/light_green" >
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/bot2Discard_Button2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Button" />

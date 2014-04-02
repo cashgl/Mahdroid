@@ -39,6 +39,7 @@ public final class R {
     }
     public static final class id {
         public static final int action_settings=0x7f09004f;
+        public static final int bot2Discard_Button2=0x7f090048;
         public static final int botDiscard1=0x7f090046;
         public static final int botDiscard2=0x7f090044;
         public static final int botDiscard3=0x7f090047;
@@ -85,7 +86,6 @@ public final class R {
         public static final int botTile3_8=0x7f090037;
         public static final int botTile3_9=0x7f090038;
         public static final int button1=0x7f090049;
-        public static final int button2=0x7f090048;
         public static final int button3=0x7f090045;
         public static final int button4=0x7f09004a;
         public static final int discards=0x7f090042;
