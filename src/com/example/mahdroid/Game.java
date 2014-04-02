@@ -15,7 +15,6 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.EditText;
-
 import android.widget.RelativeLayout.LayoutParams;
 
 public class Game extends Activity {
