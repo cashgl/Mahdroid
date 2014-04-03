@@ -24,7 +24,10 @@ public class Game extends Activity {
 	Hand hand;
 	ArrayList<Button> playerButtons, bot1Buttons, bot2Buttons, bot3Buttons;
 	Deck deck;
+	Tile tile;
 	Hand playerHand, bot1Hand, bot2Hand, bot3Hand;
+	Player player, bot1, bot2, bot3;
+	Discard pDiscard, bot1Discard, bot2Discard, bot3Discard;
 	int currentRound, currentPlayer;
 
 	@Override
@@ -33,14 +36,123 @@ public class Game extends Activity {
 		setContentView(R.layout.activity_game);
 
 		deck = new Deck();
-
+		
 		//Randomly generates a player to start the game
 		currentPlayer = randomPlayer();
 
 		//Fix this method so that it distributes 
 		//cards one by one to each player
 		createHands();
-
+		
+		player = new Player(deck);	//instantiate the player
+		tile = deck.draw();	//deck gives away a tile 
+		player.drawTile();	//player draws
+		String evalResult = player.evaluate(tile);	//evaluates player's current hand
+		//if win by picking up tile
+		if (evalResult == "w"){
+		    player.callFunction("w");
+		    //current round ends
+		}
+		//else player discards a tile
+		else {
+			playerHand.add(tile);	//add the tile to hand
+			//player.discardTile(i);	//need a position index 
+			//pDiscard.add(playerHand.tileAt(i));//add the discarded tile to player's discard pile
+			//playerHand.removeAt(i);	//update the hand
+		}
+		//bot1's action(evaluation)
+		String evalResult1 = bot1.evaluate(player.lastDiscard());
+		if ( evalResult1 == "e"){
+	   		bot1.callFunction("e");
+		   	//if bot1 eats the tile, then it's bot1's turn to discard
+		   	bot1.discardTile(0);	//for now, the bot always discards tile at index 0
+		   	bot1Discard.add(bot1Hand.tileAt(0));
+		   	bot1Hand.removeAt(0);	
+		}
+	    if ( evalResult1 == "d"){
+		   	bot1.callFunction("d");
+			bot1.discardTile(0);	
+		   	bot1Discard.add(bot1Hand.tileAt(0));
+		   	bot1Hand.removeAt(0);	
+	    }
+		if ( evalResult1 == "t"){
+	    	bot1.callFunction("t");
+	    	bot1.discardTile(0);	
+		   	bot1Discard.add(bot1Hand.tileAt(0));
+		   	bot1Hand.removeAt(0);
+		}
+		if ( evalResult1 == "s"){
+		   	bot1.callFunction("s");
+		   	bot1.discardTile(0);	
+		   	bot1Discard.add(bot1Hand.tileAt(0));
+		   	bot1Hand.removeAt(0);
+	    }
+		if ( evalResult1 == "w"){
+		   	bot1.callFunction("w");
+		    //current round ends
+		}
+		//bot2's action(evaluation)
+		String evalResult2 = bot2.evaluate(player.lastDiscard());
+		if ( evalResult2 == "e"){
+	   		bot2.callFunction("e");
+		   	bot2.discardTile(0);
+		   	bot2Discard.add(bot2Hand.tileAt(0));
+		   	bot2Hand.removeAt(0);	
+		}
+	    if ( evalResult2 == "d"){
+		   	bot2.callFunction("d");
+			bot2.discardTile(0);	
+		   	bot2Discard.add(bot2Hand.tileAt(0));
+		   	bot2Hand.removeAt(0);	
+	    }
+		if ( evalResult2 == "t"){
+	    	bot2.callFunction("t");
+	    	bot2.discardTile(0);	
+		   	bot2Discard.add(bot2Hand.tileAt(0));
+		   	bot2Hand.removeAt(0);
+		}
+		if ( evalResult2 == "s"){
+		   	bot2.callFunction("s");
+		   	bot2.discardTile(0);	
+		   	bot2Discard.add(bot2Hand.tileAt(0));
+		   	bot2Hand.removeAt(0);
+	    }
+		if ( evalResult2 == "w"){
+		   	bot2.callFunction("w");
+		    //current round ends
+		}
+		//bot3's action(evaluation)
+		String evalResult3 = bot3.evaluate(player.lastDiscard());
+		if ( evalResult3 == "e"){
+	  		bot3.callFunction("e");
+		   	bot3.discardTile(0);
+		  	bot3Discard.add(bot3Hand.tileAt(0));
+		   	bot3Hand.removeAt(0);	
+		}
+	    if ( evalResult3 == "d"){
+		  	bot3.callFunction("d");
+			bot3.discardTile(0);	
+		   	bot3Discard.add(bot3Hand.tileAt(0));
+		   	bot3Hand.removeAt(0);	
+	    }
+		if ( evalResult3 == "t"){
+			bot3.callFunction("t");
+		   	bot3.discardTile(0);	
+		   	bot3Discard.add(bot3Hand.tileAt(0));
+		  	bot3Hand.removeAt(0);
+		}
+		if ( evalResult3 == "s"){
+		  	bot3.callFunction("s");
+		  	bot3.discardTile(0);	
+		   	bot3Discard.add(bot3Hand.tileAt(0));
+		  	bot3Hand.removeAt(0);
+	    }
+		if ( evalResult3 == "w"){
+		   	bot3.callFunction("w");
+		    //current round ends
+		}
+				
+				
 		Button temp = (Button) findViewById(R.id.bot2Discard_Button2);
 
 		LayoutParams botDiscard1Params = (LayoutParams) findViewById(R.id.botDiscard1).getLayoutParams(),
