@@ -25,7 +25,7 @@ public class Game extends Activity {
 	Deck deck;
 	Tile tempTile;
 	int currentRound, currentPlayer;
-	boolean playersTurn;
+	boolean playersTurn, hasWon;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -167,14 +167,26 @@ public class Game extends Activity {
 		botDiscard2Params.height = discardHeight;
 		playerDiscardParams.height = discardHeight;
 
-		Thread t = new Thread() {
-			@Override
-			public void run() {
-				super.run();
+		//This is going to be the basis of 
+		//the rounds. Threading will be important
+		//so that we don't lock up the UI
+		Thread t = new MyThread();
+		t.start();
+	}
+
+	private class MyThread extends Thread {
+		boolean b, firstRun = false;
+		public MyThread() { firstRun = true; }
+		public MyThread(boolean bool) { b = bool; }
+
+		@Override
+		public void run() {
+			if (firstRun) {
+				hasWon = false;
 				try {
 					boolean b = true;
-					while (true) {
-						Thread.sleep(100);
+					while (!hasWon) {
+						Thread.sleep(1000);
 						runOnUiThread(new MyThread(b));
 						if (b == true)
 							b = false;
@@ -184,27 +196,15 @@ public class Game extends Activity {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				runOnUiThread(null);
 			}
-		};
-		t.start();
-	}
-	
-	private class MyThread implements Runnable {
-		boolean b;
-		public MyThread(boolean bool) {
-			b = bool;
-		}
-		@Override
-		public void run() {
-			// TODO Auto-generated method stub
-			if (b) {
-				bot1Buttons.get(3).setBackgroundColor(Color.BLUE);
-			} else {
-				bot1Buttons.get(3).setBackgroundColor(Color.RED);
+			else {
+				if (b) {
+					bot1Buttons.get(3).setBackgroundColor(Color.BLUE);
+				} else {
+					bot1Buttons.get(3).setBackgroundColor(Color.RED);
+				}
 			}
 		}
-		
 	}
 
 	private void setupPlayers() {
