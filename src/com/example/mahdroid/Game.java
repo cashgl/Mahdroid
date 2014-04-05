@@ -174,39 +174,6 @@ public class Game extends Activity {
 		t.start();
 	}
 
-	private class MyThread extends Thread {
-		boolean b, firstRun = false;
-		public MyThread() { firstRun = true; }
-		public MyThread(boolean bool) { b = bool; }
-
-		@Override
-		public void run() {
-			if (firstRun) {
-				hasWon = false;
-				try {
-					boolean b = true;
-					while (!hasWon) {
-						Thread.sleep(1000);
-						runOnUiThread(new MyThread(b));
-						if (b == true)
-							b = false;
-						else
-							b = true;
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			else {
-				if (b) {
-					bot1Buttons.get(3).setBackgroundColor(Color.BLUE);
-				} else {
-					bot1Buttons.get(3).setBackgroundColor(Color.RED);
-				}
-			}
-		}
-	}
-
 	private void setupPlayers() {
 		//This creates the players. We will need to have them
 		//solely in the ArrayList players for more efficient play.
@@ -410,7 +377,7 @@ public class Game extends Activity {
 	}
 
 	private class FunctionOnTouch implements OnTouchListener {
-
+	
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
 			Button temp = (Button) v;
@@ -419,23 +386,23 @@ public class Game extends Activity {
 			case MotionEvent.ACTION_DOWN:
 				temp.setTextColor(d.getColor());
 				break;
-
+	
 			case MotionEvent.ACTION_MOVE:
 				break;
-
+	
 			case MotionEvent.ACTION_UP:
 				temp.setTextColor(Color.WHITE);
-
+	
 				float x = Math.abs(event.getX()),y = Math.abs(event.getY());
 				double dist = Math.sqrt( Math.pow(x, 2) + Math.pow(y, 2) );
 				if (dist < 300) {
 					String funct = temp.getText() + "";
-
+	
 					AlertDialog.Builder builder = new AlertDialog.Builder(Game.this);
 					builder.setTitle("Action performed: " + funct)
 					.setMessage(dist + "");
 					builder.setPositiveButton("OK", null);
-
+	
 					AlertDialog ad = builder.create();
 					ad.show();
 				}
@@ -443,7 +410,40 @@ public class Game extends Activity {
 			}
 			return true;
 		}
+	
+	}
 
+	private class MyThread extends Thread {
+		boolean b, firstRun = false;
+		public MyThread() { firstRun = true; }
+		public MyThread(boolean bool) { b = bool; }
+	
+		@Override
+		public void run() {
+			if (firstRun) {
+				hasWon = false;
+				try {
+					boolean b = true;
+					while (!hasWon) {
+						Thread.sleep(1000);
+						runOnUiThread(new MyThread(b));
+						if (b == true)
+							b = false;
+						else
+							b = true;
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			else {
+				if (b) {
+					bot1Buttons.get(3).setBackgroundColor(Color.BLUE);
+				} else {
+					bot1Buttons.get(3).setBackgroundColor(Color.RED);
+				}
+			}
+		}
 	}
 
 }
