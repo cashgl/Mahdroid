@@ -270,36 +270,43 @@ public class Game extends Activity {
 			Player tempPlayer = players.get(k);
 			Tile tempTile;
 			Button tempButton;
-			for (int i = 0; i <= 12; i++) {
-				tempTile = tempPlayer.seeTileAt(i);
-				tempButton = playerButtons.get(i);
-
-				if (k == 0) 
+			if (k == 0) {
+				for (int i = 0; i <= 12; i++) {
+					tempTile = tempPlayer.seeTileAt(i);
 					tempButton = playerButtons.get(i);
-				else if (k == 1) 
-					tempButton = bot1Buttons.get(i);
-				else if (k == 2)
-					tempButton = bot2Buttons.get(i);
-				else
-					tempButton = bot3Buttons.get(i);
 
-				if (tempTile.getSuit() == 0) 
-					tempButton.setBackgroundColor(Color.CYAN);
-				else if (tempTile.getSuit() == 1)
-					tempButton.setBackgroundColor(Color.YELLOW);
-				else if (tempTile.getSuit() == 2)
-					tempButton.setBackgroundColor(Color.GREEN);
-				else if (tempTile.getSuit() == 3)
-					tempButton.setBackgroundColor(Color.RED);
-				else if (tempTile.getSuit() == 4)
-					tempButton.setBackgroundColor(Color.GRAY);
-				tempButton.setText("" + tempTile.getValue());
-				tempButton.setOnClickListener(new SuitValueListener(k, tempTile.getSuit(),tempTile.getValue()));
-				//buttons.get(i).setOnClickListener(colorListener);	
+					if (tempTile.getSuit() == 0) 
+						tempButton.setBackgroundColor(Color.CYAN);
+					else if (tempTile.getSuit() == 1)
+						tempButton.setBackgroundColor(Color.YELLOW);
+					else if (tempTile.getSuit() == 2)
+						tempButton.setBackgroundColor(Color.GREEN);
+					else if (tempTile.getSuit() == 3)
+						tempButton.setBackgroundColor(Color.RED);
+					else if (tempTile.getSuit() == 4)
+						tempButton.setBackgroundColor(Color.GRAY);
+					tempButton.setText("" + tempTile.getValue());
+					tempButton.setOnClickListener(new SuitValueListener(k, tempTile.getSuit(),tempTile.getValue()));
+					//buttons.get(i).setOnClickListener(colorListener);	
+				}
+			}
+			else {
+				for (int i = 0; i <= 12; i++) {
+					if (k == 1) 
+						tempButton = bot1Buttons.get(i);
+					else if (k == 2)
+						tempButton = bot2Buttons.get(i);
+					else
+						tempButton = bot3Buttons.get(i);
+					tempButton.setText("");
+					tempButton.setBackgroundColor(Color.rgb(168, 168, 168));
+					tempButton.setClickable(false);
+				}
 			}
 		}
 
 		//Creates the function buttons and associates their action listener
+		//that is reused for each function
 		OnTouchListener functionOnTouch = new FunctionOnTouch();
 		Button eatButton = (Button) findViewById(R.id.eatButton);
 		eatButton.setOnTouchListener(functionOnTouch);
