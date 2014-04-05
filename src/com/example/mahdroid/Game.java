@@ -21,15 +21,14 @@ import android.widget.RelativeLayout.LayoutParams;
 public class Game extends Activity {
 
 	EditText suitField, valueField;
-	Hand hand;
 	ArrayList<Button> playerButtons, bot1Buttons, bot2Buttons, bot3Buttons;
 	ArrayList<Player> players;
+	Player player, bot1, bot2, bot3;
 	Deck deck;
 	Tile tempTile;
-	Hand playerHand, bot1Hand, bot2Hand, bot3Hand;
-	Player player, bot1, bot2, bot3;
 	Discard pDiscard, bot1Discard, bot2Discard, bot3Discard;
 	int currentRound, currentPlayer;
+	boolean playersTurn;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +41,7 @@ public class Game extends Activity {
 		
 		//This creates the players. We will need to have them
 		//solely in the ArrayList players for more efficient play
+		players = new ArrayList<Player>();
 		players.add(new Player(deck));
 		player = players.get(0);
 		
@@ -57,12 +57,16 @@ public class Game extends Activity {
 		
 		//Randomly generates a player to start the game
 		currentPlayer = randomPlayer();
+		if (currentPlayer == 0) 
+			playersTurn = true;
+		else
+			playersTurn = false;
 
 		//Fix this method so that it distributes 
 		//cards one by one to each player
 		createHands();
 		
-		player = new Player(deck);	//instantiate the player
+		/**player = new Player(deck);	//instantiate the player
 		tempTile = deck.draw();	//deck gives away a tile 
 		player.drawTile();	//player draws
 		String evalResult = player.evaluate(tempTile);	//evaluates player's current hand
@@ -168,7 +172,7 @@ public class Game extends Activity {
 		if ( evalResult3 == "w"){
 		   	bot3.callFunction("w");
 		    //current round ends
-		}
+		}*/
 				
 				
 		Button temp = (Button) findViewById(R.id.bot2Discard_Button2);
@@ -185,53 +189,39 @@ public class Game extends Activity {
 
 	private void createHands() {
 		//Associates the buttons to a player's hand
-		associateHands();
-
-		//Instantiates the players' hands
-		playerHand = new Hand();
-		bot1Hand = new Hand();
-		bot2Hand = new Hand();
-		bot3Hand = new Hand();
-
-		//Deals the tiles to each player
-		for (int i = 0; i <= 12; i++) {
-			playerHand.add(deck.draw());
-			bot1Hand.add(deck.draw());
-			bot2Hand.add(deck.draw());
-			bot3Hand.add(deck.draw());
-		}
+		setupHands();
 
 		//This outer loop controls the deal for each player
 		//////////This won't stay since we won't be seeing other players' hands
 		for (int k = 0; k <= 3; k++) {
-			Tile tempT;
-			Button tempB;
+			Player tempPlayer = players.get(k);
+			Tile tempTile;
+			Button tempButton;
 			for (int i = 0; i <= 12; i++) {
-				if (k == 0) {
-					tempT = playerHand.tileAt(i);
-					tempB = playerButtons.get(i);
-				} else if (k == 1) {
-					tempT = bot1Hand.tileAt(i);
-					tempB = bot1Buttons.get(i);
-				} else if (k == 2) {
-					tempT = bot2Hand.tileAt(i);
-					tempB = bot2Buttons.get(i);
-				} else {
-					tempT = bot3Hand.tileAt(i);
-					tempB = bot3Buttons.get(i);
-				}
-				if (tempT.getSuit() == 0) 
-					tempB.setBackgroundColor(Color.CYAN);
-				else if (tempT.getSuit() == 1)
-					tempB.setBackgroundColor(Color.YELLOW);
-				else if (tempT.getSuit() == 2)
-					tempB.setBackgroundColor(Color.GREEN);
-				else if (tempT.getSuit() == 3)
-					tempB.setBackgroundColor(Color.RED);
-				else if (tempT.getSuit() == 4)
-					tempB.setBackgroundColor(Color.GRAY);
-				tempB.setText("" + tempT.getValue());
-				tempB.setOnClickListener(new SuitValueListener(tempT.getSuit(),tempT.getValue()));
+				tempTile = tempPlayer.seeTileAt(i);
+				tempButton = playerButtons.get(i);
+				
+				if (k == 0) 
+					tempButton = playerButtons.get(i);
+				else if (k == 1) 
+					tempButton = bot1Buttons.get(i);
+				else if (k == 2)
+					tempButton = bot2Buttons.get(i);
+				else
+					tempButton = bot3Buttons.get(i);
+				
+				if (tempTile.getSuit() == 0) 
+					tempButton.setBackgroundColor(Color.CYAN);
+				else if (tempTile.getSuit() == 1)
+					tempButton.setBackgroundColor(Color.YELLOW);
+				else if (tempTile.getSuit() == 2)
+					tempButton.setBackgroundColor(Color.GREEN);
+				else if (tempTile.getSuit() == 3)
+					tempButton.setBackgroundColor(Color.RED);
+				else if (tempTile.getSuit() == 4)
+					tempButton.setBackgroundColor(Color.GRAY);
+				tempButton.setText("" + tempTile.getValue());
+				tempButton.setOnClickListener(new SuitValueListener(k, tempTile.getSuit(),tempTile.getValue()));
 				//buttons.get(i).setOnClickListener(colorListener);	
 			}
 		}
@@ -250,26 +240,25 @@ public class Game extends Activity {
 		Button winButton = (Button) findViewById(R.id.winButton);
 		winButton.setOnTouchListener(functionOnTouch);
 	}
-	
-	private void dealHands() {
-		if (player.getHandSize() != 0 &&
-				bot1.getHandSize() != 0 &&
-				bot2.getHandSize() != 0 &&
-				bot3.getHandSize() != 0) {
-			
-			
-			
-			
-			
-		}
-	}
 
 	private int randomPlayer() {
 		Random r = new Random();
 		return r.nextInt(4);
 	}
 
-	private void associateHands() {
+	private void setupHands() {
+		//This associates the value of the hands
+		if (player.getHandSize() == 0 &&
+				bot1.getHandSize() == 0 &&
+				bot2.getHandSize() == 0 &&
+				bot3.getHandSize() == 0) {
+			for (int i = 0; i <= 3; i++) {
+				for (int j = 0; j <= 12; j++) {
+					players.get(i).drawTile();
+				}
+			}
+		}
+		
 		playerButtons = new ArrayList<Button>();
 		playerButtons.add((Button)findViewById(R.id.playerTile0));
 		playerButtons.add((Button)findViewById(R.id.playerTile1));
@@ -329,6 +318,8 @@ public class Game extends Activity {
 		bot3Buttons.add((Button)findViewById(R.id.botTile3_10));
 		bot3Buttons.add((Button)findViewById(R.id.botTile3_11));
 		bot3Buttons.add((Button)findViewById(R.id.botTile3_12));
+		
+		
 	}
 
 	@Override
@@ -350,9 +341,10 @@ public class Game extends Activity {
 	}
 
 	private class SuitValueListener implements OnClickListener {
-		int suit, value;
+		int suit, value, player;
 
-		public SuitValueListener(int s, int v) {
+		public SuitValueListener(int p, int s, int v) {
+			player = p;
 			suit = s;
 			value = v;
 		}
@@ -360,7 +352,7 @@ public class Game extends Activity {
 		@Override
 		public void onClick(View v) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(Game.this);
-			builder.setTitle("Suit: " + suit + 
+			builder.setTitle("Player: " + player + ", Suit: " + suit + 
 					", Value: " + value);
 			builder.setPositiveButton("OK", null);
 
