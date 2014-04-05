@@ -14,19 +14,16 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
-import android.widget.EditText;
-
 import android.widget.RelativeLayout.LayoutParams;
 
 public class Game extends Activity {
 
-	EditText suitField, valueField;
 	ArrayList<Button> playerButtons, bot1Buttons, bot2Buttons, bot3Buttons;
 	ArrayList<Player> players;
 	Player player, bot1, bot2, bot3;
+	Discard playerDiscard, bot1Discard, bot2Discard, bot3Discard;
 	Deck deck;
 	Tile tempTile;
-	Discard pDiscard, bot1Discard, bot2Discard, bot3Discard;
 	int currentRound, currentPlayer;
 	boolean playersTurn;
 
@@ -36,36 +33,19 @@ public class Game extends Activity {
 		setContentView(R.layout.activity_game);
 
 		currentRound = 1; //Shows that the initial is the current round
-		
+
 		deck = new Deck();
-		
-		//This creates the players. We will need to have them
-		//solely in the ArrayList players for more efficient play
-		players = new ArrayList<Player>();
-		players.add(new Player(deck));
-		player = players.get(0);
-		
-		players.add(new Player(deck));
-		bot1 = players.get(1);
-		
-		players.add(new Player(deck));
-		bot2 = players.get(2);
-		
-		players.add(new Player(deck));
-		bot3 = players.get(3);
-		/////////////////////////////////////////
-		
+
 		//Randomly generates a player to start the game
 		currentPlayer = randomPlayer();
 		if (currentPlayer == 0) 
 			playersTurn = true;
 		else
 			playersTurn = false;
-
-		//Fix this method so that it distributes 
-		//cards one by one to each player
-		createHands();
 		
+		//Sets up each player and distributes a card to them
+		setupPlayers();
+
 		/**player = new Player(deck);	//instantiate the player
 		tempTile = deck.draw();	//deck gives away a tile 
 		player.drawTile();	//player draws
@@ -173,8 +153,9 @@ public class Game extends Activity {
 		   	bot3.callFunction("w");
 		    //current round ends
 		}*/
-				
-				
+
+		//DONT TOUCH THIS!!!
+		//I'm trying to figure out the discard piles
 		Button temp = (Button) findViewById(R.id.bot2Discard_Button2);
 
 		LayoutParams botDiscard1Params = (LayoutParams) findViewById(R.id.botDiscard1).getLayoutParams(),
@@ -187,7 +168,25 @@ public class Game extends Activity {
 		playerDiscardParams.height = discardHeight;
 	}
 
-	private void createHands() {
+	private void setupPlayers() {
+		//This creates the players. We will need to have them
+		//solely in the ArrayList players for more efficient play.
+		//It merely has a double pointer to it at the moment
+		if (players != null)
+			players = null;
+		players = new ArrayList<Player>();
+		players.add(new Player(deck));
+		player = players.get(0);
+
+		players.add(new Player(deck));
+		bot1 = players.get(1);
+
+		players.add(new Player(deck));
+		bot2 = players.get(2);
+
+		players.add(new Player(deck));
+		bot3 = players.get(3);
+		
 		//Associates the buttons to a player's hand
 		setupHands();
 
@@ -200,7 +199,7 @@ public class Game extends Activity {
 			for (int i = 0; i <= 12; i++) {
 				tempTile = tempPlayer.seeTileAt(i);
 				tempButton = playerButtons.get(i);
-				
+
 				if (k == 0) 
 					tempButton = playerButtons.get(i);
 				else if (k == 1) 
@@ -209,7 +208,7 @@ public class Game extends Activity {
 					tempButton = bot2Buttons.get(i);
 				else
 					tempButton = bot3Buttons.get(i);
-				
+
 				if (tempTile.getSuit() == 0) 
 					tempButton.setBackgroundColor(Color.CYAN);
 				else if (tempTile.getSuit() == 1)
@@ -241,11 +240,6 @@ public class Game extends Activity {
 		winButton.setOnTouchListener(functionOnTouch);
 	}
 
-	private int randomPlayer() {
-		Random r = new Random();
-		return r.nextInt(4);
-	}
-
 	private void setupHands() {
 		//This associates the value of the hands
 		if (player.getHandSize() == 0 &&
@@ -258,7 +252,7 @@ public class Game extends Activity {
 				}
 			}
 		}
-		
+	
 		playerButtons = new ArrayList<Button>();
 		playerButtons.add((Button)findViewById(R.id.playerTile0));
 		playerButtons.add((Button)findViewById(R.id.playerTile1));
@@ -273,7 +267,7 @@ public class Game extends Activity {
 		playerButtons.add((Button)findViewById(R.id.playerTile10));
 		playerButtons.add((Button)findViewById(R.id.playerTile11));
 		playerButtons.add((Button)findViewById(R.id.playerTile12));
-
+	
 		bot1Buttons = new ArrayList<Button>();
 		bot1Buttons.add((Button)findViewById(R.id.botTile1_0));
 		bot1Buttons.add((Button)findViewById(R.id.botTile1_1));
@@ -288,7 +282,7 @@ public class Game extends Activity {
 		bot1Buttons.add((Button)findViewById(R.id.botTile1_10));
 		bot1Buttons.add((Button)findViewById(R.id.botTile1_11));
 		bot1Buttons.add((Button)findViewById(R.id.botTile1_12));
-
+	
 		bot2Buttons = new ArrayList<Button>();
 		bot2Buttons.add((Button)findViewById(R.id.botTile2_0));
 		bot2Buttons.add((Button)findViewById(R.id.botTile2_1));
@@ -303,7 +297,7 @@ public class Game extends Activity {
 		bot2Buttons.add((Button)findViewById(R.id.botTile2_10));
 		bot2Buttons.add((Button)findViewById(R.id.botTile2_11));
 		bot2Buttons.add((Button)findViewById(R.id.botTile2_12));
-
+	
 		bot3Buttons = new ArrayList<Button>();
 		bot3Buttons.add((Button)findViewById(R.id.botTile3_0));
 		bot3Buttons.add((Button)findViewById(R.id.botTile3_1));
@@ -318,8 +312,13 @@ public class Game extends Activity {
 		bot3Buttons.add((Button)findViewById(R.id.botTile3_10));
 		bot3Buttons.add((Button)findViewById(R.id.botTile3_11));
 		bot3Buttons.add((Button)findViewById(R.id.botTile3_12));
-		
-		
+	
+	
+	}
+
+	private int randomPlayer() {
+		Random r = new Random();
+		return r.nextInt(4);
 	}
 
 	@Override
@@ -397,7 +396,7 @@ public class Game extends Activity {
 			}
 			return true;
 		}
-		
+
 	}
 
 }
