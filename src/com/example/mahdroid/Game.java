@@ -166,6 +166,45 @@ public class Game extends Activity {
 		temp.setText("" + discardHeight);
 		botDiscard2Params.height = discardHeight;
 		playerDiscardParams.height = discardHeight;
+
+		Thread t = new Thread() {
+			@Override
+			public void run() {
+				super.run();
+				try {
+					boolean b = true;
+					while (true) {
+						Thread.sleep(100);
+						runOnUiThread(new MyThread(b));
+						if (b == true)
+							b = false;
+						else
+							b = true;
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				runOnUiThread(null);
+			}
+		};
+		t.start();
+	}
+	
+	private class MyThread implements Runnable {
+		boolean b;
+		public MyThread(boolean bool) {
+			b = bool;
+		}
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			if (b) {
+				bot1Buttons.get(3).setBackgroundColor(Color.BLUE);
+			} else {
+				bot1Buttons.get(3).setBackgroundColor(Color.RED);
+			}
+		}
+		
 	}
 
 	private void setupPlayers() {
