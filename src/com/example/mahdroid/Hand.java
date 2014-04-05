@@ -46,21 +46,6 @@ public class Hand {
 		Tile temp = add;
 		int i = 0;
 		
-		/*
-		 h.add(new Tile(0,5));
-		h.add(new Tile(2,3));
-		h.add(new Tile(0,7));
-		h.add(new Tile(2,3));
-		h.add(new Tile(2,4));
-		h.add(new Tile(0,3));
-		h.add(new Tile(3,2));
-		h.add(new Tile(0,1));
-		h.add(new Tile(3,2));
-		h.add(new Tile(0,2));
-		h.add(new Tile(1,7));
-		h.add(new Tile(0,1));
-		h.add(new Tile(2,2));
-		 */
 		while (temp != null && i < activeSize) {
 			if (activeHand.get(i).getSuit() == suit) {
 

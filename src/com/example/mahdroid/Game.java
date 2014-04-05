@@ -23,8 +23,9 @@ public class Game extends Activity {
 	EditText suitField, valueField;
 	Hand hand;
 	ArrayList<Button> playerButtons, bot1Buttons, bot2Buttons, bot3Buttons;
+	ArrayList<Player> players;
 	Deck deck;
-	Tile tile;
+	Tile tempTile;
 	Hand playerHand, bot1Hand, bot2Hand, bot3Hand;
 	Player player, bot1, bot2, bot3;
 	Discard pDiscard, bot1Discard, bot2Discard, bot3Discard;
@@ -35,7 +36,24 @@ public class Game extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game);
 
+		currentRound = 1; //Shows that the initial is the current round
+		
 		deck = new Deck();
+		
+		//This creates the players. We will need to have them
+		//solely in the ArrayList players for more efficient play
+		players.add(new Player(deck));
+		player = players.get(0);
+		
+		players.add(new Player(deck));
+		bot1 = players.get(1);
+		
+		players.add(new Player(deck));
+		bot2 = players.get(2);
+		
+		players.add(new Player(deck));
+		bot3 = players.get(3);
+		/////////////////////////////////////////
 		
 		//Randomly generates a player to start the game
 		currentPlayer = randomPlayer();
@@ -45,9 +63,9 @@ public class Game extends Activity {
 		createHands();
 		
 		player = new Player(deck);	//instantiate the player
-		tile = deck.draw();	//deck gives away a tile 
+		tempTile = deck.draw();	//deck gives away a tile 
 		player.drawTile();	//player draws
-		String evalResult = player.evaluate(tile);	//evaluates player's current hand
+		String evalResult = player.evaluate(tempTile);	//evaluates player's current hand
 		//if win by picking up tile
 		if (evalResult == "w"){
 		    player.callFunction("w");
@@ -55,7 +73,7 @@ public class Game extends Activity {
 		}
 		//else player discards a tile
 		else {
-			playerHand.add(tile);	//add the tile to hand
+			playerHand.add(tempTile);	//add the tile to hand
 			//player.discardTile(i);	//need a position index 
 			//pDiscard.add(playerHand.tileAt(i));//add the discarded tile to player's discard pile
 			//playerHand.removeAt(i);	//update the hand
@@ -231,6 +249,19 @@ public class Game extends Activity {
 
 		Button winButton = (Button) findViewById(R.id.winButton);
 		winButton.setOnTouchListener(functionOnTouch);
+	}
+	
+	private void dealHands() {
+		if (player.getHandSize() != 0 &&
+				bot1.getHandSize() != 0 &&
+				bot2.getHandSize() != 0 &&
+				bot3.getHandSize() != 0) {
+			
+			
+			
+			
+			
+		}
 	}
 
 	private int randomPlayer() {

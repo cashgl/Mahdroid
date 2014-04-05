@@ -18,6 +18,7 @@ public class Player {
 	
 	public Tile drawTile(){
 		tempTile = deck.draw();
+		hand.add(tempTile);
 		return tempTile;
 	}
 	
@@ -59,6 +60,24 @@ public class Player {
 			s.append("w");
 		
 		return s.toString();
+	}
+	
+	public int getHandSize() {
+		if (hand != null) {
+			return hand.getSize();
+		}
+		return 0;
+	}
+	
+	/**
+	 * @param index
+	 * @return
+	 */
+	public Tile seeTileAt(int index) {
+		if (hand != null) {
+			return hand.tileAt(index);
+		}
+		return null;
 	}
 	
 	public boolean callFunction(String function){
