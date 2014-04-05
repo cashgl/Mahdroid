@@ -42,7 +42,7 @@ public class Game extends Activity {
 			playersTurn = true;
 		else
 			playersTurn = false;
-		
+
 		//Sets up each player and distributes a card to them
 		setupPlayers();
 
@@ -186,9 +186,83 @@ public class Game extends Activity {
 
 		players.add(new Player(deck));
 		bot3 = players.get(3);
-		
+
 		//Associates the buttons to a player's hand
 		setupHands();
+	}
+
+	private void setupHands() {
+		//This associates the value of the hands
+		if (player.getHandSize() == 0 &&
+				bot1.getHandSize() == 0 &&
+				bot2.getHandSize() == 0 &&
+				bot3.getHandSize() == 0) {
+			for (int i = 0; i <= 3; i++) {
+				for (int j = 0; j <= 12; j++) {
+					players.get(i).drawTile();
+				}
+			}
+		}
+
+		playerButtons = new ArrayList<Button>();
+		playerButtons.add((Button)findViewById(R.id.playerTile0));
+		playerButtons.add((Button)findViewById(R.id.playerTile1));
+		playerButtons.add((Button)findViewById(R.id.playerTile2));
+		playerButtons.add((Button)findViewById(R.id.playerTile3));
+		playerButtons.add((Button)findViewById(R.id.playerTile4));
+		playerButtons.add((Button)findViewById(R.id.playerTile5));
+		playerButtons.add((Button)findViewById(R.id.playerTile6));
+		playerButtons.add((Button)findViewById(R.id.playerTile7));
+		playerButtons.add((Button)findViewById(R.id.playerTile8));
+		playerButtons.add((Button)findViewById(R.id.playerTile9));
+		playerButtons.add((Button)findViewById(R.id.playerTile10));
+		playerButtons.add((Button)findViewById(R.id.playerTile11));
+		playerButtons.add((Button)findViewById(R.id.playerTile12));
+
+		bot1Buttons = new ArrayList<Button>();
+		bot1Buttons.add((Button)findViewById(R.id.botTile1_0));
+		bot1Buttons.add((Button)findViewById(R.id.botTile1_1));
+		bot1Buttons.add((Button)findViewById(R.id.botTile1_2));
+		bot1Buttons.add((Button)findViewById(R.id.botTile1_3));
+		bot1Buttons.add((Button)findViewById(R.id.botTile1_4));
+		bot1Buttons.add((Button)findViewById(R.id.botTile1_5));
+		bot1Buttons.add((Button)findViewById(R.id.botTile1_6));
+		bot1Buttons.add((Button)findViewById(R.id.botTile1_7));
+		bot1Buttons.add((Button)findViewById(R.id.botTile1_8));
+		bot1Buttons.add((Button)findViewById(R.id.botTile1_9));
+		bot1Buttons.add((Button)findViewById(R.id.botTile1_10));
+		bot1Buttons.add((Button)findViewById(R.id.botTile1_11));
+		bot1Buttons.add((Button)findViewById(R.id.botTile1_12));
+
+		bot2Buttons = new ArrayList<Button>();
+		bot2Buttons.add((Button)findViewById(R.id.botTile2_0));
+		bot2Buttons.add((Button)findViewById(R.id.botTile2_1));
+		bot2Buttons.add((Button)findViewById(R.id.botTile2_2));
+		bot2Buttons.add((Button)findViewById(R.id.botTile2_3));
+		bot2Buttons.add((Button)findViewById(R.id.botTile2_4));
+		bot2Buttons.add((Button)findViewById(R.id.botTile2_5));
+		bot2Buttons.add((Button)findViewById(R.id.botTile2_6));
+		bot2Buttons.add((Button)findViewById(R.id.botTile2_7));
+		bot2Buttons.add((Button)findViewById(R.id.botTile2_8));
+		bot2Buttons.add((Button)findViewById(R.id.botTile2_9));
+		bot2Buttons.add((Button)findViewById(R.id.botTile2_10));
+		bot2Buttons.add((Button)findViewById(R.id.botTile2_11));
+		bot2Buttons.add((Button)findViewById(R.id.botTile2_12));
+
+		bot3Buttons = new ArrayList<Button>();
+		bot3Buttons.add((Button)findViewById(R.id.botTile3_0));
+		bot3Buttons.add((Button)findViewById(R.id.botTile3_1));
+		bot3Buttons.add((Button)findViewById(R.id.botTile3_2));
+		bot3Buttons.add((Button)findViewById(R.id.botTile3_3));
+		bot3Buttons.add((Button)findViewById(R.id.botTile3_4));
+		bot3Buttons.add((Button)findViewById(R.id.botTile3_5));
+		bot3Buttons.add((Button)findViewById(R.id.botTile3_6));
+		bot3Buttons.add((Button)findViewById(R.id.botTile3_7));
+		bot3Buttons.add((Button)findViewById(R.id.botTile3_8));
+		bot3Buttons.add((Button)findViewById(R.id.botTile3_9));
+		bot3Buttons.add((Button)findViewById(R.id.botTile3_10));
+		bot3Buttons.add((Button)findViewById(R.id.botTile3_11));
+		bot3Buttons.add((Button)findViewById(R.id.botTile3_12));
 
 		//This outer loop controls the deal for each player
 		//////////This won't stay since we won't be seeing other players' hands
@@ -238,82 +312,9 @@ public class Game extends Activity {
 
 		Button winButton = (Button) findViewById(R.id.winButton);
 		winButton.setOnTouchListener(functionOnTouch);
-	}
 
-	private void setupHands() {
-		//This associates the value of the hands
-		if (player.getHandSize() == 0 &&
-				bot1.getHandSize() == 0 &&
-				bot2.getHandSize() == 0 &&
-				bot3.getHandSize() == 0) {
-			for (int i = 0; i <= 3; i++) {
-				for (int j = 0; j <= 12; j++) {
-					players.get(i).drawTile();
-				}
-			}
-		}
-	
-		playerButtons = new ArrayList<Button>();
-		playerButtons.add((Button)findViewById(R.id.playerTile0));
-		playerButtons.add((Button)findViewById(R.id.playerTile1));
-		playerButtons.add((Button)findViewById(R.id.playerTile2));
-		playerButtons.add((Button)findViewById(R.id.playerTile3));
-		playerButtons.add((Button)findViewById(R.id.playerTile4));
-		playerButtons.add((Button)findViewById(R.id.playerTile5));
-		playerButtons.add((Button)findViewById(R.id.playerTile6));
-		playerButtons.add((Button)findViewById(R.id.playerTile7));
-		playerButtons.add((Button)findViewById(R.id.playerTile8));
-		playerButtons.add((Button)findViewById(R.id.playerTile9));
-		playerButtons.add((Button)findViewById(R.id.playerTile10));
-		playerButtons.add((Button)findViewById(R.id.playerTile11));
-		playerButtons.add((Button)findViewById(R.id.playerTile12));
-	
-		bot1Buttons = new ArrayList<Button>();
-		bot1Buttons.add((Button)findViewById(R.id.botTile1_0));
-		bot1Buttons.add((Button)findViewById(R.id.botTile1_1));
-		bot1Buttons.add((Button)findViewById(R.id.botTile1_2));
-		bot1Buttons.add((Button)findViewById(R.id.botTile1_3));
-		bot1Buttons.add((Button)findViewById(R.id.botTile1_4));
-		bot1Buttons.add((Button)findViewById(R.id.botTile1_5));
-		bot1Buttons.add((Button)findViewById(R.id.botTile1_6));
-		bot1Buttons.add((Button)findViewById(R.id.botTile1_7));
-		bot1Buttons.add((Button)findViewById(R.id.botTile1_8));
-		bot1Buttons.add((Button)findViewById(R.id.botTile1_9));
-		bot1Buttons.add((Button)findViewById(R.id.botTile1_10));
-		bot1Buttons.add((Button)findViewById(R.id.botTile1_11));
-		bot1Buttons.add((Button)findViewById(R.id.botTile1_12));
-	
-		bot2Buttons = new ArrayList<Button>();
-		bot2Buttons.add((Button)findViewById(R.id.botTile2_0));
-		bot2Buttons.add((Button)findViewById(R.id.botTile2_1));
-		bot2Buttons.add((Button)findViewById(R.id.botTile2_2));
-		bot2Buttons.add((Button)findViewById(R.id.botTile2_3));
-		bot2Buttons.add((Button)findViewById(R.id.botTile2_4));
-		bot2Buttons.add((Button)findViewById(R.id.botTile2_5));
-		bot2Buttons.add((Button)findViewById(R.id.botTile2_6));
-		bot2Buttons.add((Button)findViewById(R.id.botTile2_7));
-		bot2Buttons.add((Button)findViewById(R.id.botTile2_8));
-		bot2Buttons.add((Button)findViewById(R.id.botTile2_9));
-		bot2Buttons.add((Button)findViewById(R.id.botTile2_10));
-		bot2Buttons.add((Button)findViewById(R.id.botTile2_11));
-		bot2Buttons.add((Button)findViewById(R.id.botTile2_12));
-	
-		bot3Buttons = new ArrayList<Button>();
-		bot3Buttons.add((Button)findViewById(R.id.botTile3_0));
-		bot3Buttons.add((Button)findViewById(R.id.botTile3_1));
-		bot3Buttons.add((Button)findViewById(R.id.botTile3_2));
-		bot3Buttons.add((Button)findViewById(R.id.botTile3_3));
-		bot3Buttons.add((Button)findViewById(R.id.botTile3_4));
-		bot3Buttons.add((Button)findViewById(R.id.botTile3_5));
-		bot3Buttons.add((Button)findViewById(R.id.botTile3_6));
-		bot3Buttons.add((Button)findViewById(R.id.botTile3_7));
-		bot3Buttons.add((Button)findViewById(R.id.botTile3_8));
-		bot3Buttons.add((Button)findViewById(R.id.botTile3_9));
-		bot3Buttons.add((Button)findViewById(R.id.botTile3_10));
-		bot3Buttons.add((Button)findViewById(R.id.botTile3_11));
-		bot3Buttons.add((Button)findViewById(R.id.botTile3_12));
-	
-	
+		Button skipButton = (Button) findViewById(R.id.skipButton);
+		skipButton.setOnTouchListener(functionOnTouch);
 	}
 
 	private int randomPlayer() {
