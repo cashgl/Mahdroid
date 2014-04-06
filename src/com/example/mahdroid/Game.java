@@ -45,6 +45,22 @@ public class Game extends Activity {
 
 		//Sets up each player and distributes a card to them
 		setupPlayers();
+		
+		//The common 14th tile used by the current player
+		tempTile = deck.draw();
+		
+		String handEval = players.get(currentPlayer).evaluate(tempTile);
+		if (handEval.contains("w")) {
+			//winning code
+		} if (handEval.contains("e")) {
+			//eat code
+		} if (handEval.contains("d")) {
+			//double code
+		} if (handEval.contains("t")) {
+			//triple code
+		} if (handEval.contains("s")) {
+			//skip code
+		}
 
 		/**player = new Player(deck);	//instantiate the player
 		tempTile = deck.draw();	//deck gives away a tile 
