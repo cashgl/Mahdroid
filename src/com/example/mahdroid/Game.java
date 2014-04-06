@@ -24,6 +24,7 @@ public class Game extends Activity {
 	Discard playerDiscard, bot1Discard, bot2Discard, bot3Discard;
 	Deck deck;
 	Tile tempTile;
+	Button eatButton, doubleButton, tripleButton, winButton, skipButton;
 	int currentRound, currentPlayer;
 	boolean playersTurn, hasWon;
 
@@ -49,18 +50,33 @@ public class Game extends Activity {
 		//The common 14th tile used by the current player
 		tempTile = deck.draw();
 		
-		String handEval = players.get(currentPlayer).evaluate(tempTile);
-		if (handEval.contains("w")) {
+		String handEval = players.get(0).evaluate(tempTile);
+		if (handEval.contains("w")) {}
 			//winning code
-		} if (handEval.contains("e")) {
-			//eat code
-		} if (handEval.contains("d")) {
-			//double code
-		} if (handEval.contains("t")) {
-			//triple code
-		} if (handEval.contains("s")) {
-			//skip code
-		}
+		//Sets the eat button if hand has eat
+		if (handEval.contains("e"))
+			activateButton(eatButton);	
+		else
+			deactivateButton(eatButton);
+		//Sets the double button if the hand has double
+		if (handEval.contains("d"))
+			activateButton(doubleButton);
+		else
+			deactivateButton(doubleButton);
+		//Sets the double button if the hand has triple
+		if (handEval.contains("t")) 
+			activateButton(tripleButton);
+		else
+			deactivateButton(tripleButton);
+		//Sets the double button if the hand has triple
+		if (handEval.contains("s"))
+			activateButton(skipButton);
+		else
+			deactivateButton(skipButton);
+		
+		System.out.println("Temp Tile - Suit: " + tempTile.getSuit() + 
+				", Value: " + tempTile.getValue());
+		System.out.println("Player " + currentPlayer + " result: " + handEval);
 
 		/**player = new Player(deck);	//instantiate the player
 		tempTile = deck.draw();	//deck gives away a tile 
@@ -330,25 +346,36 @@ public class Game extends Activity {
 		//Creates the function buttons and associates their action listener
 		//that is reused for each function
 		OnTouchListener functionOnTouch = new FunctionOnTouch();
-		Button eatButton = (Button) findViewById(R.id.eatButton);
+		eatButton = (Button) findViewById(R.id.eatButton);
 		eatButton.setOnTouchListener(functionOnTouch);
 
-		Button doubleButton = (Button) findViewById(R.id.doubleButton);
+		doubleButton = (Button) findViewById(R.id.doubleButton);
 		doubleButton.setOnTouchListener(functionOnTouch);
 
-		Button tripleButton = (Button) findViewById(R.id.tripleButton);
+		tripleButton = (Button) findViewById(R.id.tripleButton);
 		tripleButton.setOnTouchListener(functionOnTouch);
 
-		Button winButton = (Button) findViewById(R.id.winButton);
+		winButton = (Button) findViewById(R.id.winButton);
 		winButton.setOnTouchListener(functionOnTouch);
 
-		Button skipButton = (Button) findViewById(R.id.skipButton);
+		skipButton = (Button) findViewById(R.id.skipButton);
 		skipButton.setOnTouchListener(functionOnTouch);
 	}
 
 	private int randomPlayer() {
 		Random r = new Random();
 		return r.nextInt(4);
+	}
+	
+	private void activateButton(Button b) {
+		b.setEnabled(true);
+		b.setTextColor(Color.WHITE);
+	}
+	
+	private void deactivateButton(Button b) {
+		b.setEnabled(false);
+		ColorDrawable d = (ColorDrawable) b.getBackground();
+		b.setTextColor(d.getColor());
 	}
 
 	@Override
