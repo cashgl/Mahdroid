@@ -14,15 +14,13 @@ public class Function {
 			//eg. when u have 3 & 4 and u pick up 2, then 2 will be added to the front
 			if (activeHand.tileAt(i).getValue()-1 == t.getValue() && 
 					activeHand.tileAt(i).getValue()+1 == activeHand.tileAt(i+1).getValue() && 
-					activeHand.tileAt(i).getSuit() == t.getSuit()){
+					activeHand.tileAt(i).getSuit() == t.getSuit())
 				return true;
-			}
 			//eg. when u have 3 & 5 and u pick up 4, then 4 will be added in between
 			if (activeHand.tileAt(i).getValue()+1 == t.getValue() && 
 					activeHand.tileAt(i).getValue()+2 == activeHand.tileAt(i+1).getValue() && 
-					activeHand.tileAt(i).getSuit() == t.getSuit()){
+					activeHand.tileAt(i).getSuit() == t.getSuit())
 				return true;
-			}
 		}
 		return false;
 	}
@@ -53,9 +51,9 @@ public class Function {
 				activeHand.remove(activeHand.tileAt(i+1));
 			}
 			//eg. when u have 3 & 5 and u pick up 4, then 4 will be added in between
-			if (activeHand.tileAt(i).getValue()+1 == t.getValue() && 
-					activeHand.tileAt(i).getValue()+2 == activeHand.tileAt(i+1).getValue() && 
-					activeHand.tileAt(i).getSuit() == t.getSuit()){
+			if (activeHand.tileAt(i).getSuit() == t.getSuit() && 
+					activeHand.tileAt(i).getValue()+1 == t.getValue() && 
+					activeHand.tileAt(i).getValue()+2 == activeHand.tileAt(i+1).getValue()){
 				//manipulate
 				exposedHand.add(activeHand.tileAt(i));
 				exposedHand.add(t);
@@ -64,14 +62,13 @@ public class Function {
 				activeHand.remove(activeHand.tileAt(i+1));
 			}
 		}
-		
 		//return exposed hand
 		return exposedHand;
 	}
 
 	public static boolean dou(Hand activeHand, Tile t){
 		for (int i = 0; i< activeHand.getSize() - 2; i++) {
-			if (activeHand.tileAt(i).equals(activeHand.tileAt(i+1)) && 
+			if (activeHand.tileAt(i).getValue() == activeHand.tileAt(i+1).getValue() && 
 					t.getSuit() == activeHand.tileAt(i).getSuit() && 
 					t.getValue() == activeHand.tileAt(i).getValue())
 				return true;
@@ -82,8 +79,8 @@ public class Function {
 	public static ArrayList<Tile> performDou(Hand activeHand, Tile t){
 		ArrayList<Tile> exposedHand = new ArrayList<Tile>();
 		for (int i = 0; i< activeHand.getSize() - 2; i++) {
-			if (activeHand.tileAt(i).equals(activeHand.tileAt(i+1)) && 
-					t.getSuit() == activeHand.tileAt(i).getSuit() && 
+			if (t.getSuit() == activeHand.tileAt(i).getSuit() && 
+					activeHand.tileAt(i).getValue() == activeHand.tileAt(i+1).getValue() && 
 					t.getValue() == activeHand.tileAt(i).getValue()){
 				//manipulate
 				exposedHand.add(activeHand.tileAt(i));
@@ -100,7 +97,7 @@ public class Function {
 
 	public static boolean triple(Hand activeHand, Tile t){
 		for (int i = 0; i< activeHand.getSize() - 2; i++) {
-			if (activeHand.tileAt(i).equals(activeHand.tileAt(i+2)) && 
+			if (activeHand.tileAt(i).getValue() == activeHand.tileAt(i+2).getValue() && 
 					t.getSuit() == activeHand.tileAt(i).getSuit() && 
 					t.getValue() == activeHand.tileAt(i).getValue())
 				return true;
@@ -111,7 +108,7 @@ public class Function {
 	public static ArrayList<Tile> performTriple(Hand activeHand, Tile t){
 		ArrayList<Tile> exposedHand = new ArrayList<Tile>();
 		for (int i = 0; i< activeHand.getSize() - 2; i++) {
-			if (activeHand.tileAt(i).equals(activeHand.tileAt(i+2)) && 
+			if (activeHand.tileAt(i).getValue() == activeHand.tileAt(i+2).getValue() && 
 					t.getSuit() == activeHand.tileAt(i).getSuit() && 
 					t.getValue() == activeHand.tileAt(i).getValue()){
 				//manipulate
