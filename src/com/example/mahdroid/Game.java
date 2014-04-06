@@ -24,7 +24,7 @@ public class Game extends Activity {
 	Discard playerDiscard, bot1Discard, bot2Discard, bot3Discard;
 	Deck deck;
 	Tile tempTile;
-	Button eatButton, doubleButton, tripleButton, winButton, skipButton;
+	Button eatButton, doubleButton, tripleButton, winButton, skipButton, tempTileButton;
 	int currentRound, currentPlayer;
 	boolean playersTurn, hasWon;
 
@@ -35,7 +35,7 @@ public class Game extends Activity {
 
 		currentRound = 1; //Shows that the initial is the current round
 
-		deck = new Deck();
+		deck = new Deck(); //Sets up the deck eveyone will use
 
 		//Randomly generates a player to start the game
 		currentPlayer = randomPlayer();
@@ -49,26 +49,29 @@ public class Game extends Activity {
 		
 		//The common 14th tile used by the current player
 		tempTile = deck.draw();
+		tempTileButton = (Button) findViewById(R.id.playerTileTemp);
+		setTileView(tempTileButton, tempTile);
+		
 		
 		String handEval = players.get(0).evaluate(tempTile);
 		if (handEval.contains("w")) {}
 			//winning code
-		//Sets the eat button if hand has eat
+		//Activates the eat button if hand has eat
 		if (handEval.contains("e"))
 			activateButton(eatButton);	
 		else
 			deactivateButton(eatButton);
-		//Sets the double button if the hand has double
+		//Activates the double button if the hand has double
 		if (handEval.contains("d"))
 			activateButton(doubleButton);
 		else
 			deactivateButton(doubleButton);
-		//Sets the double button if the hand has triple
+		//Activates the double button if the hand has triple
 		if (handEval.contains("t")) 
 			activateButton(tripleButton);
 		else
 			deactivateButton(tripleButton);
-		//Sets the double button if the hand has triple
+		//Activates the double button if the hand has triple
 		if (handEval.contains("s"))
 			activateButton(skipButton);
 		else
@@ -377,6 +380,21 @@ public class Game extends Activity {
 		ColorDrawable d = (ColorDrawable) b.getBackground();
 		b.setTextColor(d.getColor());
 	}
+	
+	private void setTileView(Button b, Tile t) {
+		if (t.getSuit() == 0) 
+			b.setBackgroundColor(Color.CYAN);
+		else if (t.getSuit() == 1)
+			b.setBackgroundColor(Color.YELLOW);
+		else if (t.getSuit() == 2)
+			b.setBackgroundColor(Color.GREEN);
+		else if (t.getSuit() == 3)
+			b.setBackgroundColor(Color.RED);
+		else if (t.getSuit() == 4)
+			b.setBackgroundColor(Color.GRAY);
+		b.setText("" + tempTile.getValue());
+		b.setOnClickListener(new SuitValueListener(0, tempTile.getSuit(),tempTile.getValue()));
+	}
 
 	@Override
 	public void onBackPressed() {
@@ -468,12 +486,12 @@ public class Game extends Activity {
 				try {
 					boolean b = true;
 					while (!hasWon) {
-						Thread.sleep(1000);
 						runOnUiThread(new MyThread(b));
 						if (b == true)
 							b = false;
 						else
 							b = true;
+						Thread.sleep(1000);
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
