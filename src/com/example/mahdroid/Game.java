@@ -35,7 +35,7 @@ public class Game extends Activity {
 
 		currentRound = 1; //Shows that the initial is the current round
 
-		deck = new Deck(); //Sets up the deck eveyone will use
+		deck = new Deck(); //Sets up the deck everyone will use
 
 		//Randomly generates a player to start the game
 		currentPlayer = randomPlayer();
@@ -51,7 +51,6 @@ public class Game extends Activity {
 		tempTile = deck.draw();
 		tempTileButton = (Button) findViewById(R.id.playerTileTemp);
 		setTileView(tempTileButton, tempTile);
-		
 		
 		String handEval = players.get(0).evaluate(tempTile);
 		if (handEval.contains("w")) {}
@@ -81,113 +80,75 @@ public class Game extends Activity {
 				", Value: " + tempTile.getValue());
 		System.out.println("Player " + currentPlayer + " result: " + handEval);
 
-		/**player = new Player(deck);	//instantiate the player
-		tempTile = deck.draw();	//deck gives away a tile 
-		player.drawTile();	//player draws
-		String evalResult = player.evaluate(tempTile);	//evaluates player's current hand
-		//if win by picking up tile
-		if (evalResult == "w"){
-		    player.callFunction("w");
-		    //current round ends
-		}
-		//else player discards a tile
-		else {
-			playerHand.add(tempTile);	//add the tile to hand
-			//player.discardTile(i);	//need a position index 
-			//pDiscard.add(playerHand.tileAt(i));//add the discarded tile to player's discard pile
-			//playerHand.removeAt(i);	//update the hand
-		}
+		//player needs to discard a tile
+		//players.get(0).discardTile(i);	//need a position index 
+		
 		//bot1's action(evaluation)
-		String evalResult1 = bot1.evaluate(player.lastDiscard());
-		if ( evalResult1 == "e"){
-	   		bot1.callFunction("e");
+		String handEval1 = players.get(1).evaluate(players.get(0).lastDiscard());
+		if (handEval1.contains("e")){
+			activateButton(eatButton);	
+	   		players.get(1).callFunction("e");
 		   	//if bot1 eats the tile, then it's bot1's turn to discard
-		   	bot1.discardTile(0);	//for now, the bot always discards tile at index 0
-		   	bot1Discard.add(bot1Hand.tileAt(0));
-		   	bot1Hand.removeAt(0);	
+	   		players.get(1).discardTile(0);	//for now, the bot always discards tile at index 0
 		}
-	    if ( evalResult1 == "d"){
-		   	bot1.callFunction("d");
-			bot1.discardTile(0);	
-		   	bot1Discard.add(bot1Hand.tileAt(0));
-		   	bot1Hand.removeAt(0);	
+	    if (handEval1.contains("d")){
+	    	activateButton(doubleButton);	
+		   	players.get(1).callFunction("d");
+			players.get(1).discardTile(0);	
 	    }
-		if ( evalResult1 == "t"){
-	    	bot1.callFunction("t");
-	    	bot1.discardTile(0);	
-		   	bot1Discard.add(bot1Hand.tileAt(0));
-		   	bot1Hand.removeAt(0);
+		if (handEval1.contains("t")){
+			activateButton(tripleButton);
+	    	players.get(1).callFunction("t");
+	    	players.get(1).discardTile(0);	
 		}
-		if ( evalResult1 == "s"){
-		   	bot1.callFunction("s");
-		   	bot1.discardTile(0);	
-		   	bot1Discard.add(bot1Hand.tileAt(0));
-		   	bot1Hand.removeAt(0);
+		if (handEval1.contains("s")){
+			activateButton(skipButton);
+		   	players.get(1).callFunction("s");
+		   	players.get(1).discardTile(0);	
 	    }
-		if ( evalResult1 == "w"){
-		   	bot1.callFunction("w");
+		if (handEval1.contains("w")){
 		    //current round ends
 		}
 		//bot2's action(evaluation)
-		String evalResult2 = bot2.evaluate(player.lastDiscard());
-		if ( evalResult2 == "e"){
-	   		bot2.callFunction("e");
-		   	bot2.discardTile(0);
-		   	bot2Discard.add(bot2Hand.tileAt(0));
-		   	bot2Hand.removeAt(0);	
-		}
-	    if ( evalResult2 == "d"){
-		   	bot2.callFunction("d");
-			bot2.discardTile(0);	
-		   	bot2Discard.add(bot2Hand.tileAt(0));
-		   	bot2Hand.removeAt(0);	
+		String handEval2 = players.get(2).evaluate(players.get(0).lastDiscard());
+	    if (handEval2.contains("d")){
+	    	activateButton(doubleButton);
+	    	players.get(2).callFunction("d");
+	    	players.get(2).discardTile(0);	
 	    }
-		if ( evalResult2 == "t"){
-	    	bot2.callFunction("t");
-	    	bot2.discardTile(0);	
-		   	bot2Discard.add(bot2Hand.tileAt(0));
-		   	bot2Hand.removeAt(0);
+		if (handEval2.contains("t")){
+			activateButton(tripleButton);
+	    	players.get(2).callFunction("t");
+	    	players.get(2).discardTile(0);	
 		}
-		if ( evalResult2 == "s"){
-		   	bot2.callFunction("s");
-		   	bot2.discardTile(0);	
-		   	bot2Discard.add(bot2Hand.tileAt(0));
-		   	bot2Hand.removeAt(0);
+		if (handEval2.contains("s")){
+			activateButton(skipButton);
+			players.get(2).callFunction("s");
+			players.get(2).discardTile(0);	
 	    }
-		if ( evalResult2 == "w"){
-		   	bot2.callFunction("w");
+		if (handEval2.contains("w")){
 		    //current round ends
 		}
 		//bot3's action(evaluation)
-		String evalResult3 = bot3.evaluate(player.lastDiscard());
-		if ( evalResult3 == "e"){
-	  		bot3.callFunction("e");
-		   	bot3.discardTile(0);
-		  	bot3Discard.add(bot3Hand.tileAt(0));
-		   	bot3Hand.removeAt(0);	
-		}
-	    if ( evalResult3 == "d"){
-		  	bot3.callFunction("d");
-			bot3.discardTile(0);	
-		   	bot3Discard.add(bot3Hand.tileAt(0));
-		   	bot3Hand.removeAt(0);	
+		String handEval3 = players.get(3).evaluate(players.get(0).lastDiscard());
+	    if (handEval3.contains("d")){
+	    	activateButton(doubleButton);
+		  	players.get(3).callFunction("d");
+		  	players.get(3).discardTile(0);	
 	    }
-		if ( evalResult3 == "t"){
-			bot3.callFunction("t");
-		   	bot3.discardTile(0);	
-		   	bot3Discard.add(bot3Hand.tileAt(0));
-		  	bot3Hand.removeAt(0);
+		if (handEval3.contains("t")){
+			activateButton(tripleButton);
+			players.get(3).callFunction("t");
+			players.get(3).discardTile(0);	
 		}
-		if ( evalResult3 == "s"){
-		  	bot3.callFunction("s");
-		  	bot3.discardTile(0);	
-		   	bot3Discard.add(bot3Hand.tileAt(0));
-		  	bot3Hand.removeAt(0);
+		if (handEval3.contains("s")){
+			activateButton(skipButton);
+			players.get(3).callFunction("s");
+			players.get(3).discardTile(0);	
 	    }
-		if ( evalResult3 == "w"){
-		   	bot3.callFunction("w");
+		if (handEval3.contains("w")){
 		    //current round ends
-		}*/
+		}
 
 		//DONT TOUCH THIS!!!
 		//I'm trying to figure out the discard piles
