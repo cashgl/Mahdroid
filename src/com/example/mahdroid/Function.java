@@ -67,10 +67,9 @@ public class Function {
 	}
 
 	public static boolean dou(Hand activeHand, Tile t){
-		for (int i = 0; i< activeHand.getSize() - 2; i++) {
-			if (activeHand.tileAt(i).getValue() == activeHand.tileAt(i+1).getValue() && 
-					t.getSuit() == activeHand.tileAt(i).getSuit() && 
-					t.getValue() == activeHand.tileAt(i).getValue())
+		for (int i = 0; i< activeHand.getSize(); i++) {
+			if (activeHand.tileAt(i).getSuit() == t.getSuit() &&
+					activeHand.tileAt(i).getValue() == t.getValue())
 				return true;
 		}
 		return false;
@@ -96,11 +95,16 @@ public class Function {
 	}
 
 	public static boolean triple(Hand activeHand, Tile t){
-		for (int i = 0; i< activeHand.getSize() - 2; i++) {
-			if (activeHand.tileAt(i).getValue() == activeHand.tileAt(i+2).getValue() && 
+		for (int i = 0; i< activeHand.getSize() - 1; i++) {
+			if (activeHand.tileAt(i).getSuit() == t.getSuit() &&
+				activeHand.tileAt(i+1).getSuit() == t.getSuit() &&
+				activeHand.tileAt(i).getValue() == t.getValue() &&
+				activeHand.tileAt(i+1).getValue() == t.getValue())
+				return true;
+			/*if (activeHand.tileAt(i).getValue() == activeHand.tileAt(i+2).getValue() && 
 					t.getSuit() == activeHand.tileAt(i).getSuit() && 
 					t.getValue() == activeHand.tileAt(i).getValue())
-				return true;
+				return true;*/
 		}
 		return false;
 	}
