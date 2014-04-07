@@ -53,8 +53,10 @@ public class Game extends Activity {
 		setTileView(tempTileButton, tempTile);
 		
 		String handEval = players.get(0).evaluate(tempTile);
-		if (handEval.contains("w")) {}
-			//winning code
+		if (handEval.contains("w")) 
+			activateButton(winButton);
+		else
+			deactivateButton(winButton);
 		//Activates the eat button if hand has eat
 		if (handEval.contains("e"))
 			activateButton(eatButton);	
