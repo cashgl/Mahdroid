@@ -76,6 +76,16 @@ public class Function {
 	}
 	
 	public static ArrayList<Tile> performDou(Hand activeHand, Tile t){
+		/*for (int i = 0; i< activeHand.getSize(); i++) {
+			if (activeHand.tileAt(i).getSuit() == t.getSuit() &&
+					activeHand.tileAt(i).getValue() == t.getValue()) {
+				
+			}
+		}*/
+		
+		
+		//This section is going to be removed... it doesn't utilize the functionedTiles
+		//method from Hand
 		ArrayList<Tile> exposedHand = new ArrayList<Tile>();
 		for (int i = 0; i< activeHand.getSize() - 2; i++) {
 			if (t.getSuit() == activeHand.tileAt(i).getSuit() && 
