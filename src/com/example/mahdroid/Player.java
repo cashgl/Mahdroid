@@ -1,5 +1,7 @@
 package com.example.mahdroid;
 
+import java.util.ArrayList;
+
 /**
  * @author Grayson
  *
@@ -78,6 +80,14 @@ public class Player {
 			return hand.tileAt(index);
 		}
 		return null;
+	}
+	
+	public ArrayList<Tile> seeActiveHand() {
+		return hand.getActiveTiles();
+	}
+	
+	public ArrayList<Tile> seeFunctionedHand() {
+		return hand.getFunctionedTiles();
 	}
 	
 	public boolean callFunction(String function){

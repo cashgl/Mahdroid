@@ -452,6 +452,10 @@ public class Game extends Activity {
 				break;
 	
 			case MotionEvent.ACTION_UP:
+				String function = temp.getText().charAt(0) + "";
+				
+				players.get(currentPlayer).callFunction(function);
+					
 				temp.setTextColor(Color.WHITE);
 	
 				float x = Math.abs(event.getX()),y = Math.abs(event.getY());

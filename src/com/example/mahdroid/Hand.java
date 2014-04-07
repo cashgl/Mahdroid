@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 
 public class Hand {
-	
+
 	private ArrayList<Tile> activeHand;
 	private ArrayList<Tile> functionedHand;
 	private int activeSize, functionedSize;
@@ -15,12 +15,12 @@ public class Hand {
 		this.activeSize = 0;
 		this.functionedSize = 0;
 	}
-	
+
 	public String evaluate(){
 		return "";
-		
+
 	}
-	
+
 	public boolean remove(Tile tile){
 		if (activeHand.remove(tile)) {
 			activeSize--;
@@ -28,7 +28,7 @@ public class Hand {
 		}
 		return false;
 	}
-	
+
 	public Tile removeAt(int i) {
 		if (i >= activeHand.size())
 			return null;
@@ -37,15 +37,15 @@ public class Hand {
 			return activeHand.remove(i);
 		}
 	}
-	
+
 	public void add(Tile add){
-		
+
 		int suit = add.getSuit();
 		int value = add.getValue();
-		
+
 		Tile temp = add;
 		int i = 0;
-		
+
 		while (temp != null && i < activeSize) {
 			if (activeHand.get(i).getSuit() == suit) {
 
@@ -70,12 +70,12 @@ public class Hand {
 			activeSize++;
 		}
 	}
-	
+
 	public boolean functionedTiles(int a, int b) {
 		if (b < a || a < 0 || b < 0 || b >= activeHand.size())
 			return false;
 		else {
-			for (int i = a; i <= (b-a); i++) {
+			for (int i = a; i <= b; i++) {
 				functionedHand.add(activeHand.remove(a));
 				activeSize--;
 				functionedSize++;
@@ -84,19 +84,31 @@ public class Hand {
 		}
 	}
 	
-	/*public ArrayList<Tile> seeFunctionedTiles() {
-		ArrayList<Tile> temp = (ArrayList<Tile>) functionedHand.clone();
-		return temp;
-	}*/
-	
+	public ArrayList<Tile> getActiveTiles() {
+		return activeHand;
+	}
+
+	public ArrayList<Tile> getFunctionedTiles() {
+		return functionedHand;
+	}
+
 	public int getSize() {
 		return this.activeSize;
 	}
-	
+
 	public Tile tileAt(int i) {
-		return activeHand.get(i);
+		if (i >= activeSize + functionedSize)
+			return null;
+		else if (i < 0)
+			return null;
+		
+		if (i < activeSize)
+			return activeHand.get(i);
+		
+		i = i - activeSize;
+		return functionedHand.get(i);
 	}
-	
+
 	public String toString() {
 		StringBuilder s = new StringBuilder();
 		for (int i = 0; i < this.activeSize; i++) {
