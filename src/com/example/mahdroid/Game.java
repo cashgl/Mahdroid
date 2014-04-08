@@ -421,6 +421,9 @@ public class Game extends Activity {
 				float x = Math.abs(event.getX()),y = Math.abs(event.getY());
 				double dist = Math.sqrt( Math.pow(x, 2) + Math.pow(y, 2) );
 				if (dist < 300) {
+					//This is the code that will actually execute the function.
+					//However, it is only used in the case of the human player
+					//since we will be automatically be doing this for the bots
 					String functText = temp.getText() + "";
 					if (functText.equalsIgnoreCase("double")) {
 						//call double on current player
