@@ -50,16 +50,19 @@ public class Player {
 	 */
 	public String evaluate(Tile discardTile){
 		StringBuilder s = new StringBuilder();
-		if (Function.eat(hand, discardTile))
-			s.append("e");
-		if (Function.dou(hand, discardTile))
-			s.append("d");
-		if (Function.triple(hand, discardTile))
-			s.append("t");
-		if (Function.skip(hand))
-			s.append("s");
-		if (Function.win(hand, tempTile))
-			s.append("w");
+		if (discardTile == null) {}
+		else {
+			if (Function.eat(hand, discardTile))
+				s.append("e");
+			if (Function.dou(hand, discardTile))
+				s.append("d");
+			if (Function.triple(hand, discardTile))
+				s.append("t");
+			if (Function.skip(hand))
+				s.append("s");
+			if (Function.win(hand, tempTile))
+				s.append("w");
+		}
 		
 		return s.toString();
 	}
