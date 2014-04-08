@@ -67,9 +67,11 @@ public class Function {
 	}
 
 	public static boolean dou(Hand activeHand, Tile t){
-		for (int i = 0; i< activeHand.getSize(); i++) {
+		for (int i = 0; i< activeHand.getSize()-1; i++) {
 			if (activeHand.tileAt(i).getSuit() == t.getSuit() &&
-					activeHand.tileAt(i).getValue() == t.getValue())
+					activeHand.tileAt(i+1).getSuit() == t.getSuit() &&
+					activeHand.tileAt(i).getValue() == t.getValue() &&
+					activeHand.tileAt(i+1).getValue() == t.getValue() )
 				return true;
 		}
 		return false;
@@ -144,7 +146,7 @@ public class Function {
 	public static boolean douWin(Hand activeHand, Tile t){
 		for (int i = 0; i< activeHand.getSize(); i++) {
 			if (activeHand.tileAt(i).getValue() == t.getValue() && 
-					activeHand.tileAt(i).getSuit() == t.getSuit())
+				activeHand.tileAt(i).getSuit() == t.getSuit())
 				return true;
 		}
 		return false;
@@ -155,8 +157,8 @@ public class Function {
 		if (activeHand.getSize() == 1 && douWin(activeHand, t))
 			return true;
 		//winning hand pattern: 1 2 3 4, win on: 1 or 4
-		else if (activeHand.getSize() == 4 && douWin(activeHand, t))
-			return true;
+		//else if (activeHand.getSize() == 4 && douWin(activeHand, t))
+			//return true;
 		//winning hand pattern: 1 1 2 2, win on: 1 or 2
 		else if (activeHand.getSize() == 4 && dou(activeHand, t))
 			return true;
@@ -164,8 +166,8 @@ public class Function {
 		else if (activeHand.getSize() == 7 && eat(activeHand, t))
 			return true;
 		//winning hand pattern: 2 3 4 5 6 7 8, win on: 2 or 5 or 8
-		else if (activeHand.getSize() == 7 && douWin(activeHand, t))
-			return true;
+		//else if (activeHand.getSize() == 7 && douWin(activeHand, t))
+			//return true;
 		//winning hand pattern: 1 1 2 3 4 5 5, win on: 1 or 5
 		else if (activeHand.getSize() == 7 && dou(activeHand, t))
 			return true;
@@ -173,8 +175,8 @@ public class Function {
 		else if (activeHand.getSize() == 10 && eat(activeHand, t))
 			return true;
 		//winning hand pattern: 1 1 1 2 3 4 5 6 7 8, win on: 2 or 5 or 8
-		else if (activeHand.getSize() == 10 && douWin(activeHand, t))
-			return true;
+		//else if (activeHand.getSize() == 10 && douWin(activeHand, t))
+			//return true;
 		//winning hand pattern: 1 1 2 3 4 5 6 7 9 9,  win on: 1 or 9
 		else if (activeHand.getSize() == 10 && dou(activeHand, t))
 			return true;
@@ -182,8 +184,8 @@ public class Function {
 		else if (activeHand.getSize() == 13 && eat(activeHand, t))
 			return true;
 		//winning hand pattern: 1 2 3 4 5 6 7 8 9 2 2 2 5, win on: 5
-		else if (activeHand.getSize() == 13 && douWin(activeHand, t))
-			return true;
+		//else if (activeHand.getSize() == 13 && douWin(activeHand, t))
+			//return true;
 		//winning hand pattern: 1 1 1 2 3 4 5 6 7 8 9 9 9, win on: 1 or 9
 		else if (activeHand.getSize() == 13 && dou(activeHand, t))
 			return true;
