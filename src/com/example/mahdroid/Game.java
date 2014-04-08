@@ -52,16 +52,19 @@ public class Game extends Activity {
 		tempTileButton = (Button) findViewById(R.id.playerTileTemp);
 		setTileView(tempTileButton, tempTile);
 		
-		String handEval = players.get(0).evaluate(tempTile);
-		//note that at the very beginning of a round, the player can only
-		//do win or skip function with tempTile. He/she can't do eat or double or triple
+		currentPlayer = 0;
+		String handEval = players.get(currentPlayer)
+				.evaluate(tempTile);
 		if (handEval.contains("w")) 
 			activateButton(winButton);
 		else
 			deactivateButton(winButton);
+		
+		handEval = players.get(currentPlayer)
+				.evaluate(players.get((currentPlayer + 3)%4).lastDiscard());
 		//Activates the eat button if hand has eat
 		if (handEval.contains("e"))
-			activateButton(eatButton);
+			activateButton(eatButton);	
 		else
 			deactivateButton(eatButton);
 		//Activates the double button if the hand has double
@@ -395,30 +398,37 @@ public class Game extends Activity {
 	}
 
 	private class FunctionOnTouch implements OnTouchListener {
-	
+		int playerTurn;
+		
+		public FunctionOnTouch() {
+			playerTurn = currentPlayer;
+		}
+		
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
 			Button temp = (Button) v;
 			ColorDrawable d = (ColorDrawable) temp.getBackground();
+			
 			switch(event.getAction()){
 			case MotionEvent.ACTION_DOWN:
 				temp.setTextColor(d.getColor());
 				break;
 	
-			case MotionEvent.ACTION_MOVE:
-				break;
-	
 			case MotionEvent.ACTION_UP:
-				String function = temp.getText().charAt(0) + "";
-				
-				players.get(currentPlayer).callFunction(function);
+				String funct = temp.getText().charAt(0) + "";
 					
 				temp.setTextColor(Color.WHITE);
-	
 				float x = Math.abs(event.getX()),y = Math.abs(event.getY());
 				double dist = Math.sqrt( Math.pow(x, 2) + Math.pow(y, 2) );
 				if (dist < 300) {
-					String funct = temp.getText() + "";
+					String functText = temp.getText() + "";
+					if (functText.equalsIgnoreCase("double")) {
+						//call double on current player
+					} else if (functText.equalsIgnoreCase("triple")) {
+						//call triple on current player
+					} else if (functText.equalsIgnoreCase("eat")) {
+						//call eat on current player
+					}
 	
 					AlertDialog.Builder builder = new AlertDialog.Builder(Game.this);
 					builder.setTitle("Action performed: " + funct)
