@@ -25,39 +25,30 @@ public class Function {
 		return false;
 	}
 	
-	public static ArrayList<Tile> performEat(Hand activeHand, Tile t) {
-		ArrayList<Tile> exposedHand = new ArrayList<Tile>();
-		for (int i = 0; i< activeHand.getSize()-1; i++) {
+	public static void performEat(Hand hand, Tile t) {
+		for (int i = 0; i < hand.getSize()-1; i++) {
 			//eg. when u have 3 & 4 and u pick up 5, then 5 will be added to the end 
-			if (activeHand.tileAt(i).getValue()+1 == activeHand.tileAt(i+1).getValue() && 
-					activeHand.tileAt(i+1).getValue()+1 == t.getValue() && 
-					activeHand.tileAt(i).getSuit() == t.getSuit()){
+			if (hand.tileAt(i).getSuit() == t.getSuit() && 
+				hand.tileAt(i).getValue()+1 == hand.tileAt(i+1).getValue() && 
+				hand.tileAt(i+1).getValue()+1 == t.getValue()){
 				//manipulate
-				exposedHand.add(activeHand.tileAt(i));
-				exposedHand.add(activeHand.tileAt(i+1));
-				exposedHand.add(t);
+				hand.functionedTiles(i, i+2);
 			}
 			//eg. when u have 3 & 4 and u pick up 2, then 2 will be added to the front
-			if (activeHand.tileAt(i).getValue()-1 == t.getValue() && 
-					activeHand.tileAt(i).getValue()+1 == activeHand.tileAt(i+1).getValue() && 
-					activeHand.tileAt(i).getSuit() == t.getSuit()){
+			if (hand.tileAt(i).getSuit() == t.getSuit() &&
+				hand.tileAt(i).getValue()-1 == t.getValue() && 
+				hand.tileAt(i).getValue()+1 == hand.tileAt(i+1).getValue()){
 				//manipulate
-				exposedHand.add(t);
-				exposedHand.add(activeHand.tileAt(i));
-				exposedHand.add(activeHand.tileAt(i+1));
+				hand.functionedTiles(i, i+2);
 			}
 			//eg. when u have 3 & 5 and u pick up 4, then 4 will be added in between
-			if (activeHand.tileAt(i).getSuit() == t.getSuit() && 
-					activeHand.tileAt(i).getValue()+1 == t.getValue() && 
-					activeHand.tileAt(i).getValue()+2 == activeHand.tileAt(i+1).getValue()){
+			if (hand.tileAt(i).getSuit() == t.getSuit() && 
+				hand.tileAt(i).getValue()+1 == t.getValue() && 
+				hand.tileAt(i).getValue()+2 == hand.tileAt(i+1).getValue()){
 				//manipulate
-				exposedHand.add(activeHand.tileAt(i));
-				exposedHand.add(t);
-				exposedHand.add(activeHand.tileAt(i+1));
+				hand.functionedTiles(i, i+2);
 			}
 		}
-		//return exposed hand
-		return exposedHand;
 	}
 
 	public static boolean dou(Hand activeHand, Tile t){
