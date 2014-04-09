@@ -36,8 +36,6 @@ public class Function {
 				exposedHand.add(activeHand.tileAt(i));
 				exposedHand.add(activeHand.tileAt(i+1));
 				exposedHand.add(t);
-				activeHand.remove(activeHand.tileAt(i));
-				activeHand.remove(activeHand.tileAt(i+1));
 			}
 			//eg. when u have 3 & 4 and u pick up 2, then 2 will be added to the front
 			if (activeHand.tileAt(i).getValue()-1 == t.getValue() && 
@@ -47,8 +45,6 @@ public class Function {
 				exposedHand.add(t);
 				exposedHand.add(activeHand.tileAt(i));
 				exposedHand.add(activeHand.tileAt(i+1));
-				activeHand.remove(activeHand.tileAt(i));
-				activeHand.remove(activeHand.tileAt(i+1));
 			}
 			//eg. when u have 3 & 5 and u pick up 4, then 4 will be added in between
 			if (activeHand.tileAt(i).getSuit() == t.getSuit() && 
@@ -58,8 +54,6 @@ public class Function {
 				exposedHand.add(activeHand.tileAt(i));
 				exposedHand.add(t);
 				exposedHand.add(activeHand.tileAt(i+1));
-				activeHand.remove(activeHand.tileAt(i));
-				activeHand.remove(activeHand.tileAt(i+1));
 			}
 		}
 		//return exposed hand
@@ -97,8 +91,6 @@ public class Function {
 				exposedHand.add(activeHand.tileAt(i));
 				exposedHand.add(activeHand.tileAt(i+1));
 				exposedHand.add(t);
-				activeHand.remove(activeHand.tileAt(i));
-				activeHand.remove(activeHand.tileAt(i+1));
 			}
 		}
 		
@@ -129,12 +121,8 @@ public class Function {
 					t.getValue() == activeHand.tileAt(i).getValue()){
 				//manipulate
 				exposedHand.add(activeHand.tileAt(i));
-				exposedHand.add(activeHand.tileAt(i+1));
 				exposedHand.add(activeHand.tileAt(i+2));
 				exposedHand.add(t);
-				activeHand.remove(activeHand.tileAt(i));
-				activeHand.remove(activeHand.tileAt(i+1));
-				activeHand.remove(activeHand.tileAt(i+2));
 			}
 		}
 	
