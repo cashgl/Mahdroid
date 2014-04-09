@@ -4,22 +4,22 @@ import java.util.ArrayList;
 
 public class Function {
 
-	public static boolean eat(Hand activeHand, Tile t){
-		for (int i = 0; i< activeHand.getSize()-1; i++) {
+	public static boolean eat(Hand hand, Tile t){
+		for (int i = 0; i< hand.getSize()-1; i++) {
 			//eg. when u have 3 & 4 and u pick up 5, then 5 will be added to the end 
-			if (activeHand.tileAt(i).getValue()+1 == activeHand.tileAt(i+1).getValue() && 
-					activeHand.tileAt(i+1).getValue()+1 == t.getValue() && 
-					activeHand.tileAt(i).getSuit() == t.getSuit())
+			if (hand.tileAt(i).getSuit() == t.getSuit() && 
+				hand.tileAt(i).getValue()+1 == hand.tileAt(i+1).getValue() && 
+				hand.tileAt(i+1).getValue()+1 == t.getValue())
 				return true;
 			//eg. when u have 3 & 4 and u pick up 2, then 2 will be added to the front
-			if (activeHand.tileAt(i).getValue()-1 == t.getValue() && 
-					activeHand.tileAt(i).getValue()+1 == activeHand.tileAt(i+1).getValue() && 
-					activeHand.tileAt(i).getSuit() == t.getSuit())
+			if (hand.tileAt(i).getSuit() == t.getSuit() && 
+				hand.tileAt(i).getValue()-1 == t.getValue() && 
+				hand.tileAt(i).getValue()+1 == hand.tileAt(i+1).getValue())
 				return true;
 			//eg. when u have 3 & 5 and u pick up 4, then 4 will be added in between
-			if (activeHand.tileAt(i).getValue()+1 == t.getValue() && 
-					activeHand.tileAt(i).getValue()+2 == activeHand.tileAt(i+1).getValue() && 
-					activeHand.tileAt(i).getSuit() == t.getSuit())
+			if (hand.tileAt(i).getSuit() == t.getSuit() && 
+				hand.tileAt(i).getValue()+1 == t.getValue() && 
+				hand.tileAt(i).getValue()+2 == hand.tileAt(i+1).getValue())
 				return true;
 		}
 		return false;
@@ -51,83 +51,62 @@ public class Function {
 		}
 	}
 
-	public static boolean dou(Hand activeHand, Tile t){
-		for (int i = 0; i< activeHand.getSize()-1; i++) {
-			if (activeHand.tileAt(i).getSuit() == t.getSuit() &&
-					activeHand.tileAt(i+1).getSuit() == t.getSuit() &&
-					activeHand.tileAt(i).getValue() == t.getValue() &&
-					activeHand.tileAt(i+1).getValue() == t.getValue() )
-				return true;
+	public static boolean dou(Hand hand, Tile t){
+		for (int i = 0; i< hand.getSize()-1; i++) {
+			if (hand.tileAt(i).getSuit() == t.getSuit() &&
+				hand.tileAt(i+1).getSuit() == t.getSuit() &&
+				hand.tileAt(i).getValue() == t.getValue() &&
+				hand.tileAt(i+1).getValue() == t.getValue())
+			return true;
 		}
 		return false;
 	}
 	
-	public static ArrayList<Tile> performDou(Hand activeHand, Tile t){
+	public static void performDou(Hand hand, Tile t){
 		/*for (int i = 0; i< activeHand.getSize(); i++) {
 			if (activeHand.tileAt(i).getSuit() == t.getSuit() &&
 					activeHand.tileAt(i).getValue() == t.getValue()) {
 				
 			}
 		}*/
-		
-		
-		//This section is going to be removed... it doesn't utilize the functionedTiles
-		//method from Hand
-		ArrayList<Tile> exposedHand = new ArrayList<Tile>();
-		for (int i = 0; i< activeHand.getSize() - 2; i++) {
-			if (t.getSuit() == activeHand.tileAt(i).getSuit() && 
-					activeHand.tileAt(i).getValue() == activeHand.tileAt(i+1).getValue() && 
-					t.getValue() == activeHand.tileAt(i).getValue()){
-				//manipulate
-				exposedHand.add(activeHand.tileAt(i));
-				exposedHand.add(activeHand.tileAt(i+1));
-				exposedHand.add(t);
-			}
+		for (int i = 0; i< hand.getSize()-1; i++) {
+			if (hand.tileAt(i).getSuit() == t.getSuit() &&
+				hand.tileAt(i+1).getSuit() == t.getSuit() &&
+				hand.tileAt(i).getValue() == t.getValue() &&
+				hand.tileAt(i+1).getValue() == t.getValue())
+				//manipulate hand
+				hand.functionedTiles(i, i+2);
 		}
-		
-	    //return exposed hand
-		return exposedHand;
 	}
 
-	public static boolean triple(Hand activeHand, Tile t){
-		for (int i = 0; i< activeHand.getSize() - 1; i++) {
-			if (activeHand.tileAt(i).getSuit() == t.getSuit() &&
-				activeHand.tileAt(i+1).getSuit() == t.getSuit() &&
-				activeHand.tileAt(i).getValue() == t.getValue() &&
-				activeHand.tileAt(i+1).getValue() == t.getValue())
+	public static boolean triple(Hand hand, Tile t){
+		for (int i = 0; i< hand.getSize() - 2; i++) {
+			if (hand.tileAt(i).getSuit() == t.getSuit() &&
+				hand.tileAt(i+2).getSuit() == t.getSuit() &&
+				hand.tileAt(i).getValue() == hand.tileAt(i+2).getValue() &&
+				hand.tileAt(i).getValue() == t.getValue())
 				return true;
-			/*if (activeHand.tileAt(i).getValue() == activeHand.tileAt(i+2).getValue() && 
-					t.getSuit() == activeHand.tileAt(i).getSuit() && 
-					t.getValue() == activeHand.tileAt(i).getValue())
-				return true;*/
 		}
 		return false;
 	}
 	
-	public static ArrayList<Tile> performTriple(Hand activeHand, Tile t){
-		ArrayList<Tile> exposedHand = new ArrayList<Tile>();
-		for (int i = 0; i< activeHand.getSize() - 2; i++) {
-			if (activeHand.tileAt(i).getValue() == activeHand.tileAt(i+2).getValue() && 
-					t.getSuit() == activeHand.tileAt(i).getSuit() && 
-					t.getValue() == activeHand.tileAt(i).getValue()){
+	public static void performTriple(Hand hand, Tile t){
+		for (int i = 0; i< hand.getSize() - 2; i++) {
+			if (hand.tileAt(i).getSuit() == t.getSuit() && 
+				hand.tileAt(i+2).getSuit() == t.getSuit() &&	
+				hand.tileAt(i).getValue() == hand.tileAt(i+2).getValue() &&
+				hand.tileAt(i).getValue() == t.getValue())
 				//manipulate
-				exposedHand.add(activeHand.tileAt(i));
-				exposedHand.add(activeHand.tileAt(i+2));
-				exposedHand.add(t);
-			}
+				hand.functionedTiles(i, i+3);
 		}
-	
-		//return exposed hand
-		return exposedHand;
 	}
 
 	//This method is for one of the winning hand patterns
-	public static boolean douWin(Hand activeHand, Tile t){
-		for (int i = 0; i< activeHand.getSize(); i++) {
-			if (activeHand.tileAt(i).getValue() == t.getValue() && 
-				activeHand.tileAt(i).getSuit() == t.getSuit())
-				return true;
-		}
+	public static boolean douWin(Hand hand, Tile t){
+		//when hand size = 1
+		if (hand.getSize() == 1 && hand.tileAt(0).getSuit() == t.getSuit() &&
+				hand.tileAt(0).getValue() == t.getValue())
+			return true;
 		return false;
 	}
 	
@@ -142,14 +121,18 @@ public class Function {
 		else if (activeHand.getSize() == 4 && dou(activeHand, t))
 			return true;
 		//winning hand pattern: 1 1 2 3 4 5 6, win on: 1 or 4 or 7
-		else if (activeHand.getSize() == 7 && eat(activeHand, t))
+		else if (activeHand.getSize() == 7 && eat(activeHand, t)){
+			System.out.println("Executed");
 			return true;
+		}
 		//winning hand pattern: 2 3 4 5 6 7 8, win on: 2 or 5 or 8
 		//else if (activeHand.getSize() == 7 && douWin(activeHand, t))
 			//return true;
 		//winning hand pattern: 1 1 2 3 4 5 5, win on: 1 or 5
-		else if (activeHand.getSize() == 7 && dou(activeHand, t))
+		else if (activeHand.getSize() == 7 && dou(activeHand, t)){
+			System.out.println("Executed");
 			return true;
+		}
 		//winning hand pattern: 1 1 2 2 2 3 4 5 7 8, win on: 6 or 9
 		else if (activeHand.getSize() == 10 && eat(activeHand, t))
 			return true;
