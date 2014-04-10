@@ -62,6 +62,7 @@ public class Game extends Activity {
 			deactivateButton(winButton);
 
 		handEval = players.get(currentPlayer).evaluate(players.get((currentPlayer + 3)%4).lastDiscard());
+		handEval = players.get(currentPlayer).evaluate(tempTile); //This needs to be deleted
 		//Activates the eat button if hand has eat
 		if (handEval.contains("e"))
 			activateButton(eatButton);	
