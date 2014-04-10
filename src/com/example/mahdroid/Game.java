@@ -21,7 +21,6 @@ public class Game extends Activity {
 	ArrayList<Button> playerButtons, bot1Buttons, bot2Buttons, bot3Buttons;
 	ArrayList<Player> players;
 	Player player, bot1, bot2, bot3;
-	Discard playerDiscard, bot1Discard, bot2Discard, bot3Discard;
 	Deck deck;
 	Tile tempTile, discardedTile;
 	Button eatButton, doubleButton, tripleButton, winButton, skipButton, tempTileButton;
@@ -93,21 +92,21 @@ public class Game extends Activity {
 		currentPlayer = 1;
 		String handEval1 = players.get(currentPlayer).evaluate(players.get(0).lastDiscard());
 		if (handEval1.contains("e")){
-	   		players.get(currentPlayer).callFunction("e");
-	   		bot1Discard.add(players.get(currentPlayer).seeTileAt(0));
-			discardedTile = bot1Discard.grabLast();	//for now, the bot always discards tile at index 0
+	   		players.get(currentPlayer).callFunction("e", tempTile);
+	   		//bot1Discard.add(players.get(currentPlayer).seeTileAt(0));
+			//discardedTile = bot1Discard.grabLast();	//for now, the bot always discards tile at index 0
 			currentPlayer = 2; //update currrentPlayer to keep track of who is going to evaluate next
 		}	
 	    if (handEval1.contains("d")){
-		   	players.get(currentPlayer).callFunction("d");
-		   	bot1Discard.add(players.get(currentPlayer).seeTileAt(0));
-		   	discardedTile = bot1Discard.grabLast();	//for now, the bot always discards tile at index 0
+		   	players.get(currentPlayer).callFunction("d", tempTile);
+		   	//bot1Discard.add(players.get(currentPlayer).seeTileAt(0));
+		   	//discardedTile = bot1Discard.grabLast();	//for now, the bot always discards tile at index 0
 			currentPlayer = 2; //update currrentPlayer to keep track of who is going to evaluate next
 	    }
 		if (handEval1.contains("t")){
-	    	players.get(currentPlayer).callFunction("t");	
-	    	bot1Discard.add(players.get(currentPlayer).seeTileAt(0));
-	    	discardedTile = bot1Discard.grabLast();	//for now, the bot always discards tile at index 0
+	    	players.get(currentPlayer).callFunction("t", tempTile);	
+	    	//bot1Discard.add(players.get(currentPlayer).seeTileAt(0));
+	    	//discardedTile = bot1Discard.grabLast();	//for now, the bot always discards tile at index 0
 			currentPlayer = 2; //update currrentPlayer to keep track of who is going to evaluate next
 		}
 		if (handEval1.contains("w")){
@@ -117,15 +116,15 @@ public class Game extends Activity {
 		currentPlayer = 2;
 		String handEval2 = players.get(currentPlayer).evaluate(players.get(0).lastDiscard());
 	    if (handEval2.contains("d")){
-	    	players.get(currentPlayer).callFunction("d");
-	    	bot2Discard.add(players.get(currentPlayer).seeTileAt(0));
-	    	discardedTile = bot2Discard.grabLast();	//for now, the bot always discards tile at index 0
+	    	players.get(currentPlayer).callFunction("d", tempTile);
+	    	//bot2Discard.add(players.get(currentPlayer).seeTileAt(0));
+	    	//discardedTile = bot2Discard.grabLast();	//for now, the bot always discards tile at index 0
 			currentPlayer = 3; //update currrentPlayer to keep track of who is going to evaluate next
 	    }
 		if (handEval2.contains("t")){
-	    	players.get(currentPlayer).callFunction("t");
-	    	bot2Discard.add(players.get(currentPlayer).seeTileAt(0));
-	    	discardedTile = bot2Discard.grabLast();	//for now, the bot always discards tile at index 0
+	    	players.get(currentPlayer).callFunction("t", tempTile);
+	    	//bot2Discard.add(players.get(currentPlayer).seeTileAt(0));
+	    	//discardedTile = bot2Discard.grabLast();	//for now, the bot always discards tile at index 0
 			currentPlayer = 3; //update currrentPlayer to keep track of who is going to evaluate next
 		}
 		if (handEval2.contains("w")){
@@ -135,15 +134,15 @@ public class Game extends Activity {
 		currentPlayer = 3;
 		String handEval3 = players.get(currentPlayer).evaluate(players.get(0).lastDiscard());
 		if (handEval3.contains("d")){
-			players.get(currentPlayer).callFunction("d");	
-			bot3Discard.add(players.get(currentPlayer).seeTileAt(0));
-			discardedTile = bot3Discard.grabLast();	//for now, the bot always discards tile at index 0
+			players.get(currentPlayer).callFunction("d", tempTile);	
+			//bot3Discard.add(players.get(currentPlayer).seeTileAt(0));
+			//discardedTile = bot3Discard.grabLast();	//for now, the bot always discards tile at index 0
 			currentPlayer = 0; //update currrentPlayer to keep track of who is going to evaluate next
 		}
 		if (handEval3.contains("t")){
-			players.get(currentPlayer).callFunction("t");
-			bot3Discard.add(players.get(currentPlayer).seeTileAt(0));
-			discardedTile = bot3Discard.grabLast();	//for now, the bot always discards tile at index 0
+			players.get(currentPlayer).callFunction("t", tempTile);
+			//bot3Discard.add(players.get(currentPlayer).seeTileAt(0));
+			//discardedTile = bot3Discard.grabLast();	//for now, the bot always discards tile at index 0
 			currentPlayer = 0; //update currrentPlayer to keep track of who is going to evaluate next
 		}
 		if (handEval3.contains("w")){

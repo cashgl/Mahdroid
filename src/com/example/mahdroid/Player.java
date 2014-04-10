@@ -10,7 +10,6 @@ public class Player {
 	private Deck deck;
 	private Hand hand;
 	private Discard discard;
-	private Tile tempTile;
 	
 	public Player(Deck d) {
 		deck = d;
@@ -19,9 +18,9 @@ public class Player {
 	}
 	
 	public Tile drawTile(){
-		tempTile = deck.draw();
-		hand.add(tempTile);
-		return tempTile;
+		Tile t = deck.draw();
+		hand.add(t);
+		return t;
 	}
 	
 	public Tile lastDiscard(){
@@ -32,35 +31,39 @@ public class Player {
 	 * Takes the index of the hand and discards that tile
 	 * @param i
 	 */
-	public void discardTile(int i){
+	public boolean discardTile(int i) {
+		Tile t;
 		if (i >= 0 && i < 13) {
 			discard.add(hand.removeAt(i));
-			hand.add(tempTile);
-			tempTile = null;
+			//hand.add(tempTile);
+			//tempTile = null;
+			return true;
 		}
-		else {
+		return false;
+		/*else {
 			discard.add(tempTile);
 			tempTile = null;
-		}
+			
+		}*/
 	}
 	
 	/**
-	 * @param discardTile
+	 * @param t
 	 * @return
 	 */
-	public String evaluate(Tile discardTile){
+	public String evaluate(Tile t){
 		StringBuilder s = new StringBuilder();
-		if (discardTile == null) {}
+		if (t == null) {}
 		else {
-			if (Function.eat(hand, discardTile))
+			if (Function.eat(hand, t))
 				s.append("e");
-			if (Function.dou(hand, discardTile))
+			if (Function.dou(hand, t))
 				s.append("d");
-			if (Function.triple(hand, discardTile))
+			if (Function.triple(hand, t))
 				s.append("t");
 			if (Function.skip(hand))
 				s.append("s");
-			if (Function.win(hand, tempTile))
+			if (Function.win(hand, t))
 				s.append("w");
 		}
 		
@@ -93,9 +96,9 @@ public class Player {
 		return hand.getFunctionedTiles();
 	}
 	
-	public boolean callFunction(String function){
+	public boolean callFunction(String function, Tile t){
 		if (function.equals("e"))
-			Function.performEat(hand, tempTile);
+			Function.performEat(hand, t);
 	/*	else if (function.equals("d"))
 			Function.performDouble(hand, tempTile);
 		else if (function.equals("t"))
