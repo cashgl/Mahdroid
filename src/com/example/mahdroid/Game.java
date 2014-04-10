@@ -69,13 +69,13 @@ public class Game extends Activity {
 			activateButton(doubleButton);
 		else
 			deactivateButton(doubleButton);
-		//Activates the double button if the hand has triple
+		//Activates the triple button if the hand has triple
 		if (handEval.contains("t")) 
 			activateButton(tripleButton);
 		else
 			deactivateButton(tripleButton);
-		//Activates the double button if the hand has triple
-		if (handEval.contains("s"))
+		//Activates the skip button if any of the functions are available, else not
+		if (handEval.contains("e") || handEval.contains("d") || handEval.contains("t"))
 			activateButton(skipButton);
 		else
 			deactivateButton(skipButton);
@@ -88,7 +88,7 @@ public class Game extends Activity {
 		//playerDiscard.add(players.get(0).seeTileAt(i)); //add the tile to discard
 		//players.get(0).discardTile(i);	//need a position index 
 		
-		//bot1's action(evaluation)
+		/*//bot1's action(evaluation)
 		currentPlayer = 1;
 		String handEval1 = players.get(currentPlayer).evaluate(players.get(0).lastDiscard());
 		if (handEval1.contains("e")){
@@ -147,7 +147,7 @@ public class Game extends Activity {
 		}
 		if (handEval3.contains("w")){
 			//current round ends
-		}
+		}*/
 
 		//DONT TOUCH THIS!!!
 		//I'm trying to figure out the discard piles
@@ -165,7 +165,7 @@ public class Game extends Activity {
 		//This is going to be the basis of 
 		//the rounds. Threading will be important
 		//so that we don't lock up the UI
-		Thread t = new MyThread();
+		Thread t = new RoundThread();
 		t.start();
 	}
 
@@ -448,19 +448,25 @@ public class Game extends Activity {
 	
 	}
 
-	private class MyThread extends Thread {
+	private class RoundThread extends Thread {
 		boolean b, firstRun = false;
-		public MyThread() { firstRun = true; }
-		public MyThread(boolean bool) { b = bool; }
+		public RoundThread() { firstRun = true; }
+		public RoundThread(boolean bool) { b = bool; }
 	
 		@Override
 		public void run() {
-			if (firstRun) {
+			if (currentPlayer == 0) {
+				//Human player logic
+			}
+			else if (currentPlayer == 1 || currentPlayer == 2 || currentPlayer == 3) {
+				//Bot player logic
+			}
+			/*if (firstRun) {
 				hasWon = false;
 				try {
 					boolean b = true;
 					while (!hasWon) {
-						runOnUiThread(new MyThread(b));
+						runOnUiThread(new RoundThread(b));
 						if (b == true)
 							b = false;
 						else
@@ -477,7 +483,7 @@ public class Game extends Activity {
 				} else {
 					bot1Buttons.get(3).setBackgroundColor(Color.RED);
 				}
-			}
+			}*/
 		}
 	}
 
