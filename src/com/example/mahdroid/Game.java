@@ -474,29 +474,28 @@ public class Game extends Activity {
 			try {
 				while (!hasWon && !stopThread) {
 					if (currentPlayer == 0) {
-						//Human player logic
 						while (!hasTakenTurn) {
-							System.out.println("Player 0 is waiting!!!!!");
+							System.out.println("Player 0 is waiting...");
 							Thread.sleep(1000);
 						}
+						//Human player logic here
+						//runOnUiThread(new UpdateUiThread(b));
 						System.out.println("Player " + currentPlayer + " took their turn!");
 						hasTakenTurn = false;
 						currentPlayer = (currentPlayer + 1) %4;
 					}
 					else if (currentPlayer == 1 || currentPlayer == 2 || currentPlayer == 3) {
-						//Bot player logic
+						//Bot player logic here
 						System.out.println("Player " + currentPlayer + " took their turn!");
 						currentPlayer = (currentPlayer + 1) %4;
-						//stopThread();
+						Thread.sleep(3000);
 					}
-					//runOnUiThread(new RoundThread(b));
+					//runOnUiThread(new UpdateUiThread(b));
 				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-
 		}
-
 	}//End RoundThread
 
 	private class UpdateUiThread extends Thread {
