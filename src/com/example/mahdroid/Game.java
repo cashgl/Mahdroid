@@ -25,7 +25,8 @@ public class Game extends Activity {
 	Tile tempTile, discardedTile;
 	Button eatButton, doubleButton, tripleButton, winButton, skipButton, tempTileButton;
 	int currentRound, currentPlayer;
-	boolean playersTurn, hasWon;
+	boolean playersTurn, hasWon, hasTakenTurn, roundThreadIsRunning;
+	RoundThread t;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,8 @@ public class Game extends Activity {
 		setContentView(R.layout.activity_game);
 
 		currentRound = 1; //Shows that the initial is the current round
+		hasWon = false;
+		hasTakenTurn = false;
 
 		deck = new Deck(); //Sets up the deck everyone will use
 
@@ -45,19 +48,19 @@ public class Game extends Activity {
 
 		//Sets up each player and distributes a card to them
 		setupPlayers();
-		
+
 		//The common 14th tile used by the current player
 		tempTile = deck.draw();
 		tempTileButton = (Button) findViewById(R.id.playerTileTemp);
 		setTileView(tempTileButton, tempTile);
-		
+
 		currentPlayer = 0;
 		String handEval = players.get(currentPlayer).evaluate(tempTile);
 		if (handEval.contains("w")) 
 			activateButton(winButton);
 		else
 			deactivateButton(winButton);
-		
+
 		handEval = players.get(currentPlayer).evaluate(players.get((currentPlayer + 3)%4).lastDiscard());
 		//Activates the eat button if hand has eat
 		if (handEval.contains("e"))
@@ -79,7 +82,11 @@ public class Game extends Activity {
 			activateButton(skipButton);
 		else
 			deactivateButton(skipButton);
-		
+
+		//Starts the round!!!!
+		t = new RoundThread();
+		t.start();
+
 		System.out.println("Temp Tile - Suit: " + tempTile.getSuit() + 
 				", Value: " + tempTile.getValue());
 		System.out.println("Player " + currentPlayer + " result: " + handEval);
@@ -87,7 +94,7 @@ public class Game extends Activity {
 		//player needs to discard a tile
 		//playerDiscard.add(players.get(0).seeTileAt(i)); //add the tile to discard
 		//players.get(0).discardTile(i);	//need a position index 
-		
+
 		/*//bot1's action(evaluation)
 		currentPlayer = 1;
 		String handEval1 = players.get(currentPlayer).evaluate(players.get(0).lastDiscard());
@@ -165,8 +172,7 @@ public class Game extends Activity {
 		//This is going to be the basis of 
 		//the rounds. Threading will be important
 		//so that we don't lock up the UI
-		Thread t = new RoundThread();
-		t.start();
+
 	}
 
 	private void setupPlayers() {
@@ -329,18 +335,18 @@ public class Game extends Activity {
 		Random r = new Random();
 		return r.nextInt(4);
 	}
-	
+
 	private void activateButton(Button b) {
 		b.setEnabled(true);
 		b.setTextColor(Color.WHITE);
 	}
-	
+
 	private void deactivateButton(Button b) {
 		b.setEnabled(false);
 		ColorDrawable d = (ColorDrawable) b.getBackground();
 		b.setTextColor(d.getColor());
 	}
-	
+
 	private void setTileView(Button b, Tile t) {
 		if (t.getSuit() == 0) 
 			b.setBackgroundColor(Color.CYAN);
@@ -352,9 +358,9 @@ public class Game extends Activity {
 			b.setBackgroundColor(Color.RED);
 		else if (t.getSuit() == 4)
 			b.setBackgroundColor(Color.GRAY);
-		b.setText("" + tempTile.getValue());
-		b.setOnClickListener(new SuitValueListener(0, tempTile.getSuit(),tempTile.getValue()));
-	}
+		b.setText("" + t.getValue());
+		b.setOnClickListener(new SuitValueListener(0, t.getSuit(),t.getValue()));
+	}//End setTileView
 
 	@Override
 	public void onBackPressed() {
@@ -366,13 +372,14 @@ public class Game extends Activity {
 		.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
+				t.stopThread();
 				finish();    
 			}
 		})
 		.setNegativeButton("No", null)
 		.setCancelable(false)
 		.show();
-	}
+	}//End onBackPressed
 
 	private class SuitValueListener implements OnClickListener {
 		int suit, value, player;
@@ -393,30 +400,32 @@ public class Game extends Activity {
 			AlertDialog ad = builder.create();
 			ad.show();
 
+			if (hasTakenTurn == false)
+				hasTakenTurn = true;
 		}
 
-	}
+	}//EndSuitValueListener
 
 	private class FunctionOnTouch implements OnTouchListener {
 		int playerTurn;
-		
+
 		public FunctionOnTouch() {
 			playerTurn = currentPlayer;
 		}
-		
+
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
 			Button temp = (Button) v;
 			ColorDrawable d = (ColorDrawable) temp.getBackground();
-			
+
 			switch(event.getAction()){
 			case MotionEvent.ACTION_DOWN:
 				temp.setTextColor(d.getColor());
 				break;
-	
+
 			case MotionEvent.ACTION_UP:
 				String funct = temp.getText().charAt(0) + "";
-					
+
 				temp.setTextColor(Color.WHITE);
 				float x = Math.abs(event.getX()),y = Math.abs(event.getY());
 				double dist = Math.sqrt( Math.pow(x, 2) + Math.pow(y, 2) );
@@ -432,59 +441,93 @@ public class Game extends Activity {
 					} else if (functText.equalsIgnoreCase("eat")) {
 						//call eat on current player
 					}
-	
+
 					AlertDialog.Builder builder = new AlertDialog.Builder(Game.this);
 					builder.setTitle("Action performed: " + funct)
 					.setMessage(dist + "");
 					builder.setPositiveButton("OK", null);
-	
+
 					AlertDialog ad = builder.create();
 					ad.show();
+
+					if (hasTakenTurn == false)
+						hasTakenTurn = true;
 				}
 				break;
 			}
 			return true;
 		}
-	
-	}
+
+	}//End FunctionOnTouch
 
 	private class RoundThread extends Thread {
-		boolean b, firstRun = false;
-		public RoundThread() { firstRun = true; }
-		public RoundThread(boolean bool) { b = bool; }
-	
+		boolean stopThread = false;
+		
+		public void stopThread() {
+			stopThread = true;
+		}
+		
 		@Override
 		public void run() {
-			if (currentPlayer == 0) {
-				//Human player logic
-			}
-			else if (currentPlayer == 1 || currentPlayer == 2 || currentPlayer == 3) {
-				//Bot player logic
-			}
-			/*if (firstRun) {
-				hasWon = false;
-				try {
-					boolean b = true;
-					while (!hasWon) {
-						runOnUiThread(new RoundThread(b));
-						if (b == true)
-							b = false;
-						else
-							b = true;
-						Thread.sleep(1000);
+			try {
+				while (!hasWon && !stopThread) {
+					if (currentPlayer == 0) {
+						//Human player logic
+						while (!hasTakenTurn) {
+							System.out.println("Player 0 is waiting!!!!!");
+							Thread.sleep(1000);
+						}
+						System.out.println("Player " + currentPlayer + " took their turn!");
+						hasTakenTurn = false;
+						currentPlayer = (currentPlayer + 1) %4;
 					}
-				} catch (Exception e) {
-					e.printStackTrace();
+					else if (currentPlayer == 1 || currentPlayer == 2 || currentPlayer == 3) {
+						//Bot player logic
+						System.out.println("Player " + currentPlayer + " took their turn!");
+						currentPlayer = (currentPlayer + 1) %4;
+						//stopThread();
+					}
+					//runOnUiThread(new RoundThread(b));
 				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
-			else {
-				if (b) {
-					bot1Buttons.get(3).setBackgroundColor(Color.BLUE);
-				} else {
-					bot1Buttons.get(3).setBackgroundColor(Color.RED);
-				}
-			}*/
-		}
-	}
 
-}
+		}
+
+	}//End RoundThread
+
+	private class UpdateUiThread extends Thread {
+
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			super.run();
+			if (currentPlayer == 0) {
+				for (int k = 0; k <= 3; k++) {
+					Player tempPlayer = players.get(k);
+					Tile tempTile;
+					Button tempButton;
+					if (k == 0) {
+						for (int i = 0; i <= 12; i++) {
+							tempTile = tempPlayer.seeTileAt(i);
+							tempButton = playerButtons.get(i);
+
+							if (tempTile.getSuit() == 0) 
+								tempButton.setBackgroundColor(Color.CYAN);
+							else if (tempTile.getSuit() == 1)
+								tempButton.setBackgroundColor(Color.YELLOW);
+							else if (tempTile.getSuit() == 2)
+								tempButton.setBackgroundColor(Color.GREEN);
+							else if (tempTile.getSuit() == 3)
+								tempButton.setBackgroundColor(Color.RED);
+							else if (tempTile.getSuit() == 4)
+								tempButton.setBackgroundColor(Color.GRAY);
+							tempButton.setText("" + tempTile.getValue());
+						}//End for
+					}//End if
+				}//End for
+			}//End if
+		}//End run()
+	}//End UpdateUiThread Class
+}//End Game Class
