@@ -110,6 +110,41 @@ public class Function {
 		return false;
 	}
 	
+	//helper method for win()
+	/**
+	public static Hand performDouWin(Hand hand, Tile t){
+		for (int i = 0; i < hand.getSize(); i++){
+			if (hand.tileAt(i).getSuit() == t.getSuit() &&
+					hand.tileAt(i).getValue() == t.getValue()){
+				hand.functionedTiles(i, i+1);
+			}
+		}
+		return hand;
+	}
+	**/
+	
+	//helper method for win()
+	public static boolean check(Hand activeHand, Tile t){
+		Hand checkHand = new Hand();
+		for (int i = 0; i < activeHand.getSize(); i++){
+			checkHand.add(activeHand.tileAt(i));
+		}
+		
+		for (int i = 0; i < checkHand.getSize(); i++ ){
+			if (checkHand.tileAt(i).getSuit() == t.getSuit() && 
+					checkHand.tileAt(i).getValue() == t.getValue()){
+				checkHand.removeAt(i);
+				checkHand.removeAt(i+1);
+				
+			}
+			
+		}
+		
+		return true;
+	}
+	
+	
+	
 	public static boolean win(Hand activeHand, Tile t){
 		//winning hand pattern: 1, win on: 1
 		if (activeHand.getSize() == 1 && douWin(activeHand, t))
