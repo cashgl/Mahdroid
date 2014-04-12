@@ -86,7 +86,8 @@ public class Game extends Activity {
 		else
 			deactivateButton(skipButton);
 
-		discardTile(0);
+		currentPlayer = 1;
+		discardTile(4);
 		/*//Starts the round!!!!
 		t = new RoundThread();
 		t.start();*/
@@ -139,10 +140,10 @@ public class Game extends Activity {
 
 	private void setupHands() {
 		//This associates the value of the hands
-		if (player.getHandSize() == 0 &&
-				bot1.getHandSize() == 0 &&
-				bot2.getHandSize() == 0 &&
-				bot3.getHandSize() == 0) {
+		if (player.getActiveSize() == 0 &&
+				bot1.getActiveSize() == 0 &&
+				bot2.getActiveSize() == 0 &&
+				bot3.getActiveSize() == 0) {
 			for (int i = 0; i <= 3; i++) {
 				for (int j = 0; j <= 12; j++) {
 					players.get(i).drawTile();
@@ -286,30 +287,83 @@ public class Game extends Activity {
 		b.setTextColor(d.getColor());
 	}
 
-	private void setTileView(Button b, Tile t) {
-		if (t.getSuit() == 0) 
-			b.setBackgroundColor(Color.CYAN);
-		else if (t.getSuit() == 1)
-			b.setBackgroundColor(Color.YELLOW);
-		else if (t.getSuit() == 2)
-			b.setBackgroundColor(Color.GREEN);
-		else if (t.getSuit() == 3)
-			b.setBackgroundColor(Color.RED);
-		else if (t.getSuit() == 4)
-			b.setBackgroundColor(Color.GRAY);
-		b.setText("" + t.getValue());
-		b.setOnClickListener(new TileValueListener(0, t.getSuit(),t.getValue()));
-	}//End setTileView
-	
 	private void discardTile(int i) {
+		Player p = players.get(currentPlayer);
+		int activeHandSize = p.getActiveSize();
+
 		switch (currentPlayer) {
 		case 0:
-			System.out.println("Player " + currentPlayer);
+			if (tempTile != null && i == 13) {
+				p.discardTile(tempTile);
+				tempTile = null;
+			} else if (i < activeHandSize)
+				p.discardTile(i);
 			break;
-
 		default:
 			System.out.println("Other player " + currentPlayer);
 			break;
+		}
+		refreshHandUi();
+	}
+
+	private void setTileView(Button b, Tile t) {
+		if (t != null) {
+			if (t.getSuit() == 0) 
+				b.setBackgroundColor(Color.CYAN);
+			else if (t.getSuit() == 1)
+				b.setBackgroundColor(Color.YELLOW);
+			else if (t.getSuit() == 2)
+				b.setBackgroundColor(Color.GREEN);
+			else if (t.getSuit() == 3)
+				b.setBackgroundColor(Color.RED);
+			else if (t.getSuit() == 4)
+				b.setBackgroundColor(Color.GRAY);
+			b.setText("" + t.getValue());
+			b.setOnClickListener(new TileValueListener(0, t.getSuit(),t.getValue()));
+			b.setVisibility(View.VISIBLE);
+		} else {
+			b.setBackgroundColor(Color.GRAY);
+			b.setText("-");
+			b.setVisibility(View.INVISIBLE);
+		}
+	}//End setTileView
+
+	private void refreshHandUi() {
+		Player p = players.get(currentPlayer);
+		ArrayList<Button> buttons;
+		Button b;
+		Tile t;
+
+		if (currentPlayer == 0)
+			buttons = playerButtons;
+		else if (currentPlayer == 1)
+			buttons = bot1Buttons;
+		else if (currentPlayer == 2)
+			buttons = bot2Buttons;
+		else
+			buttons = bot3Buttons;
+		
+		if (currentPlayer == 0) {
+			for (int i = 0; i < buttons.size(); i++) {
+				b = buttons.get(i);
+				t = p.seeTileAt(i);
+				setTileView(b, t);
+			}
+		} else {
+			for (int i = 0; i < buttons.size(); i++) {
+				b = buttons.get(i);
+				if (i < p.getActiveSize()) {
+					t = p.seeTileAt(i);
+					b.setBackgroundColor(getResources().getColor(R.color.grey));
+					b.setText("");
+				} else if (i < p.getTotalSize()) {
+					t = p.seeTileAt(i);
+					setTileView(b, t);
+				} else {
+					t = null;
+					setTileView(b, t);
+				}
+			}
 		}
 	}
 
@@ -412,11 +466,11 @@ public class Game extends Activity {
 
 	private class RoundThread extends Thread {
 		boolean stopThread = false;
-		
+
 		public void stopThread() {
 			stopThread = true;
 		}
-		
+
 		@Override
 		public void run() {
 			try {

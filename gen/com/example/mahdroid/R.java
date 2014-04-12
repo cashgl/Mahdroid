@@ -14,6 +14,7 @@ public final class R {
         public static final int black=0x7f06000b;
         public static final int blue=0x7f060003;
         public static final int chartreuse3=0x7f060006;
+        public static final int grey=0x7f06000c;
         public static final int light_blue=0x7f060007;
         public static final int light_gray=0x7f060005;
         public static final int light_green=0x7f060009;

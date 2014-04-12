@@ -92,8 +92,16 @@ public class Hand {
 		return functionedHand;
 	}
 
-	public int getSize() {
+	public int getActiveSize() {
 		return this.activeSize;
+	}
+	
+	public int getFunctionedSize() {
+		return this.functionedSize;
+	}
+	
+	public int getTotalSize() {
+		return this.functionedSize + this.activeSize;
 	}
 
 	public Tile tileAt(int i) {

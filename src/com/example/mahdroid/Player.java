@@ -47,6 +47,14 @@ public class Player {
 		}*/
 	}
 	
+	public boolean discardTile(Tile t) {
+		if (t != null) {
+			discard.add(t);
+			return true;
+		}
+		return false;
+	}
+	
 	/**
 	 * @param t
 	 * @return
@@ -70,10 +78,16 @@ public class Player {
 		return s.toString();
 	}
 	
-	public int getHandSize() {
+	public int getActiveSize() {
 		if (hand != null) {
-			return hand.getSize();
+			return hand.getActiveSize();
 		}
+		return 0;
+	}
+	
+	public int getTotalSize() {
+		if (hand != null)
+			return hand.getTotalSize();
 		return 0;
 	}
 	
