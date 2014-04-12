@@ -2,6 +2,7 @@ package com.example.mahdroid;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.ThreadPoolExecutor.DiscardPolicy;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -26,9 +27,6 @@ public class Game extends Activity {
 	Button eatButton, doubleButton, tripleButton, winButton, skipButton, tempTileButton;
 	//targetPlayer is the player whose hand needs to be evaluated at most 3 times
 	int currentRound, currentPlayer, targetPlayer;
-	//how many times evaluation has been done for a discarded tile
-	int eCount = 0;
-	boolean fAvailable = false; //true is any of the functions is available 
 	boolean playersTurn, hasWon, hasTakenTurn, roundThreadIsRunning;
 	RoundThread t;
 
@@ -88,9 +86,10 @@ public class Game extends Activity {
 		else
 			deactivateButton(skipButton);
 
-		//Starts the round!!!!
+		discardTile(0);
+		/*//Starts the round!!!!
 		t = new RoundThread();
-		t.start();
+		t.start();*/
 
 		System.out.println("Temp Tile - Suit: " + tempTile.getSuit() + 
 				", Value: " + tempTile.getValue());
@@ -233,7 +232,7 @@ public class Game extends Activity {
 					else if (tempTile.getSuit() == 4)
 						tempButton.setBackgroundColor(Color.GRAY);
 					tempButton.setText("" + tempTile.getValue());
-					tempButton.setOnClickListener(new SuitValueListener(k, tempTile.getSuit(),tempTile.getValue()));
+					tempButton.setOnClickListener(new TileValueListener(k, tempTile.getSuit(),tempTile.getValue()));
 					//buttons.get(i).setOnClickListener(colorListener);	
 				}
 			}
@@ -299,8 +298,20 @@ public class Game extends Activity {
 		else if (t.getSuit() == 4)
 			b.setBackgroundColor(Color.GRAY);
 		b.setText("" + t.getValue());
-		b.setOnClickListener(new SuitValueListener(0, t.getSuit(),t.getValue()));
+		b.setOnClickListener(new TileValueListener(0, t.getSuit(),t.getValue()));
 	}//End setTileView
+	
+	private void discardTile(int i) {
+		switch (currentPlayer) {
+		case 0:
+			System.out.println("Player " + currentPlayer);
+			break;
+
+		default:
+			System.out.println("Other player " + currentPlayer);
+			break;
+		}
+	}
 
 	@Override
 	public void onBackPressed() {
@@ -312,7 +323,6 @@ public class Game extends Activity {
 		.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				t.stopThread();
 				finish();    
 			}
 		})
@@ -321,10 +331,10 @@ public class Game extends Activity {
 		.show();
 	}//End onBackPressed
 
-	private class SuitValueListener implements OnClickListener {
+	private class TileValueListener implements OnClickListener {
 		int suit, value, player;
 
-		public SuitValueListener(int p, int s, int v) {
+		public TileValueListener(int p, int s, int v) {
 			player = p;
 			suit = s;
 			value = v;
