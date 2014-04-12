@@ -64,91 +64,29 @@ public class Game extends Activity {
 			activateButton(winButton);
 		else
 			deactivateButton(winButton);
-		//handEval = players.get(currentPlayer).evaluate(players.get((currentPlayer+3)%4).lastDiscard());
-		//then, player.get(currentPlayer) should discard a tile
-		//if currentPlayer is human player
-		if (currentPlayer == 0 || playersTurn){
-			//discard a tile by clicking on the tile
-		}
-		else{
-			players.get(currentPlayer).discardTile(0);	//bot always discards at index 0
-		}
-	
-		//while ()	{//while game is not stopped yet
-			//if cCount = 3, move on to the next player and deck gives away a tile
-			if (eCount == 3){
-				tempTile = deck.draw();
-				tempTileButton = (Button) findViewById(R.id.playerTileTemp);
-				setTileView(tempTileButton, tempTile);
-				currentPlayer = (currentPlayer + 3) % 4 - 1;	//reset currentPlayer
-				//after draw, discard next 
-				//human's turn
-				if (currentPlayer == 0 || playersTurn ){
-					//discard a tile by clicking on the tile
-				}
-				//bot's turn
-				else {
-					players.get(currentPlayer).discardTile(0);
-				}
-				eCount = 0; //reset eCount back to 0;	
-			}
-			
-			targetPlayer = currentPlayer;
-			//none of the functions is available, then evaluate next hand 
-			if (fAvailable == false){
-				currentPlayer = currentPlayer + 1;	//update currentPlayer
-				handEval = players.get(currentPlayer).evaluate(players.get(targetPlayer).lastDiscard());
-			}
-			else {
-				fAvailable = false; 
-				handEval = players.get(currentPlayer).evaluate(players.get((currentPlayer+3)%4).lastDiscard());
-			}
-				
-			//Activates the eat button if hand has eat
-			if (handEval.contains("e")){
-				fAvailable = true;
-				activateButton(eatButton);
-				players.get(currentPlayer).callFunction("e", players.get((currentPlayer+3)%4).lastDiscard());
-				players.get(currentPlayer).discardTile(0);	//after function, discard a tile
-				currentPlayer = currentPlayer + 1;	//update currentPlayer
-			}
-			else
-				deactivateButton(eatButton);
-			//Activates the double button if the hand has double
-			if (handEval.contains("d")){
-				fAvailable = true;
-				activateButton(doubleButton);
-				players.get(currentPlayer).callFunction("d", players.get((currentPlayer+3)%4).lastDiscard());
-			
-			}
-			else
-				deactivateButton(doubleButton);
-			//Activates the triple button if the hand has triple
-			if (handEval.contains("t")){
-				fAvailable = true;
-				activateButton(tripleButton);
-				players.get(currentPlayer).callFunction("t", players.get((currentPlayer+3)%4).lastDiscard());
-			
-			}
-			else
-				deactivateButton(tripleButton);
-			//Activates the win button if the hand has win
-			if (handEval.contains("w")){
-				fAvailable = true;
-				activateButton(winButton);
-				players.get(currentPlayer).callFunction("t", players.get((currentPlayer+3)%4).lastDiscard());
-			
-			}
-			else
-				deactivateButton(winButton);
-			//Activates the skip button if any of the functions are available, else not(you can skip on a win too)
-			if (handEval.contains("e") || handEval.contains("d") || handEval.contains("t") || handEval.contains("w"))
-				activateButton(skipButton);
-			else
-				deactivateButton(skipButton);
-			
-			eCount = eCount + 1;  //update evaluation count
-		//}//end while
+
+		handEval = players.get(currentPlayer).evaluate(players.get((currentPlayer + 3)%4).lastDiscard());
+		handEval = players.get(currentPlayer).evaluate(tempTile); //This needs to be deleted
+		//Activates the eat button if hand has eat
+		if (handEval.contains("e"))
+			activateButton(eatButton);	
+		else
+			deactivateButton(eatButton);
+		//Activates the double button if the hand has double
+		if (handEval.contains("d"))
+			activateButton(doubleButton);
+		else
+			deactivateButton(doubleButton);
+		//Activates the triple button if the hand has triple
+		if (handEval.contains("t")) 
+			activateButton(tripleButton);
+		else
+			deactivateButton(tripleButton);
+		//Activates the skip button if any of the functions are available, else not
+		if (handEval.contains("e") || handEval.contains("d") || handEval.contains("t"))
+			activateButton(skipButton);
+		else
+			deactivateButton(skipButton);
 
 		//Starts the round!!!!
 		t = new RoundThread();
