@@ -130,16 +130,36 @@ public class Function {
 			checkHand.add(activeHand.tileAt(i));
 		}
 		
-		for (int i = 0; i < checkHand.getSize(); i++ ){
-			if (checkHand.tileAt(i).getSuit() == t.getSuit() && 
-					checkHand.tileAt(i).getValue() == t.getValue()){
-				checkHand.removeAt(i);
-				checkHand.removeAt(i+1);
-				
+		//add the tile into activeHand
+		checkHand.add(t);
+		int pairCount = 0;
+		int runCount = 0;
+		int tripleCount = 0;
+		//pair detector
+		for (int i = 0; i < checkHand.getSize()-1; i++){
+			if (checkHand.tileAt(i).getSuit() == checkHand.tileAt(i+1).getSuit() &&
+				checkHand.tileAt(i).getValue() == checkHand.tileAt(i+1).getValue()){
+				pairCount++;
 			}
-			
 		}
-		
+		//run detector
+		for (int i = 0; i < checkHand.getSize()-2; i++){
+			if (checkHand.tileAt(i).getSuit() == checkHand.tileAt(i+1).getSuit() &&
+				checkHand.tileAt(i+1).getSuit() == checkHand.tileAt(i+2).getSuit() &&
+				checkHand.tileAt(i).getValue()+1 == checkHand.tileAt(i+1).getValue() &&
+				checkHand.tileAt(i+1).getValue()+1 == checkHand.tileAt(i+2).getValue()){
+				runCount++;
+			}
+		}
+		//triple detector
+		for (int i = 0; i < checkHand.getSize()-3; i++){
+			if (checkHand.tileAt(i).getSuit() == checkHand.tileAt(i+1).getSuit() &&
+				checkHand.tileAt(i+1).getSuit() == checkHand.tileAt(i+2).getSuit() &&
+				checkHand.tileAt(i).getValue() == checkHand.tileAt(i+1).getValue() &&
+				checkHand.tileAt(i+1).getValue() == checkHand.tileAt(i+2).getValue()){
+				tripleCount++;
+			}
+		}
 		return true;
 	}
 	
