@@ -46,6 +46,10 @@ public class Game extends Activity {
 		//Sets up each player and distributes a card to them
 		setupPlayers();
 		
+		//The common 14th tile used by the current player
+		tempTile = deck.draw();
+		evaluateHand(tempTile);
+		
 		gameStats = (TextView) findViewById(R.id.gameStats);
 		
 		if (currentPlayer != 0) {
@@ -53,7 +57,6 @@ public class Game extends Activity {
 			PerformTurnThread t = new PerformTurnThread();
 			t.start();
 		} else {
-			tempTile = players.get(currentPlayer).drawTempTile();
 			setTileView(tempTileButton, tempTile);
 			gameStats.setText(getGameStats());
 		}
@@ -311,6 +314,12 @@ public class Game extends Activity {
 				activateButton(skipButton);
 			else
 				deactivateButton(skipButton);
+		} else {
+			deactivateButton(doubleButton);
+			deactivateButton(eatButton);
+			deactivateButton(skipButton);
+			deactivateButton(tripleButton);
+			deactivateButton(winButton);
 		}
 
 		//System.out.println("Temp Tile - Suit: " + tempTile.getSuit() + 
@@ -420,6 +429,7 @@ public class Game extends Activity {
 		} 
 		//If it is bot 3, we make the buttons clickable for the human player again
 		else if (currentPlayer == 0) {
+			runOnUiThread(new UpdateViewsThread("eval"));
 			activatePlayerButtons();
 			if (players.get(currentPlayer).getTotalSize() < 12)
 				tempTile = players.get(currentPlayer).drawTempTile();
@@ -543,6 +553,8 @@ public class Game extends Activity {
 			super.run();
 			if (!s.equals(""))
 				gameStats.setText(s);
+			else if (s.equals("eval"))
+				evaluateHand(tempTile);
 			else
 				refreshHandUi();
 		}
