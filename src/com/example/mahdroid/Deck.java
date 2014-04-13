@@ -26,16 +26,12 @@ public class Deck {
 			for (int value = 1; value <= 4; value++) {
 				tempDeck.add(new Tile(3,value));
 			}
-			//Creating the dragon tiles
-			for (int value = 1; value <= 3; value++) {
-				tempDeck.add(new Tile(4,value));
-			}
 		}
 		
 		//Instantiates random object and how many cards are left in
 		//the temporary deck
 		Random rand = new Random();
-		int sizeLeft = 136;
+		int sizeLeft = 124;
 		
 		//Shuffles the deck
 		while (tempDeck.size() != 0) {
