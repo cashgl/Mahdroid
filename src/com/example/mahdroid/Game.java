@@ -23,12 +23,12 @@ public class Game extends Activity {
 	ArrayList<Player> players;
 	Player player, bot1, bot2, bot3;
 	Deck deck;
-	Tile tempTile, discardedTile;
+	Tile tempTile;
 	Button eatButton, doubleButton, tripleButton, winButton, 
 		skipButton, tempTileButton, discardButton;
 	TextView gameStats;
-	int currentRound, currentPlayer, targetPlayer;
-	boolean playersTurn, hasWon, hasTakenTurn, roundThreadIsRunning;
+	int currentRound, currentPlayer;
+	boolean hasWon;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,33 +37,24 @@ public class Game extends Activity {
 
 		currentRound = 1; //Shows that the initial is the current round
 		hasWon = false;
-		hasTakenTurn = false;
 
 		deck = new Deck(); //Sets up the deck everyone will use
 
 		//Randomly generates a player to start the game
 		currentPlayer = randomPlayer();
-		if (currentPlayer == 0) 
-			playersTurn = true;
-		else
-			playersTurn = false;
 
 		//Sets up each player and distributes a card to them
 		setupPlayers();
-
-		//The common 14th tile used by the current player
-		tempTile = deck.draw();
-		setTileView(tempTileButton, tempTile);
-
-		currentPlayer = 0;
-		evaluateHand(tempTile);
 		
 		gameStats = (TextView) findViewById(R.id.gameStats);
 		
 		if (currentPlayer != 0) {
+			deactivatePlayerButtons();
 			PerformTurnThread t = new PerformTurnThread();
 			t.start();
 		} else {
+			tempTile = players.get(currentPlayer).drawTempTile();
+			setTileView(tempTileButton, tempTile);
 			gameStats.setText(getGameStats());
 		}
 
@@ -223,7 +214,7 @@ public class Game extends Activity {
 					tb.setClickable(false);
 				}
 			}
-
+			setTileView(tempTileButton, tempTile);
 			discardButton = (Button) findViewById(R.id.bot2Discard_Button2);
 		}
 
@@ -260,6 +251,18 @@ public class Game extends Activity {
 		b.setEnabled(false);
 		ColorDrawable d = (ColorDrawable) b.getBackground();
 		b.setTextColor(d.getColor());
+	}
+	
+	private void activatePlayerButtons() {
+		for (int i = 0; i <= 12; i++)
+			playerButtons.get(i).setClickable(true);
+		tempTileButton.setClickable(true);
+	}
+	
+	private void deactivatePlayerButtons() {
+		for (int i = 0; i <= 12; i++) 
+			playerButtons.get(i).setClickable(false);
+		tempTileButton.setClickable(false);
 	}
 
 	private void discardTile(int i) {
@@ -319,14 +322,13 @@ public class Game extends Activity {
 
 	private String getGameStats() {
 		String direction = "";
-		
 		if (currentPlayer == 0)
 			direction = "South";
 		else if (currentPlayer == 1)
 			direction = "East";
 		else if (currentPlayer == 2)
 			direction = "North";
-		else if (currentPlayer == 3)
+		else
 			direction = "West";
 		return String.format("Current Player: %s        Round: %d", direction, currentRound);
 	}
@@ -418,9 +420,7 @@ public class Game extends Activity {
 		} 
 		//If it is bot 3, we make the buttons clickable for the human player again
 		else if (currentPlayer == 0) {
-			for (int i = 0; i <= 12; i++)
-				playerButtons.get(i).setClickable(true);
-			tempTileButton.setClickable(true);
+			activatePlayerButtons();
 			if (players.get(currentPlayer).getTotalSize() < 12)
 				tempTile = players.get(currentPlayer).drawTempTile();
 			runOnUiThread(new UpdateViewsThread());
@@ -463,9 +463,7 @@ public class Game extends Activity {
 			deactivateButton(skipButton);
 			deactivateButton(tripleButton);
 			deactivateButton(winButton);
-			for (int i = 0; i <= 12; i++) 
-				playerButtons.get(i).setClickable(false);
-			tempTileButton.setClickable(false);
+			deactivatePlayerButtons();
 
 			System.out.println("Player " + currentPlayer + " has taken their turn!");
 			currentPlayer = (currentPlayer + 1) %4;
@@ -519,9 +517,6 @@ public class Game extends Activity {
 
 					AlertDialog ad = builder.create();
 					ad.show();
-
-					if (hasTakenTurn == false)
-						hasTakenTurn = true;
 				}
 				break;
 			}
@@ -542,9 +537,7 @@ public class Game extends Activity {
 		public UpdateViewsThread(String str) {
 			s = str;
 		}
-		public UpdateViewsThread() {
-			
-		}
+		public UpdateViewsThread() {}
 		@Override
 		public void run() {
 			super.run();
