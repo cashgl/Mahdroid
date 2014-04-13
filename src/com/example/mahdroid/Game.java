@@ -24,7 +24,8 @@ public class Game extends Activity {
 	Player player, bot1, bot2, bot3;
 	Deck deck;
 	Tile tempTile, discardedTile;
-	Button eatButton, doubleButton, tripleButton, winButton, skipButton, tempTileButton;
+	Button eatButton, doubleButton, tripleButton, winButton, 
+	skipButton, tempTileButton, discardButton;
 	//targetPlayer is the player whose hand needs to be evaluated at most 3 times
 	int currentRound, currentPlayer, targetPlayer;
 	boolean playersTurn, hasWon, hasTakenTurn, roundThreadIsRunning;
@@ -53,48 +54,10 @@ public class Game extends Activity {
 
 		//The common 14th tile used by the current player
 		tempTile = deck.draw();
-		tempTileButton = (Button) findViewById(R.id.playerTileTemp);
 		setTileView(tempTileButton, tempTile);
 
 		currentPlayer = 0;
-		String handEval = players.get(currentPlayer).evaluate(tempTile);
-		if (handEval.contains("w")) 
-			activateButton(winButton);
-		else
-			deactivateButton(winButton);
-
-		handEval = players.get(currentPlayer).evaluate(players.get((currentPlayer + 3)%4).lastDiscard());
-		handEval = players.get(currentPlayer).evaluate(tempTile); //This needs to be deleted
-		//Activates the eat button if hand has eat
-		if (handEval.contains("e"))
-			activateButton(eatButton);	
-		else
-			deactivateButton(eatButton);
-		//Activates the double button if the hand has double
-		if (handEval.contains("d"))
-			activateButton(doubleButton);
-		else
-			deactivateButton(doubleButton);
-		//Activates the triple button if the hand has triple
-		if (handEval.contains("t")) 
-			activateButton(tripleButton);
-		else
-			deactivateButton(tripleButton);
-		//Activates the skip button if any of the functions are available, else not
-		if (handEval.contains("e") || handEval.contains("d") || handEval.contains("t"))
-			activateButton(skipButton);
-		else
-			deactivateButton(skipButton);
-
-		currentPlayer = 1;
-		discardTile(4);
-		/*//Starts the round!!!!
-		t = new RoundThread();
-		t.start();*/
-
-		System.out.println("Temp Tile - Suit: " + tempTile.getSuit() + 
-				", Value: " + tempTile.getValue());
-		System.out.println("Player " + currentPlayer + " result: " + handEval);
+		evaluateHand();
 
 		//DONT TOUCH THIS!!!
 		//I'm trying to figure out the discard piles
@@ -108,11 +71,6 @@ public class Game extends Activity {
 		temp.setText("" + discardHeight);
 		botDiscard2Params.height = discardHeight;
 		playerDiscardParams.height = discardHeight;
-
-		//This is going to be the basis of 
-		//the rounds. Threading will be important
-		//so that we don't lock up the UI
-
 	}
 
 	private void setupPlayers() {
@@ -165,6 +123,8 @@ public class Game extends Activity {
 		playerButtons.add((Button)findViewById(R.id.playerTile10));
 		playerButtons.add((Button)findViewById(R.id.playerTile11));
 		playerButtons.add((Button)findViewById(R.id.playerTile12));
+
+		tempTileButton = (Button) findViewById(R.id.playerTileTemp);
 
 		bot1Buttons = new ArrayList<Button>();
 		bot1Buttons.add((Button)findViewById(R.id.botTile1_0));
@@ -233,7 +193,7 @@ public class Game extends Activity {
 					else if (tempTile.getSuit() == 4)
 						tempButton.setBackgroundColor(Color.GRAY);
 					tempButton.setText("" + tempTile.getValue());
-					tempButton.setOnClickListener(new TileValueListener(k, tempTile.getSuit(),tempTile.getValue()));
+					tempButton.setOnClickListener(new TileValueListener(tempTile.getSuit(),tempTile.getValue()));
 					//buttons.get(i).setOnClickListener(colorListener);	
 				}
 			}
@@ -246,10 +206,12 @@ public class Game extends Activity {
 					else
 						tempButton = bot3Buttons.get(i);
 					tempButton.setText("");
-					tempButton.setBackgroundColor(Color.rgb(168, 168, 168));
+					tempButton.setBackgroundColor(getResources().getColor(R.color.grey));
 					tempButton.setClickable(false);
 				}
 			}
+
+			discardButton = (Button) findViewById(R.id.bot2Discard_Button2);
 		}
 
 		//Creates the function buttons and associates their action listener
@@ -291,19 +253,49 @@ public class Game extends Activity {
 		Player p = players.get(currentPlayer);
 		int activeHandSize = p.getActiveSize();
 
-		switch (currentPlayer) {
-		case 0:
-			if (tempTile != null && i == 13) {
-				p.discardTile(tempTile);
-				tempTile = null;
-			} else if (i < activeHandSize)
-				p.discardTile(i);
-			break;
-		default:
-			System.out.println("Other player " + currentPlayer);
-			break;
-		}
+		if (tempTile != null && i == 13) {
+			p.discardTile(tempTile);
+			tempTile = null;
+		} else if (i < activeHandSize)
+			p.discardTile(i);
+
+
 		refreshHandUi();
+	}
+	
+	private void evaluateHand() {
+		String handEval = players.get(currentPlayer).evaluate(tempTile);
+		if (handEval.contains("w")) 
+			activateButton(winButton);
+		else
+			deactivateButton(winButton);
+
+		handEval = players.get(currentPlayer).evaluate(players.get((currentPlayer + 3)%4).lastDiscard());
+		handEval = players.get(currentPlayer).evaluate(tempTile); //This needs to be deleted
+		//Activates the eat button if hand has eat
+		if (handEval.contains("e"))
+			activateButton(eatButton);	
+		else
+			deactivateButton(eatButton);
+		//Activates the double button if the hand has double
+		if (handEval.contains("d"))
+			activateButton(doubleButton);
+		else
+			deactivateButton(doubleButton);
+		//Activates the triple button if the hand has triple
+		if (handEval.contains("t")) 
+			activateButton(tripleButton);
+		else
+			deactivateButton(tripleButton);
+		//Activates the skip button if any of the functions are available, else not
+		if (handEval.contains("e") || handEval.contains("d") || handEval.contains("t"))
+			activateButton(skipButton);
+		else
+			deactivateButton(skipButton);
+		
+		System.out.println("Temp Tile - Suit: " + tempTile.getSuit() + 
+				", Value: " + tempTile.getValue());
+		System.out.println("Player " + currentPlayer + " result: " + handEval);
 	}
 
 	private void setTileView(Button b, Tile t) {
@@ -319,7 +311,7 @@ public class Game extends Activity {
 			else if (t.getSuit() == 4)
 				b.setBackgroundColor(Color.GRAY);
 			b.setText("" + t.getValue());
-			b.setOnClickListener(new TileValueListener(0, t.getSuit(),t.getValue()));
+			b.setOnClickListener(new TileValueListener(t.getSuit(),t.getValue()));
 			b.setVisibility(View.VISIBLE);
 		} else {
 			b.setBackgroundColor(Color.GRAY);
@@ -342,13 +334,18 @@ public class Game extends Activity {
 			buttons = bot2Buttons;
 		else
 			buttons = bot3Buttons;
-		
+
 		if (currentPlayer == 0) {
 			for (int i = 0; i < buttons.size(); i++) {
 				b = buttons.get(i);
 				t = p.seeTileAt(i);
 				setTileView(b, t);
 			}
+			if (tempTile != null) 
+				setTileView(tempTileButton, tempTile);
+			else
+				setTileView(tempTileButton, null);
+
 		} else {
 			for (int i = 0; i < buttons.size(); i++) {
 				b = buttons.get(i);
@@ -386,26 +383,43 @@ public class Game extends Activity {
 	}//End onBackPressed
 
 	private class TileValueListener implements OnClickListener {
-		int suit, value, player;
+		int suit, value;
 
-		public TileValueListener(int p, int s, int v) {
-			player = p;
+		public TileValueListener(int s, int v) {
 			suit = s;
 			value = v;
 		}
 
 		@Override
 		public void onClick(View v) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(Game.this);
-			builder.setTitle("Player: " + player + ", Suit: " + suit + 
-					", Value: " + value);
-			builder.setPositiveButton("OK", null);
+			if (currentPlayer != 0) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(Game.this);
+				builder.setTitle("Player: " + currentPlayer + ", Suit: " + suit + 
+						", Value: " + value);
+				builder.setPositiveButton("OK", null);
 
-			AlertDialog ad = builder.create();
-			ad.show();
+				AlertDialog ad = builder.create();
+				ad.show();
+			}
 
+			//Finds the index of the button pressed so we can discard the
+			//correct tile in the Hand
+			if (v.equals(tempTileButton))
+				discardTile(13);
+			else
+				discardTile(playerButtons.indexOf((Button) v));
+
+			setTileView(discardButton, players.get(currentPlayer).lastDiscard());
+
+			refreshHandUi();
+			deactivateButton(doubleButton);
+			deactivateButton(eatButton);
+			deactivateButton(skipButton);
+			deactivateButton(tripleButton);
+			deactivateButton(winButton);
 			if (hasTakenTurn == false)
 				hasTakenTurn = true;
+			//currentPlayer = (currentPlayer + 1) %4;
 		}
 
 	}//EndSuitValueListener
