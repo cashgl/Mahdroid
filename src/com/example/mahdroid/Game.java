@@ -29,7 +29,6 @@ public class Game extends Activity {
 	//targetPlayer is the player whose hand needs to be evaluated at most 3 times
 	int currentRound, currentPlayer, targetPlayer;
 	boolean playersTurn, hasWon, hasTakenTurn, roundThreadIsRunning;
-	RoundThread t;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +71,24 @@ public class Game extends Activity {
 		botDiscard2Params.height = discardHeight;
 		playerDiscardParams.height = discardHeight;
 	}
+
+	@Override
+	public void onBackPressed() {
+		//This method confirms if the user wants to exit the activity
+		new AlertDialog.Builder(this)
+		.setIcon(android.R.drawable.ic_dialog_alert)
+		.setTitle("Quitting Game")
+		.setMessage("Are you sure you want to quit the game?\nThis will erase all progress")
+		.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				finish();    
+			}
+		})
+		.setNegativeButton("No", null)
+		.setCancelable(false)
+		.show();
+	}//End onBackPressed
 
 	private void setupPlayers() {
 		//This creates the players. We will need to have them
@@ -172,42 +189,29 @@ public class Game extends Activity {
 		bot3Buttons.add((Button)findViewById(R.id.botTile3_12));
 
 		//This outer loop controls the deal for each player
-		//////////This won't stay since we won't be seeing other players' hands
 		for (int k = 0; k <= 3; k++) {
 			Player tempPlayer = players.get(k);
-			Tile tempTile;
-			Button tempButton;
+			Tile tt;
+			Button tb;
 			if (k == 0) {
 				for (int i = 0; i <= 12; i++) {
-					tempTile = tempPlayer.seeTileAt(i);
-					tempButton = playerButtons.get(i);
+					tt = tempPlayer.seeTileAt(i);
+					tb = playerButtons.get(i);
 
-					if (tempTile.getSuit() == 0) 
-						tempButton.setBackgroundColor(Color.CYAN);
-					else if (tempTile.getSuit() == 1)
-						tempButton.setBackgroundColor(Color.YELLOW);
-					else if (tempTile.getSuit() == 2)
-						tempButton.setBackgroundColor(Color.GREEN);
-					else if (tempTile.getSuit() == 3)
-						tempButton.setBackgroundColor(Color.RED);
-					else if (tempTile.getSuit() == 4)
-						tempButton.setBackgroundColor(Color.GRAY);
-					tempButton.setText("" + tempTile.getValue());
-					tempButton.setOnClickListener(new TileValueListener(tempTile.getSuit(),tempTile.getValue()));
-					//buttons.get(i).setOnClickListener(colorListener);	
+					setTileView(tb, tt);
 				}
 			}
 			else {
 				for (int i = 0; i <= 12; i++) {
 					if (k == 1) 
-						tempButton = bot1Buttons.get(i);
+						tb = bot1Buttons.get(i);
 					else if (k == 2)
-						tempButton = bot2Buttons.get(i);
+						tb = bot2Buttons.get(i);
 					else
-						tempButton = bot3Buttons.get(i);
-					tempButton.setText("");
-					tempButton.setBackgroundColor(getResources().getColor(R.color.grey));
-					tempButton.setClickable(false);
+						tb = bot3Buttons.get(i);
+					tb.setText("");
+					tb.setBackgroundColor(getResources().getColor(R.color.grey));
+					tb.setClickable(false);
 				}
 			}
 
@@ -259,43 +263,46 @@ public class Game extends Activity {
 		} else if (i < activeHandSize)
 			p.discardTile(i);
 
-
 		refreshHandUi();
 	}
-	
-	private void evaluateHand() {
-		String handEval = players.get(currentPlayer).evaluate(tempTile);
-		if (handEval.contains("w")) 
-			activateButton(winButton);
-		else
-			deactivateButton(winButton);
 
-		handEval = players.get(currentPlayer).evaluate(players.get((currentPlayer + 3)%4).lastDiscard());
-		handEval = players.get(currentPlayer).evaluate(tempTile); //This needs to be deleted
-		//Activates the eat button if hand has eat
-		if (handEval.contains("e"))
-			activateButton(eatButton);	
-		else
-			deactivateButton(eatButton);
-		//Activates the double button if the hand has double
-		if (handEval.contains("d"))
-			activateButton(doubleButton);
-		else
-			deactivateButton(doubleButton);
-		//Activates the triple button if the hand has triple
-		if (handEval.contains("t")) 
-			activateButton(tripleButton);
-		else
-			deactivateButton(tripleButton);
-		//Activates the skip button if any of the functions are available, else not
-		if (handEval.contains("e") || handEval.contains("d") || handEval.contains("t"))
-			activateButton(skipButton);
-		else
-			deactivateButton(skipButton);
+	private String evaluateHand() {
+		String handEval = players.get(currentPlayer).evaluate(tempTile);
+		if (currentPlayer == 0) {
+			if (handEval.contains("w")) 
+				activateButton(winButton);
+			else
+				deactivateButton(winButton);
+
+			handEval = players.get(currentPlayer).evaluate(players.get((currentPlayer + 3)%4).lastDiscard());
+			handEval = players.get(currentPlayer).evaluate(tempTile); //This needs to be deleted
+			//Activates the eat button if hand has eat
+			if (handEval.contains("e"))
+				activateButton(eatButton);	
+			else
+				deactivateButton(eatButton);
+			//Activates the double button if the hand has double
+			if (handEval.contains("d"))
+				activateButton(doubleButton);
+			else
+				deactivateButton(doubleButton);
+			//Activates the triple button if the hand has triple
+			if (handEval.contains("t")) 
+				activateButton(tripleButton);
+			else
+				deactivateButton(tripleButton);
+			//Activates the skip button if any of the functions are available, else not
+			if (handEval.contains("e") || handEval.contains("d") || handEval.contains("t"))
+				activateButton(skipButton);
+			else
+				deactivateButton(skipButton);
+		}
 		
 		System.out.println("Temp Tile - Suit: " + tempTile.getSuit() + 
 				", Value: " + tempTile.getValue());
 		System.out.println("Player " + currentPlayer + " result: " + handEval);
+		
+		return handEval;
 	}
 
 	private void setTileView(Button b, Tile t) {
@@ -364,23 +371,11 @@ public class Game extends Activity {
 		}
 	}
 
-	@Override
-	public void onBackPressed() {
-		//This method confirms if the user wants to exit the activity
-		new AlertDialog.Builder(this)
-		.setIcon(android.R.drawable.ic_dialog_alert)
-		.setTitle("Quitting Game")
-		.setMessage("Are you sure you want to quit the game?\nThis will erase all progress")
-		.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				finish();    
-			}
-		})
-		.setNegativeButton("No", null)
-		.setCancelable(false)
-		.show();
-	}//End onBackPressed
+	private void performTurn() {
+		String handEval = evaluateHand();
+		
+		tempTile = players.get(currentPlayer).drawTempTile();
+	}
 
 	private class TileValueListener implements OnClickListener {
 		int suit, value;
@@ -513,38 +508,4 @@ public class Game extends Activity {
 			}
 		}
 	}//End RoundThread
-
-	private class UpdateUiThread extends Thread {
-
-		@Override
-		public void run() {
-			// TODO Auto-generated method stub
-			super.run();
-			if (currentPlayer == 0) {
-				for (int k = 0; k <= 3; k++) {
-					Player tempPlayer = players.get(k);
-					Tile tempTile;
-					Button tempButton;
-					if (k == 0) {
-						for (int i = 0; i <= 12; i++) {
-							tempTile = tempPlayer.seeTileAt(i);
-							tempButton = playerButtons.get(i);
-
-							if (tempTile.getSuit() == 0) 
-								tempButton.setBackgroundColor(Color.CYAN);
-							else if (tempTile.getSuit() == 1)
-								tempButton.setBackgroundColor(Color.YELLOW);
-							else if (tempTile.getSuit() == 2)
-								tempButton.setBackgroundColor(Color.GREEN);
-							else if (tempTile.getSuit() == 3)
-								tempButton.setBackgroundColor(Color.RED);
-							else if (tempTile.getSuit() == 4)
-								tempButton.setBackgroundColor(Color.GRAY);
-							tempButton.setText("" + tempTile.getValue());
-						}//End for
-					}//End if
-				}//End for
-			}//End if
-		}//End run()
-	}//End UpdateUiThread Class
 }//End Game Class

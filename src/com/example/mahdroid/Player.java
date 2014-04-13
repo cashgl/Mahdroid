@@ -23,6 +23,14 @@ public class Player {
 		return t;
 	}
 	
+	public void addToHand(Tile t) {
+		hand.add(t);
+	}
+	
+	public Tile drawTempTile() {
+		return deck.draw();
+	}
+	
 	public Tile lastDiscard(){
 		return discard.grabLast();
 	}
