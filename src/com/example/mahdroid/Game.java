@@ -2,7 +2,6 @@ package com.example.mahdroid;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.concurrent.ThreadPoolExecutor.DiscardPolicy;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -16,6 +15,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.RelativeLayout.LayoutParams;
+import android.widget.TextView;
 
 public class Game extends Activity {
 
@@ -25,8 +25,8 @@ public class Game extends Activity {
 	Deck deck;
 	Tile tempTile, discardedTile;
 	Button eatButton, doubleButton, tripleButton, winButton, 
-	skipButton, tempTileButton, discardButton;
-	//targetPlayer is the player whose hand needs to be evaluated at most 3 times
+		skipButton, tempTileButton, discardButton;
+	TextView gameStats;
 	int currentRound, currentPlayer, targetPlayer;
 	boolean playersTurn, hasWon, hasTakenTurn, roundThreadIsRunning;
 
@@ -56,7 +56,16 @@ public class Game extends Activity {
 		setTileView(tempTileButton, tempTile);
 
 		currentPlayer = 0;
-		evaluateHand();
+		evaluateHand(tempTile);
+		
+		gameStats = (TextView) findViewById(R.id.gameStats);
+		
+		if (currentPlayer != 0) {
+			PerformTurnThread t = new PerformTurnThread();
+			t.start();
+		} else {
+			gameStats.setText(getGameStats());
+		}
 
 		//DONT TOUCH THIS!!!
 		//I'm trying to figure out the discard piles
@@ -260,22 +269,25 @@ public class Game extends Activity {
 		if (tempTile != null && i == 13) {
 			p.discardTile(tempTile);
 			tempTile = null;
-		} else if (i < activeHandSize)
+		} else if (i < activeHandSize) {
 			p.discardTile(i);
+			p.addToHand(tempTile);
+			tempTile = null;
+		}
 
 		refreshHandUi();
 	}
 
-	private String evaluateHand() {
-		String handEval = players.get(currentPlayer).evaluate(tempTile);
+	private String evaluateHand(Tile t) {
+		String handEval = players.get(currentPlayer).evaluate(t);
 		if (currentPlayer == 0) {
 			if (handEval.contains("w")) 
 				activateButton(winButton);
 			else
 				deactivateButton(winButton);
 
-			handEval = players.get(currentPlayer).evaluate(players.get((currentPlayer + 3)%4).lastDiscard());
-			handEval = players.get(currentPlayer).evaluate(tempTile); //This needs to be deleted
+			handEval = players.get(currentPlayer).evaluate(t);
+			handEval = players.get(currentPlayer).evaluate(t); //This needs to be deleted
 			//Activates the eat button if hand has eat
 			if (handEval.contains("e"))
 				activateButton(eatButton);	
@@ -297,12 +309,26 @@ public class Game extends Activity {
 			else
 				deactivateButton(skipButton);
 		}
-		
-		System.out.println("Temp Tile - Suit: " + tempTile.getSuit() + 
-				", Value: " + tempTile.getValue());
-		System.out.println("Player " + currentPlayer + " result: " + handEval);
-		
+
+		//System.out.println("Temp Tile - Suit: " + tempTile.getSuit() + 
+		//	", Value: " + tempTile.getValue());
+		//System.out.println("Player " + currentPlayer + " result: " + handEval);
+
 		return handEval;
+	}
+
+	private String getGameStats() {
+		String direction = "";
+		
+		if (currentPlayer == 0)
+			direction = "South";
+		else if (currentPlayer == 1)
+			direction = "East";
+		else if (currentPlayer == 2)
+			direction = "North";
+		else if (currentPlayer == 3)
+			direction = "West";
+		return String.format("Current Player: %s        Round: %d", direction, currentRound);
 	}
 
 	private void setTileView(Button b, Tile t) {
@@ -372,11 +398,36 @@ public class Game extends Activity {
 	}
 
 	private void performTurn() {
-		String handEval = evaluateHand();
-		
-		tempTile = players.get(currentPlayer).drawTempTile();
-	}
+		runOnUiThread(new UpdateViewsThread(getGameStats()));
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//String handEval = evaluateHand(players.get((currentPlayer + 3)%4).lastDiscard());
+		String handEval = evaluateHand(tempTile);
 
+		tempTile = players.get(currentPlayer).drawTempTile();
+
+		System.out.println("Player " + currentPlayer + " has taken their turn!");
+		currentPlayer = (currentPlayer + 1) %4;
+		//Starts performTurn with the next player again
+		if (currentPlayer == 2 || currentPlayer == 3) {
+			performTurn();
+		} 
+		//If it is bot 3, we make the buttons clickable for the human player again
+		else if (currentPlayer == 0) {
+			for (int i = 0; i <= 12; i++)
+				playerButtons.get(i).setClickable(true);
+			tempTileButton.setClickable(true);
+			if (players.get(currentPlayer).getTotalSize() < 12)
+				tempTile = players.get(currentPlayer).drawTempTile();
+			runOnUiThread(new UpdateViewsThread());
+			runOnUiThread(new UpdateViewsThread(getGameStats()));
+		}
+	}
+	
 	private class TileValueListener implements OnClickListener {
 		int suit, value;
 
@@ -412,9 +463,15 @@ public class Game extends Activity {
 			deactivateButton(skipButton);
 			deactivateButton(tripleButton);
 			deactivateButton(winButton);
-			if (hasTakenTurn == false)
-				hasTakenTurn = true;
-			//currentPlayer = (currentPlayer + 1) %4;
+			for (int i = 0; i <= 12; i++) 
+				playerButtons.get(i).setClickable(false);
+			tempTileButton.setClickable(false);
+
+			System.out.println("Player " + currentPlayer + " has taken their turn!");
+			currentPlayer = (currentPlayer + 1) %4;
+			
+			PerformTurnThread t = new PerformTurnThread();
+			t.start();
 		}
 
 	}//EndSuitValueListener
@@ -473,39 +530,28 @@ public class Game extends Activity {
 
 	}//End FunctionOnTouch
 
-	private class RoundThread extends Thread {
-		boolean stopThread = false;
-
-		public void stopThread() {
-			stopThread = true;
-		}
-
+	private class PerformTurnThread extends Thread {
 		@Override
 		public void run() {
-			try {
-				while (!hasWon && !stopThread) {
-					if (currentPlayer == 0) {
-						while (!hasTakenTurn) {
-							System.out.println("Player 0 is waiting...");
-							Thread.sleep(1000);
-						}
-						//Human player logic here
-						//runOnUiThread(new UpdateUiThread(b));
-						System.out.println("Player " + currentPlayer + " took their turn!");
-						hasTakenTurn = false;
-						currentPlayer = (currentPlayer + 1) %4;
-					}
-					else if (currentPlayer == 1 || currentPlayer == 2 || currentPlayer == 3) {
-						//Bot player logic here
-						System.out.println("Player " + currentPlayer + " took their turn!");
-						currentPlayer = (currentPlayer + 1) %4;
-						Thread.sleep(3000);
-					}
-					//runOnUiThread(new UpdateUiThread(b));
-				}
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			performTurn();
 		}
-	}//End RoundThread
+	}//End PerformTurnThread
+	
+	private class UpdateViewsThread extends Thread {
+		String s = "";
+		public UpdateViewsThread(String str) {
+			s = str;
+		}
+		public UpdateViewsThread() {
+			
+		}
+		@Override
+		public void run() {
+			super.run();
+			if (!s.equals(""))
+				gameStats.setText(s);
+			else
+				refreshHandUi();
+		}
+	}//End UpdateTextViewThread
 }//End Game Class

@@ -523,10 +523,9 @@
             android:id="@+id/playerDiscard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/botDiscard1"
             android:layout_alignLeft="@+id/botDiscard2"
-            android:layout_alignParentBottom="true"
             android:layout_alignRight="@+id/botDiscard2"
-            android:layout_marginBottom="3dp"
             android:background="@color/light_red" >
 
             <Button
@@ -559,10 +558,9 @@
             android:id="@+id/botDiscard1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_alignBottom="@+id/botDiscard3"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:layout_marginBottom="3dp"
             android:layout_marginLeft="3dp"
             android:background="@color/light_pink" >
 
@@ -578,10 +576,9 @@
             android:id="@+id/botDiscard3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_above="@+id/gameStats"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginBottom="3dp"
             android:layout_marginRight="3dp"
             android:background="@color/light_blue" >
 
@@ -592,6 +589,16 @@
                 android:text="Button" />
 
         </RelativeLayout>
+
+        <TextView
+            android:id="@+id/gameStats"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:gravity="center_horizontal"
+            android:text="TextView" />
 
     </RelativeLayout>
 
