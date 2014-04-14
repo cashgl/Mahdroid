@@ -523,7 +523,7 @@
             android:id="@+id/playerDiscard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/botDiscard1"
+            android:layout_above="@+id/textView1"
             android:layout_alignLeft="@+id/botDiscard2"
             android:layout_alignRight="@+id/botDiscard2"
             android:background="@color/light_red" >
@@ -536,13 +536,11 @@
 
         </RelativeLayout>
         
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/botDiscard2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/botDiscard1"
-            android:layout_toRightOf="@+id/botDiscard3"
             android:layout_marginBottom="3dp"
             android:background="@color/light_green" >
 
@@ -552,7 +550,7 @@
                 android:layout_height="wrap_content"
                 android:text="Button" />
 
-        </RelativeLayout>
+        </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/botDiscard1"

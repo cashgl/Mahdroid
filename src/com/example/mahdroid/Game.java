@@ -13,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
@@ -50,7 +51,10 @@ public class Game extends Activity {
 		tempTile = deck.draw();
 		evaluateHand(tempTile);
 		
-		gameStats = (TextView) findViewById(R.id.gameStats);
+		ViewGroup linearlayout = (ViewGroup) findViewById(R.id.botDiscard2);
+		Button bt = new Button(this);
+		bt.setText("Hi!");
+		linearlayout.addView(bt);
 		
 		if (currentPlayer != 0) {
 			deactivatePlayerButtons();
@@ -238,6 +242,8 @@ public class Game extends Activity {
 
 		skipButton = (Button) findViewById(R.id.skipButton);
 		skipButton.setOnTouchListener(functionOnTouch);
+		
+		gameStats = (TextView) findViewById(R.id.gameStats);
 	}
 
 	private int randomPlayer() {
@@ -357,8 +363,9 @@ public class Game extends Activity {
 			else if (t.getSuit() == 4)
 				b.setBackgroundColor(Color.GRAY);
 			b.setText("" + t.getValue());
-			b.setOnClickListener(new TileValueListener(t.getSuit(),t.getValue()));
 			b.setVisibility(View.VISIBLE);
+			if (playerButtons.contains(b) || tempTileButton.equals(b))
+				b.setOnClickListener(new TileValueListener(t.getSuit(),t.getValue()));
 		} else {
 			b.setBackgroundColor(Color.GRAY);
 			b.setText("-");
@@ -414,7 +421,7 @@ public class Game extends Activity {
 		//Refreshes game stats so the human knows which player's turn it is
 		runOnUiThread(new UpdateViewsThread(getGameStats()));
 		try {
-			Thread.sleep(3000);
+			Thread.sleep(2500);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -439,7 +446,7 @@ public class Game extends Activity {
 			if (players.get(currentPlayer).getTotalSize() < 12)
 				tempTile = players.get(currentPlayer).drawTempTile();
 			runOnUiThread(new UpdateViewsThread(getGameStats()));
-			runOnUiThread(new UpdateViewsThread());
+			runOnUiThread(new UpdateViewsThread("refresh"));
 		}
 	}
 	
@@ -551,14 +558,12 @@ public class Game extends Activity {
 		public UpdateViewsThread(String str) {
 			if (str.equals("eval")) {
 				eval = true; refreshUI = false; gameStat = false;
+			} else if (str.equals("refresh")){
+				eval = false; refreshUI = true; gameStat = false;
 			} else {
 				eval = false; refreshUI = false; gameStat = true;
 				s = str;
 			}
-			
-		}
-		public UpdateViewsThread() {
-			eval = false; refreshUI = true; gameStat = false;
 		}
 		@Override
 		public void run() {
