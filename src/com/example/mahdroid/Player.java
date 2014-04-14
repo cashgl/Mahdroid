@@ -1,6 +1,7 @@
 package com.example.mahdroid;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * @author Grayson
@@ -10,11 +11,15 @@ public class Player {
 	private Deck deck;
 	private Hand hand;
 	private Discard discard;
+	private int numEat, numDouble, numTriple;
 	
 	public Player(Deck d) {
 		deck = d;
 		hand = new Hand();
 		discard = new Discard();
+		numEat = 0;
+		numDouble = 0;
+		numTriple = 0;
 	}
 	
 	public Tile drawTile(){
@@ -71,11 +76,14 @@ public class Player {
 		StringBuilder s = new StringBuilder();
 		if (t == null) {}
 		else {
-			if (Function.eat(hand, t))
+			numEat = Function.eat(hand, t);
+			numDouble = Function.dou(hand, t);
+			numTriple = Function.triple(hand, t);
+			if (numEat > 0)
 				s.append("e");
-			if (Function.dou(hand, t))
+			if (numDouble > 0)
 				s.append("d");
-			if (Function.triple(hand, t))
+			if (numTriple > 0)
 				s.append("t");
 			if (Function.skip(hand))
 				s.append("s");
@@ -119,12 +127,19 @@ public class Player {
 	}
 	
 	public boolean callFunction(String function, Tile t){
-		if (function.equals("e"))
+		Random rand = new Random();
+		if (function.equals("e")) {
+			int n = rand.nextInt(numEat)+1;
 			Function.performEat(hand, t);
-	/*	else if (function.equals("d"))
-			Function.performDouble(hand, tempTile);
-		else if (function.equals("t"))
-			Function.performTriple(hand, tempTile);  */
+		}
+		else if (function.equals("d")){
+			int n = rand.nextInt(numDouble)+1;
+			Function.performDou(hand, t);
+		}
+		else if (function.equals("t")){
+			int n = rand.nextInt(numDouble)+1;
+			Function.performTriple(hand, t); 
+		}
 
 		return false;
 	}

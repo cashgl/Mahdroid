@@ -4,28 +4,29 @@ import java.util.ArrayList;
 
 public class Function {
 
-	public static boolean eat(Hand hand, Tile t) {
+	public static int eat(Hand hand, Tile t) {
+		int eatCount = 0;
 		for (int i = 0; i < hand.getActiveSize() - 1; i++) {
 			// eg. when u have 3 & 4 and u pick up 5, then 5 will be added to
 			// the end
 			if (hand.tileAt(i).getSuit() == t.getSuit() && 
 				hand.tileAt(i).getValue() + 1 == hand.tileAt(i + 1).getValue() && 
 				hand.tileAt(i + 1).getValue() + 1 == t.getValue())
-				return true;
+				eatCount++;
 			// eg. when u have 3 & 4 and u pick up 2, then 2 will be added to
 			// the front
 			if (hand.tileAt(i).getSuit() == t.getSuit() && 
 				hand.tileAt(i).getValue() - 1 == t.getValue() && 
 				hand.tileAt(i).getValue() + 1 == hand.tileAt(i + 1).getValue())
-				return true;
+				eatCount++;
 			// eg. when u have 3 & 5 and u pick up 4, then 4 will be added in
 			// between
 			if (hand.tileAt(i).getSuit() == t.getSuit() && 
 				hand.tileAt(i).getValue() + 1 == t.getValue() && 
 				hand.tileAt(i).getValue() + 2 == hand.tileAt(i + 1).getValue())
-				return true;
+				eatCount++;
 		}
-		return false;
+		return eatCount;
 	}
 
 	public static void performEat(Hand hand, Tile t) {
@@ -57,15 +58,16 @@ public class Function {
 		}
 	}
 
-	public static boolean dou(Hand hand, Tile t) {
+	public static int dou(Hand hand, Tile t) {
+		int doubleCount = 0;
 		for (int i = 0; i < hand.getActiveSize() - 1; i++) {
 			if (hand.tileAt(i).getSuit() == t.getSuit() && 
 				hand.tileAt(i + 1).getSuit() == t.getSuit() && 
 				hand.tileAt(i).getValue() == t.getValue() && 
 				hand.tileAt(i + 1).getValue() == t.getValue())
-				return true;
+				doubleCount++;
 		}
-		return false;
+		return doubleCount;
 	}
 
 	public static void performDou(Hand hand, Tile t) {
@@ -86,15 +88,16 @@ public class Function {
 		}
 	}
 
-	public static boolean triple(Hand hand, Tile t) {
+	public static int triple(Hand hand, Tile t) {
+		int tripleCount = 0;
 		for (int i = 0; i < hand.getActiveSize() - 2; i++) {
 			if (hand.tileAt(i).getSuit() == t.getSuit() && 
 				hand.tileAt(i + 2).getSuit() == t.getSuit() && 
 				hand.tileAt(i).getValue() == hand.tileAt(i + 2).getValue() && 
 				hand.tileAt(i).getValue() == t.getValue())
-				return true;
+				tripleCount++;
 		}
-		return false;
+		return tripleCount;
 	}
 
 	public static void performTriple(Hand hand, Tile t) {
@@ -126,14 +129,6 @@ public class Function {
 		}
 		return false;
 	}
-
-	// helper method for win()
-	/**
-	 * public static Hand performDouWin(Hand hand, Tile t){ for (int i = 0; i <
-	 * hand.getSize(); i++){ if (hand.tileAt(i).getSuit() == t.getSuit() &&
-	 * hand.tileAt(i).getValue() == t.getValue()){ hand.functionedTiles(i, i+1);
-	 * } } return hand; }
-	 **/
 
 	// helper method for win()
 	public static boolean check(Hand activeHand, Tile t) {
@@ -211,10 +206,9 @@ public class Function {
 			}
 		}
 		
-		// if (pairCount == 1){
+		// if (pairCount == 1)
 		result = runCheck(checkHand);
 		System.out.println("Result: " + result);
-		// }
 		if (result == true) {
 			System.out.println("yeah");
 			return true;
