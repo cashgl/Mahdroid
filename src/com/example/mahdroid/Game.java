@@ -280,6 +280,8 @@ public class Game extends Activity {
 			p.addToHand(tempTile);
 			tempTile = null;
 		}
+		
+		setTileView(discardButton, p.lastDiscard());
 
 		refreshHandUi();
 	}
@@ -409,15 +411,18 @@ public class Game extends Activity {
 	}
 
 	private void performTurn() {
+		//Refreshes game stats so the human knows which player's turn it is
 		runOnUiThread(new UpdateViewsThread(getGameStats()));
 		try {
 			Thread.sleep(3000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		//String handEval = evaluateHand(players.get((currentPlayer + 3)%4).lastDiscard());
 		String handEval = evaluateHand(tempTile);
+		
+		//Selects a random card to discard
+		Random rand = new Random();
 
 		tempTile = players.get(currentPlayer).drawTempTile();
 
@@ -433,8 +438,8 @@ public class Game extends Activity {
 			activatePlayerButtons();
 			if (players.get(currentPlayer).getTotalSize() < 12)
 				tempTile = players.get(currentPlayer).drawTempTile();
-			runOnUiThread(new UpdateViewsThread());
 			runOnUiThread(new UpdateViewsThread(getGameStats()));
+			runOnUiThread(new UpdateViewsThread());
 		}
 	}
 	
@@ -464,8 +469,6 @@ public class Game extends Activity {
 				discardTile(13);
 			else
 				discardTile(playerButtons.indexOf((Button) v));
-
-			setTileView(discardButton, players.get(currentPlayer).lastDiscard());
 
 			refreshHandUi();
 			deactivateButton(doubleButton);
@@ -543,17 +546,26 @@ public class Game extends Activity {
 	}//End PerformTurnThread
 	
 	private class UpdateViewsThread extends Thread {
+		boolean eval = false, refreshUI = false, gameStat = false;
 		String s = "";
 		public UpdateViewsThread(String str) {
-			s = str;
+			if (str.equals("eval")) {
+				eval = true; refreshUI = false; gameStat = false;
+			} else {
+				eval = false; refreshUI = false; gameStat = true;
+				s = str;
+			}
+			
 		}
-		public UpdateViewsThread() {}
+		public UpdateViewsThread() {
+			eval = false; refreshUI = true; gameStat = false;
+		}
 		@Override
 		public void run() {
 			super.run();
-			if (!s.equals(""))
+			if (gameStat)
 				gameStats.setText(s);
-			else if (s.equals("eval"))
+			else if (eval)
 				evaluateHand(tempTile);
 			else
 				refreshHandUi();
