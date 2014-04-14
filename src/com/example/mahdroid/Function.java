@@ -132,32 +132,47 @@ public class Function {
 		
 		//add the tile into activeHand
 		checkHand.add(t);
-		int pairCount = 0;
-		int runCount = 0;
-		int tripleCount = 0;
-		//pair detector
+		
+		//remove the pair
 		for (int i = 0; i < checkHand.getActiveSize()-1; i++){
 			if (checkHand.tileAt(i).getSuit() == checkHand.tileAt(i+1).getSuit() &&
 				checkHand.tileAt(i).getValue() == checkHand.tileAt(i+1).getValue()){
-				pairCount++;
+				checkHand.removeAt(i);
+				checkHand.removeAt(i+1);
+			}
+		}
+		//remove the triple
+		for (int i = 0; i < checkHand.getActiveSize()-2; i++){
+			if (checkHand.tileAt(i).getSuit() == checkHand.tileAt(i+1).getSuit() &&
+					 checkHand.tileAt(i+1).getSuit() == checkHand.tileAt(i+2).getSuit() &&
+					 checkHand.tileAt(i).getValue() == checkHand.tileAt(i+1).getValue() &&
+					 checkHand.tileAt(i+1).getValue() == checkHand.tileAt(i+2).getValue()){
+				checkHand.removeAt(i);
+				checkHand.removeAt(i+1);
+				checkHand.removeAt(i+2);
+			}
+		}
+		//remove the four
+		for (int i = 0; i < checkHand.getActiveSize()-3; i++){
+			if (checkHand.tileAt(i).getSuit() == checkHand.tileAt(i+1).getSuit() &&
+				checkHand.tileAt(i+1).getSuit() == checkHand.tileAt(i+2).getSuit() &&
+				checkHand.tileAt(i+2).getSuit() == checkHand.tileAt(i+3).getSuit() &&
+				checkHand.tileAt(i).getValue() == checkHand.tileAt(i+1).getValue() &&
+				checkHand.tileAt(i+1).getValue() == checkHand.tileAt(i+2).getValue() &&
+				checkHand.tileAt(i+2).getValue() == checkHand.tileAt(i+3).getValue()){
+				checkHand.removeAt(i);
+				checkHand.removeAt(i+1);
+				checkHand.removeAt(i+2);
+				checkHand.removeAt(i+3);
 			}
 		}
 		//run detector
 		for (int i = 0; i < checkHand.getActiveSize()-2; i++){
-			if (checkHand.tileAt(i).getSuit() == checkHand.tileAt(i+1).getSuit() &&
-				checkHand.tileAt(i+1).getSuit() == checkHand.tileAt(i+2).getSuit() &&
-				checkHand.tileAt(i).getValue()+1 == checkHand.tileAt(i+1).getValue() &&
-				checkHand.tileAt(i+1).getValue()+1 == checkHand.tileAt(i+2).getValue()){
-				runCount++;
-			}
-		}
-		//triple detector
-		for (int i = 0; i < checkHand.getActiveSize()-3; i++){
-			if (checkHand.tileAt(i).getSuit() == checkHand.tileAt(i+1).getSuit() &&
-				checkHand.tileAt(i+1).getSuit() == checkHand.tileAt(i+2).getSuit() &&
-				checkHand.tileAt(i).getValue() == checkHand.tileAt(i+1).getValue() &&
-				checkHand.tileAt(i+1).getValue() == checkHand.tileAt(i+2).getValue()){
-				tripleCount++;
+			if (checkHand.tileAt(i).getSuit() != checkHand.tileAt(i+1).getSuit() ||
+				checkHand.tileAt(i+1).getSuit() != checkHand.tileAt(i+2).getSuit() ||
+				checkHand.tileAt(i).getValue()+1 != checkHand.tileAt(i+1).getValue() ||
+				checkHand.tileAt(i+1).getValue()+1 != checkHand.tileAt(i+2).getValue()){
+				return false;
 			}
 		}
 		return true;
