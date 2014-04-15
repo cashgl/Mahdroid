@@ -40,10 +40,10 @@ public final class R {
     }
     public static final class id {
         public static final int action_settings=0x7f090050;
-        public static final int bot2Discard_Button2=0x7f090047;
-        public static final int botDiscard1=0x7f090048;
+        public static final int bot2Discard_Button2=0x7f090049;
+        public static final int botDiscard1=0x7f090047;
         public static final int botDiscard2=0x7f090045;
-        public static final int botDiscard3=0x7f090049;
+        public static final int botDiscard3=0x7f090048;
         public static final int botHand1=0x7f090011;
         public static final int botHand2=0x7f09001f;
         public static final int botHand3=0x7f09002e;
