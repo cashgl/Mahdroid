@@ -286,10 +286,8 @@ public class Game extends Activity {
 			p.addToHand(tempTile);
 			tempTile = null;
 		}
-		
-		setTileView(discardButton, p.lastDiscard());
 
-		refreshHandUi();
+		runOnUiThread(new UpdateViewsThread("refresh"));
 	}
 
 	private String evaluateHand(Tile t) {
@@ -372,6 +370,16 @@ public class Game extends Activity {
 			b.setVisibility(View.INVISIBLE);
 		}
 	}//End setTileView
+	
+	private void refreshBotHandUi () {
+		refreshHandUi();
+		
+		Player p = players.get(currentPlayer);
+		Button b = discardButton;
+		Tile t = p.lastDiscard();
+		
+		setTileView(b, t);
+	}
 
 	private void refreshHandUi() {
 		Player p = players.get(currentPlayer);
@@ -430,6 +438,9 @@ public class Game extends Activity {
 		
 		//Selects a random card to discard
 		Random rand = new Random();
+		int r = rand.nextInt(13);
+		
+		discardTile(r);
 
 		tempTile = players.get(currentPlayer).drawTempTile();
 
