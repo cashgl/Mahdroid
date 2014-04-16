@@ -28,7 +28,7 @@ public class Game extends Activity {
 	Deck deck;
 	Tile tempTile;
 	Button eatButton, doubleButton, tripleButton, winButton, 
-		skipButton, tempTileButton, discardButton;
+	skipButton, tempTileButton, discardButton;
 	TextView gameStats;
 	int currentRound, currentPlayer;
 	boolean hasWon;
@@ -48,21 +48,21 @@ public class Game extends Activity {
 
 		//Sets up each player and distributes a card to them
 		setupPlayers();
-		
+
 		//The common 14th tile used by the current player
 		tempTile = deck.draw();
 		evaluateWin(tempTile);
-		
+
 		deactivateButton(doubleButton);
 		deactivateButton(eatButton);
 		deactivateButton(skipButton);
 		deactivateButton(tripleButton);
-		
+
 		ViewGroup linearlayout = (ViewGroup) findViewById(R.id.botDiscard2);
 		Button bt = new Button(this);
 		bt.setText("Hi!");
 		//linearlayout.addView(bt);
-		
+
 		if (currentPlayer != 0) {
 			deactivatePlayerButtons();
 			PerformTurnThread t = new PerformTurnThread();
@@ -122,7 +122,7 @@ public class Game extends Activity {
 
 		players.add(new Player(deck));
 		bot3 = players.get(3);
-		
+
 		for (int i = 0; i <= 3; i++) {
 			players.get(i).addObserver(new DiscardObserver());
 		}
@@ -253,7 +253,7 @@ public class Game extends Activity {
 
 		skipButton = (Button) findViewById(R.id.skipButton);
 		skipButton.setOnTouchListener(functionOnTouch);
-		
+
 		gameStats = (TextView) findViewById(R.id.gameStats);
 	}
 
@@ -272,7 +272,7 @@ public class Game extends Activity {
 		ColorDrawable d = (ColorDrawable) b.getBackground();
 		b.setTextColor(d.getColor());
 	}
-	
+
 	private void activatePlayerButtons() {
 		Player p = players.get(0);
 		for (int i = 0; i < p.getActiveSize(); i++)
@@ -281,7 +281,7 @@ public class Game extends Activity {
 			playerButtons.get(i).setClickable(false);
 		tempTileButton.setClickable(true);
 	}
-	
+
 	private void deactivatePlayerButtons() {
 		for (int i = 0; i <= 12; i++) 
 			playerButtons.get(i).setClickable(false);
@@ -314,7 +314,7 @@ public class Game extends Activity {
 			deactivateButton(winButton);
 		return handEval;
 	}
-	
+
 	private String evaluateNotWin(Tile t) {
 		String handEval = players.get(currentPlayer).evaluate(t);
 		if (currentPlayer == 0) {
@@ -400,7 +400,7 @@ public class Game extends Activity {
 		else
 			direction = "West";
 		final String s = String.format("Current Player: %s        Round: %d", direction, currentRound);
-		
+
 		runOnUiThread(new Thread() {
 			@Override
 			public void run() {
@@ -408,7 +408,7 @@ public class Game extends Activity {
 				gameStats.setText(s);
 			}
 		});
-		
+
 	}
 
 	private void setTileView(Button b, Tile t) {
@@ -434,26 +434,27 @@ public class Game extends Activity {
 		}
 	}//End setTileView
 
-	private void refreshHandUi() {
+	private void refreshHandUi(int c) {
+		final int currPlayer = c;
 		runOnUiThread(new Thread() {
 			@Override
 			public void run() {
 				super.run();
-				Player p = players.get(currentPlayer);
+				Player p = players.get(currPlayer);
 				ArrayList<Button> buttons;
 				Button b;
 				Tile t;
 
-				if (currentPlayer == 0)
+				if (currPlayer == 0)
 					buttons = playerButtons;
-				else if (currentPlayer == 1)
+				else if (currPlayer == 1)
 					buttons = bot1Buttons;
-				else if (currentPlayer == 2)
+				else if (currPlayer == 2)
 					buttons = bot2Buttons;
 				else
 					buttons = bot3Buttons;
 
-				if (currentPlayer == 0) {
+				if (currPlayer == 0) {
 					for (int i = 0; i < buttons.size(); i++) {
 						b = buttons.get(i);
 						t = p.seeTileAt(i);
@@ -482,63 +483,60 @@ public class Game extends Activity {
 				}
 			}
 		});
-		
+
 	}
 
 	private void performTurn() {
-		//Refreshes game stats so the human knows which player's turn it is
-		updateGameStats();
 		try {
+			//Refreshes game stats so the human knows which player's turn it is
+			updateGameStats();
 			Thread.sleep(2000);
+			//String handEval = evaluateHand(players.get((currentPlayer + 3)%4).lastDiscard());
+			//TODO String handEval = evaluateHand(tempTile);
+
+			//Selects a random card to discard
+			Random rand = new Random();
+			int r = rand.nextInt(14);
+
+			tempTile = deck.draw();
+			discardTile(r);
+
+			Thread.sleep(250);
+			currentPlayer = (currentPlayer + 1) %4;
+			//Starts performTurn with the next player again
+			if (currentPlayer == 2 || currentPlayer == 3) {
+				performTurn();
+			} 
+			//If it is bot 3, we make the buttons clickable for the human player again
+			else if (currentPlayer == 0) {
+				final Tile lastTile = players.get(3).lastDiscard();
+				runOnUiThread(new Thread() {
+					@Override
+					public void run() {
+						super.run();
+						evaluateWin(tempTile);
+						evaluateNotWin(lastTile);
+					}
+				});
+
+				//Sleeping the current thread for just a moment just in case
+				try {
+					Thread.sleep(50);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				if (tempTile == null)
+					tempTile = deck.draw();
+				updateGameStats();
+				refreshHandUi(currentPlayer);
+				activatePlayerButtons();
+			}
+			Thread.sleep(250);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		//String handEval = evaluateHand(players.get((currentPlayer + 3)%4).lastDiscard());
-		//TODO String handEval = evaluateHand(tempTile);
-		
-		//Selects a random card to discard
-		Random rand = new Random();
-		int r = rand.nextInt(14);
-		
-		tempTile = deck.draw();
-		discardTile(r);
-
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
-		currentPlayer = (currentPlayer + 1) %4;
-		//Starts performTurn with the next player again
-		if (currentPlayer == 2 || currentPlayer == 3) {
-			performTurn();
-		} 
-		//If it is bot 3, we make the buttons clickable for the human player again
-		else if (currentPlayer == 0) {
-			final Tile lastTile = players.get(3).lastDiscard();
-			runOnUiThread(new Thread() {
-				@Override
-				public void run() {
-					super.run();
-					evaluateWin(tempTile);
-					evaluateNotWin(lastTile);
-				}
-			});
-			
-			//Sleeping the current thread for just a moment just in case
-			try {
-				Thread.sleep(50);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			if (tempTile == null)
-				tempTile = deck.draw();
-			updateGameStats();
-			refreshHandUi();
-			activatePlayerButtons();
-		}
 	}
-	
+
 	private class TileValueListener implements OnClickListener {
 		int suit, value;
 
@@ -550,6 +548,12 @@ public class Game extends Activity {
 		@Override
 		public void onClick(View v) {
 			deactivatePlayerButtons();
+			deactivateButton(doubleButton);
+			deactivateButton(eatButton);
+			deactivateButton(skipButton);
+			deactivateButton(tripleButton);
+			deactivateButton(winButton);
+			
 			if (currentPlayer != 0) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(Game.this);
 				builder.setTitle("Player: " + currentPlayer + ", Suit: " + suit + 
@@ -567,15 +571,10 @@ public class Game extends Activity {
 			else
 				discardTile(playerButtons.indexOf((Button) v));
 
-			refreshHandUi();
-			deactivateButton(doubleButton);
-			deactivateButton(eatButton);
-			deactivateButton(skipButton);
-			deactivateButton(tripleButton);
-			deactivateButton(winButton);
-
-			currentPlayer = (currentPlayer + 1) %4;
+			refreshHandUi(currentPlayer);
 			
+			currentPlayer = (currentPlayer + 1) %4;
+
 			PerformTurnThread t = new PerformTurnThread();
 			t.start();
 		}
@@ -617,14 +616,6 @@ public class Game extends Activity {
 						//call eat on current player
 						p.callFunction(funct, prev.useLastDiscard());
 					}
-					
-					refreshHandUi();
-					deactivateButton(doubleButton);
-					deactivateButton(eatButton);
-					deactivateButton(skipButton);
-					deactivateButton(tripleButton);
-					deactivateButton(winButton);
-					activatePlayerButtons();
 
 					AlertDialog.Builder builder = new AlertDialog.Builder(Game.this);
 					builder.setTitle("Action performed: " + funct)
@@ -636,6 +627,13 @@ public class Game extends Activity {
 				}
 				break;
 			}
+			refreshHandUi(currentPlayer);
+			deactivateButton(doubleButton);
+			deactivateButton(eatButton);
+			deactivateButton(skipButton);
+			deactivateButton(tripleButton);
+			deactivateButton(winButton);
+			activatePlayerButtons();
 			return true;
 		}
 
@@ -658,7 +656,7 @@ public class Game extends Activity {
 					super.run();
 					Player p = players.get(currentPlayer);
 					Tile t = p.lastDiscard();
-				
+
 					setTileView(discardButton, t);
 				}
 			});
