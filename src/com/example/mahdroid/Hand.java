@@ -8,7 +8,7 @@ public class Hand {
 	private ArrayList<Tile> activeHand;
 	private ArrayList<Tile> functionedHand;
 	private int activeSize, functionedSize;
-
+	
 	public Hand() {
 		this.activeHand = new ArrayList<Tile>();
 		this.functionedHand = new ArrayList<Tile>();

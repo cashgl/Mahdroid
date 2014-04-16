@@ -11,7 +11,8 @@ public class Player {
 	private Deck deck;
 	private Hand hand;
 	private Discard discard;
-	private int numEat, numDouble, numTriple;
+	private int numEat, numDouble, numTriple,
+	randomEat, randomDouble, randomTriple;
 	
 	public Player(Deck d) {
 		deck = d;
@@ -128,17 +129,28 @@ public class Player {
 	
 	public boolean callFunction(String function, Tile t){
 		Random rand = new Random();
+		//System.out.println("Player-callFunction numEat: " + numEat);
+		//System.out.println("Player-callFunction numDouble: " + numDouble);
+		//System.out.println("Player-callFunction numTriple: " + numTriple);
+		
+		if (numEat != 0){
+			randomEat = rand.nextInt(numEat);
+		}
+		if (numDouble != 0){
+			randomDouble = rand.nextInt(numDouble);
+		}
+		if (numTriple != 0){
+			randomTriple = rand.nextInt(numTriple);
+		}
+		
 		if (function.equals("e")) {
-			int n = rand.nextInt(numEat)+1;
-			Function.performEat(hand, t);
+			Function.performEat(hand, randomEat);
 		}
 		else if (function.equals("d")){
-			int n = rand.nextInt(numDouble)+1;
-			Function.performDou(hand, t);
+			Function.performDou(hand, randomDouble);
 		}
 		else if (function.equals("t")){
-			int n = rand.nextInt(numDouble)+1;
-			Function.performTriple(hand, t); 
+			Function.performTriple(hand, randomTriple); 
 		}
 
 		return false;

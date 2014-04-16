@@ -1,114 +1,106 @@
 package com.example.mahdroid;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Function {
+	//LinkedList which stores the location index of each eat, double and triple detected
+	private static List<Integer> locationEat = new LinkedList<Integer>();
+	private static List<Integer> locationDouble = new LinkedList<Integer>();
+	private static List<Integer> locationTriple = new LinkedList<Integer>();
+	private static int eatCount;	//how many eats
+	private static int doubleCount;	//how many doubles
+	private static int tripleCount;	//how many triples
 
 	public static int eat(Hand hand, Tile t) {
-		int eatCount = 0;
 		for (int i = 0; i < hand.getActiveSize() - 1; i++) {
-			// eg. when u have 3 & 4 and u pick up 5, then 5 will be added to
+			// eg. when u have 3 & 4 and discard is 5, then 5 will be added to
 			// the end
 			if (hand.tileAt(i).getSuit() == t.getSuit() && 
 				hand.tileAt(i).getValue() + 1 == hand.tileAt(i + 1).getValue() && 
-				hand.tileAt(i + 1).getValue() + 1 == t.getValue())
+				hand.tileAt(i + 1).getValue() + 1 == t.getValue()){
 				eatCount++;
-			// eg. when u have 3 & 4 and u pick up 2, then 2 will be added to
+				locationEat.add(i);
+				//System.out.println(hand.tileAt(i) + " " + hand.tileAt(i+1) + " " + t);			
+			}				
+			// eg. when u have 3 & 4 and discard is 2, then 2 will be added to
 			// the front
 			if (hand.tileAt(i).getSuit() == t.getSuit() && 
 				hand.tileAt(i).getValue() - 1 == t.getValue() && 
-				hand.tileAt(i).getValue() + 1 == hand.tileAt(i + 1).getValue())
+				hand.tileAt(i).getValue() + 1 == hand.tileAt(i + 1).getValue()){
 				eatCount++;
-			// eg. when u have 3 & 5 and u pick up 4, then 4 will be added in
+				locationEat.add(i);
+				//System.out.println(t + " " + hand.tileAt(i) + " " + hand.tileAt(i+1));
+			}
+			// eg. when u have 3 & 5 and discard is 4, then 4 will be added in
 			// between
 			if (hand.tileAt(i).getSuit() == t.getSuit() && 
 				hand.tileAt(i).getValue() + 1 == t.getValue() && 
-				hand.tileAt(i).getValue() + 2 == hand.tileAt(i + 1).getValue())
+				hand.tileAt(i).getValue() + 2 == hand.tileAt(i + 1).getValue()){
 				eatCount++;
+				locationEat.add(i);
+				//System.out.println(hand.tileAt(i) + " " + t + " " + hand.tileAt(i+1));
+				}
+			// eg. when u have 3 & 5 and discard is 4, then 4 will be added in
+			// between
+			if (hand.tileAt(i).getSuit() == t.getSuit() && 
+				hand.tileAt(i).getValue() + 1 == t.getValue() && 
+				hand.tileAt(i).getValue() + 2 == hand.tileAt(i + 2).getValue()){
+				eatCount++;
+				locationEat.add(i);
+				//System.out.println(hand.tileAt(i) + " " + t + " " + hand.tileAt(i+2));
+			}
 		}
+			
 		return eatCount;
 	}
 
-	public static void performEat(Hand hand, Tile t) {
-		for (int i = 0; i < hand.getActiveSize() - 1; i++) {
-			// eg. when u have 3 & 4 and u pick up 5, then 5 will be added to
-			// the end
-			if (hand.tileAt(i).getSuit() == t.getSuit() && 
-				hand.tileAt(i).getValue() + 1 == hand.tileAt(i + 1).getValue() && 
-				hand.tileAt(i + 1).getValue() + 1 == t.getValue()) {
-				// manipulate
-				hand.functionedTiles(i, i + 2);
-			}
-			// eg. when u have 3 & 4 and u pick up 2, then 2 will be added to
-			// the front
-			if (hand.tileAt(i).getSuit() == t.getSuit() && 
-				hand.tileAt(i).getValue() - 1 == t.getValue() && 
-				hand.tileAt(i).getValue() + 1 == hand.tileAt(i + 1).getValue()) {
-				// manipulate
-				hand.functionedTiles(i, i + 2);
-			}
-			// eg. when u have 3 & 5 and u pick up 4, then 4 will be added in
-			// between
-			if (hand.tileAt(i).getSuit() == t.getSuit() && 
-				hand.tileAt(i).getValue() + 1 == t.getValue() && 
-				hand.tileAt(i).getValue() + 2 == hand.tileAt(i + 1).getValue()) {
-				// manipulate
-				hand.functionedTiles(i, i + 2);
-			}
-		}
+	public static void performEat(Hand hand, int where) {
+		//System.out.println("Location: " + locationEat.get(where));
+		hand.functionedTiles(locationEat.get(where), locationEat.get(where)+2);
+		//System.out.println(hand.toString());
 	}
 
 	public static int dou(Hand hand, Tile t) {
-		int doubleCount = 0;
 		for (int i = 0; i < hand.getActiveSize() - 1; i++) {
 			if (hand.tileAt(i).getSuit() == t.getSuit() && 
 				hand.tileAt(i + 1).getSuit() == t.getSuit() && 
 				hand.tileAt(i).getValue() == t.getValue() && 
-				hand.tileAt(i + 1).getValue() == t.getValue())
+				hand.tileAt(i + 1).getValue() == t.getValue()){
 				doubleCount++;
+				locationDouble.add(i);
+				//System.out.println(hand.tileAt(i) + " " + hand.tileAt(i+1) + " " + t);
+			}
 		}
 		return doubleCount;
 	}
 
-	public static void performDou(Hand hand, Tile t) {
-		/*
-		 * for (int i = 0; i< activeHand.getSize(); i++) { if
-		 * (activeHand.tileAt(i).getSuit() == t.getSuit() &&
-		 * activeHand.tileAt(i).getValue() == t.getValue()) {
-		 * 
-		 * } }
-		 */
-		for (int i = 0; i < hand.getActiveSize() - 1; i++) {
-			if (hand.tileAt(i).getSuit() == t.getSuit() && 
-				hand.tileAt(i + 1).getSuit() == t.getSuit() && 
-				hand.tileAt(i).getValue() == t.getValue() && 
-				hand.tileAt(i + 1).getValue() == t.getValue())
-				// manipulate hand
-				hand.functionedTiles(i, i + 2);
-		}
+	public static void performDou(Hand hand, int where) {
+		//System.out.println("Location: " + locationDouble.get(where));
+		hand.functionedTiles(locationDouble.get(where), locationDouble.get(where)+2);
+		//System.out.println(hand.toString());
 	}
 
 	public static int triple(Hand hand, Tile t) {
-		int tripleCount = 0;
 		for (int i = 0; i < hand.getActiveSize() - 2; i++) {
 			if (hand.tileAt(i).getSuit() == t.getSuit() && 
-				hand.tileAt(i + 2).getSuit() == t.getSuit() && 
-				hand.tileAt(i).getValue() == hand.tileAt(i + 2).getValue() && 
-				hand.tileAt(i).getValue() == t.getValue())
+				hand.tileAt(i).getSuit() == hand.tileAt(i+2).getSuit() && 
+				hand.tileAt(i).getValue() == t.getValue() &&
+				hand.tileAt(i).getValue() == hand.tileAt(i+2).getValue()){
 				tripleCount++;
+				locationTriple.add(i);
+				//System.out.println(hand.tileAt(i) + " " + hand.tileAt(i+1) + " " + 
+					//hand.tileAt(i+2) + " " + t);	
+			}
 		}
-		return tripleCount;
+			return tripleCount;
 	}
 
-	public static void performTriple(Hand hand, Tile t) {
-		for (int i = 0; i < hand.getActiveSize() - 2; i++) {
-			if (hand.tileAt(i).getSuit() == t.getSuit() && 
-				hand.tileAt(i + 2).getSuit() == t.getSuit() && 
-				hand.tileAt(i).getValue() == hand.tileAt(i + 2).getValue() && 
-				hand.tileAt(i).getValue() == t.getValue())
-				// manipulate
-				hand.functionedTiles(i, i + 3);
-		}
+	public static void performTriple(Hand hand, int where) {
+		//System.out.println("Location: " + locationTriple.get(where));
+		hand.functionedTiles(locationTriple.get(where), locationTriple.get(where)+3);
+		//System.out.println(hand.toString());
 	}
 
 	// This method is for one of the winning hand patterns
