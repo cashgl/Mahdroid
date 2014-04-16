@@ -1,6 +1,8 @@
 package com.example.mahdroid;
 
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Random;
 
 import android.app.Activity;
@@ -54,7 +56,7 @@ public class Game extends Activity {
 		ViewGroup linearlayout = (ViewGroup) findViewById(R.id.botDiscard2);
 		Button bt = new Button(this);
 		bt.setText("Hi!");
-		linearlayout.addView(bt);
+		//linearlayout.addView(bt);
 		
 		if (currentPlayer != 0) {
 			deactivatePlayerButtons();
@@ -62,7 +64,7 @@ public class Game extends Activity {
 			t.start();
 		} else {
 			setTileView(tempTileButton, tempTile);
-			gameStats.setText(getGameStats());
+			updateGameStats();
 		}
 
 		//DONT TOUCH THIS!!!
@@ -115,6 +117,10 @@ public class Game extends Activity {
 
 		players.add(new Player(deck));
 		bot3 = players.get(3);
+		
+		for (int i = 0; i <= 3; i++) {
+			players.get(i).addObserver(new DiscardObserver());
+		}
 
 		//Associates the buttons to a player's hand
 		setupHands();
@@ -286,8 +292,6 @@ public class Game extends Activity {
 			p.addToHand(tempTile);
 			tempTile = null;
 		}
-
-		runOnUiThread(new UpdateViewsThread("refresh"));
 	}
 
 	private String evaluateHand(Tile t) {
@@ -335,7 +339,7 @@ public class Game extends Activity {
 		return handEval;
 	}
 
-	private String getGameStats() {
+	private void updateGameStats() {
 		String direction = "";
 		if (currentPlayer == 0)
 			direction = "South";
@@ -345,7 +349,16 @@ public class Game extends Activity {
 			direction = "North";
 		else
 			direction = "West";
-		return String.format("Current Player: %s        Round: %d", direction, currentRound);
+		final String s = String.format("Current Player: %s        Round: %d", direction, currentRound);
+		
+		runOnUiThread(new Thread() {
+			@Override
+			public void run() {
+				super.run();
+				gameStats.setText(s);
+			}
+		});
+		
 	}
 
 	private void setTileView(Button b, Tile t) {
@@ -370,64 +383,61 @@ public class Game extends Activity {
 			b.setVisibility(View.INVISIBLE);
 		}
 	}//End setTileView
-	
-	private void refreshBotHandUi () {
-		refreshHandUi();
-		
-		Player p = players.get(currentPlayer);
-		Button b = discardButton;
-		Tile t = p.lastDiscard();
-		
-		setTileView(b, t);
-	}
 
 	private void refreshHandUi() {
-		Player p = players.get(currentPlayer);
-		ArrayList<Button> buttons;
-		Button b;
-		Tile t;
+		runOnUiThread(new Thread() {
+			@Override
+			public void run() {
+				super.run();
+				Player p = players.get(currentPlayer);
+				ArrayList<Button> buttons;
+				Button b;
+				Tile t;
 
-		if (currentPlayer == 0)
-			buttons = playerButtons;
-		else if (currentPlayer == 1)
-			buttons = bot1Buttons;
-		else if (currentPlayer == 2)
-			buttons = bot2Buttons;
-		else
-			buttons = bot3Buttons;
+				if (currentPlayer == 0)
+					buttons = playerButtons;
+				else if (currentPlayer == 1)
+					buttons = bot1Buttons;
+				else if (currentPlayer == 2)
+					buttons = bot2Buttons;
+				else
+					buttons = bot3Buttons;
 
-		if (currentPlayer == 0) {
-			for (int i = 0; i < buttons.size(); i++) {
-				b = buttons.get(i);
-				t = p.seeTileAt(i);
-				setTileView(b, t);
-			}
-			if (tempTile != null) 
-				setTileView(tempTileButton, tempTile);
-			else
-				setTileView(tempTileButton, null);
+				if (currentPlayer == 0) {
+					for (int i = 0; i < buttons.size(); i++) {
+						b = buttons.get(i);
+						t = p.seeTileAt(i);
+						setTileView(b, t);
+					}
+					if (tempTile != null) 
+						setTileView(tempTileButton, tempTile);
+					else
+						setTileView(tempTileButton, null);
 
-		} else {
-			for (int i = 0; i < buttons.size(); i++) {
-				b = buttons.get(i);
-				if (i < p.getActiveSize()) {
-					t = p.seeTileAt(i);
-					b.setBackgroundColor(getResources().getColor(R.color.grey));
-					b.setText("");
-				} else if (i < p.getTotalSize()) {
-					t = p.seeTileAt(i);
-					setTileView(b, t);
 				} else {
-					t = null;
-					setTileView(b, t);
+					for (int i = 0; i < buttons.size(); i++) {
+						b = buttons.get(i);
+						if (i < p.getActiveSize()) {
+							t = p.seeTileAt(i);
+							b.setBackgroundColor(getResources().getColor(R.color.grey));
+							b.setText("");
+						} else if (i < p.getTotalSize()) {
+							t = p.seeTileAt(i);
+							setTileView(b, t);
+						} else {
+							t = null;
+							setTileView(b, t);
+						}
+					}
 				}
 			}
-		}
+		});
+		
 	}
 
 	private void performTurn() {
 		//Refreshes game stats so the human knows which player's turn it is
-		runOnUiThread(new UpdateViewsThread(getGameStats()));
+		updateGameStats();
 		try {
 			Thread.sleep(2500);
 		} catch (InterruptedException e) {
@@ -438,11 +448,12 @@ public class Game extends Activity {
 		
 		//Selects a random card to discard
 		Random rand = new Random();
-		int r = rand.nextInt(13);
+		int r = rand.nextInt(14);
 		
+		tempTile = deck.draw();
 		discardTile(r);
 
-		tempTile = players.get(currentPlayer).drawTempTile();
+		
 
 		System.out.println("Player " + currentPlayer + " has taken their turn!");
 		currentPlayer = (currentPlayer + 1) %4;
@@ -454,10 +465,10 @@ public class Game extends Activity {
 		else if (currentPlayer == 0) {
 			runOnUiThread(new UpdateViewsThread("eval"));
 			activatePlayerButtons();
-			if (players.get(currentPlayer).getTotalSize() < 12)
-				tempTile = players.get(currentPlayer).drawTempTile();
-			runOnUiThread(new UpdateViewsThread(getGameStats()));
-			runOnUiThread(new UpdateViewsThread("refresh"));
+			if (tempTile == null)
+				tempTile = deck.draw();
+			updateGameStats();
+			refreshHandUi();
 		}
 	}
 	
@@ -506,11 +517,6 @@ public class Game extends Activity {
 	}//EndSuitValueListener
 
 	private class FunctionOnTouch implements OnTouchListener {
-		int playerTurn;
-
-		public FunctionOnTouch() {
-			playerTurn = currentPlayer;
-		}
 
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
@@ -564,15 +570,13 @@ public class Game extends Activity {
 	}//End PerformTurnThread
 	
 	private class UpdateViewsThread extends Thread {
-		boolean eval = false, refreshUI = false, gameStat = false;
+		boolean eval = false, gameStat = false;
 		String s = "";
 		public UpdateViewsThread(String str) {
 			if (str.equals("eval")) {
-				eval = true; refreshUI = false; gameStat = false;
-			} else if (str.equals("refresh")){
-				eval = false; refreshUI = true; gameStat = false;
+				eval = true; gameStat = false;
 			} else {
-				eval = false; refreshUI = false; gameStat = true;
+				eval = false; gameStat = true;
 				s = str;
 			}
 		}
@@ -583,8 +587,23 @@ public class Game extends Activity {
 				gameStats.setText(s);
 			else if (eval)
 				evaluateHand(tempTile);
-			else
-				refreshHandUi();
 		}
 	}//End UpdateTextViewThread
+	
+	private class DiscardObserver implements Observer {
+
+		@Override
+		public void update(Observable arg0, Object arg1) {
+			runOnUiThread(new Thread() {
+				@Override
+				public void run() {
+					super.run();
+					Player p = players.get(currentPlayer);
+					Tile t = p.lastDiscard();
+				
+					setTileView(discardButton, t);
+				}
+			});
+		}
+	}
 }//End Game Class
