@@ -1,13 +1,14 @@
 package com.example.mahdroid;
 
 import java.util.ArrayList;
+import java.util.Observable;
 import java.util.Random;
 
 /**
  * @author Grayson
  *
  */
-public class Player {
+public class Player extends Observable{
 	private Deck deck;
 	private Hand hand;
 	private Discard discard;
@@ -41,6 +42,10 @@ public class Player {
 		return discard.grabLast();
 	}
 	
+	public Tile useLastDiscard() {
+		return discard.useLast();
+	}
+	
 	/**
 	 * Takes the index of the hand and discards that tile
 	 * @param i
@@ -51,6 +56,7 @@ public class Player {
 			discard.add(hand.removeAt(i));
 			//hand.add(tempTile);
 			//tempTile = null;
+			triggerObservers();
 			return true;
 		}
 		return false;
@@ -59,11 +65,14 @@ public class Player {
 			tempTile = null;
 			
 		}*/
+		
+		
 	}
 	
 	public boolean discardTile(Tile t) {
 		if (t != null) {
 			discard.add(t);
+			triggerObservers();
 			return true;
 		}
 		return false;
@@ -155,4 +164,18 @@ public class Player {
 
 		return false;
 	}
+	
+	private class TriggerObserversThread extends Thread {
+		@Override
+		public void run() {
+			super.run();
+			triggerObservers();
+		}
+	}
+	
+	private void triggerObservers() {
+		 
+        setChanged();
+        notifyObservers();
+    }
 }
