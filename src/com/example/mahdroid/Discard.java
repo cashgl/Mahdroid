@@ -36,6 +36,12 @@ public class Discard {
 		return null;
 	}
 	
+	public Tile useLast() {
+		if (pile.size() != 0)
+			return pile.pop();
+		return null;
+	}
+	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < this.size; i++) {

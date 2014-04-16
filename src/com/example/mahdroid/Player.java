@@ -41,6 +41,10 @@ public class Player extends Observable{
 		return discard.grabLast();
 	}
 	
+	public Tile useLastDiscard() {
+		return discard.useLast();
+	}
+	
 	/**
 	 * Takes the index of the hand and discards that tile
 	 * @param i

@@ -51,7 +51,12 @@ public class Game extends Activity {
 		
 		//The common 14th tile used by the current player
 		tempTile = deck.draw();
-		evaluateHand(tempTile);
+		evaluateWin(tempTile);
+		
+		deactivateButton(doubleButton);
+		deactivateButton(eatButton);
+		deactivateButton(skipButton);
+		deactivateButton(tripleButton);
 		
 		ViewGroup linearlayout = (ViewGroup) findViewById(R.id.botDiscard2);
 		Button bt = new Button(this);
@@ -269,8 +274,11 @@ public class Game extends Activity {
 	}
 	
 	private void activatePlayerButtons() {
-		for (int i = 0; i <= 12; i++)
+		Player p = players.get(0);
+		for (int i = 0; i < p.getActiveSize(); i++)
 			playerButtons.get(i).setClickable(true);
+		for (int i = p.getActiveSize(); i < p.getTotalSize(); i++)
+			playerButtons.get(i).setClickable(false);
 		tempTileButton.setClickable(true);
 	}
 	
@@ -294,7 +302,53 @@ public class Game extends Activity {
 		}
 	}
 
-	private String evaluateHand(Tile t) {
+	private String evaluateWin(Tile t) {
+		String handEval = players.get(currentPlayer).evaluate(t);
+		if (currentPlayer == 0) {
+			if (handEval.contains("w")) 
+				activateButton(winButton);
+			else
+				deactivateButton(winButton);
+		}
+		else
+			deactivateButton(winButton);
+		return handEval;
+	}
+	
+	private String evaluateNotWin(Tile t) {
+		String handEval = players.get(currentPlayer).evaluate(t);
+		if (currentPlayer == 0) {
+			handEval = players.get(currentPlayer).evaluate(t);
+			handEval = players.get(currentPlayer).evaluate(t); //This needs to be deleted
+			//Activates the eat button if hand has eat
+			if (handEval.contains("e"))
+				activateButton(eatButton);	
+			else
+				deactivateButton(eatButton);
+			//Activates the double button if the hand has double
+			if (handEval.contains("d"))
+				activateButton(doubleButton);
+			else
+				deactivateButton(doubleButton);
+			//Activates the triple button if the hand has triple
+			if (handEval.contains("t")) 
+				activateButton(tripleButton);
+			else
+				deactivateButton(tripleButton);
+			//Activates the skip button if any of the functions are available, else not
+			if (handEval.contains("e") || handEval.contains("d") || handEval.contains("t"))
+				activateButton(skipButton);
+			else
+				deactivateButton(skipButton);
+		} else {
+			deactivateButton(doubleButton);
+			deactivateButton(eatButton);
+			deactivateButton(skipButton);
+			deactivateButton(tripleButton);
+		}
+		return handEval;
+	}
+	private String evaluateeHand(Tile t) {
 		String handEval = players.get(currentPlayer).evaluate(t);
 		if (currentPlayer == 0) {
 			if (handEval.contains("w")) 
@@ -331,10 +385,6 @@ public class Game extends Activity {
 			deactivateButton(tripleButton);
 			deactivateButton(winButton);
 		}
-
-		//System.out.println("Temp Tile - Suit: " + tempTile.getSuit() + 
-		//	", Value: " + tempTile.getValue());
-		//System.out.println("Player " + currentPlayer + " result: " + handEval);
 
 		return handEval;
 	}
@@ -439,12 +489,12 @@ public class Game extends Activity {
 		//Refreshes game stats so the human knows which player's turn it is
 		updateGameStats();
 		try {
-			Thread.sleep(2500);
+			Thread.sleep(2000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		//String handEval = evaluateHand(players.get((currentPlayer + 3)%4).lastDiscard());
-		String handEval = evaluateHand(tempTile);
+		//TODO String handEval = evaluateHand(tempTile);
 		
 		//Selects a random card to discard
 		Random rand = new Random();
@@ -453,9 +503,11 @@ public class Game extends Activity {
 		tempTile = deck.draw();
 		discardTile(r);
 
-		
-
-		System.out.println("Player " + currentPlayer + " has taken their turn!");
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
 		currentPlayer = (currentPlayer + 1) %4;
 		//Starts performTurn with the next player again
 		if (currentPlayer == 2 || currentPlayer == 3) {
@@ -463,12 +515,27 @@ public class Game extends Activity {
 		} 
 		//If it is bot 3, we make the buttons clickable for the human player again
 		else if (currentPlayer == 0) {
-			runOnUiThread(new UpdateViewsThread("eval"));
-			activatePlayerButtons();
+			final Tile lastTile = players.get(3).lastDiscard();
+			runOnUiThread(new Thread() {
+				@Override
+				public void run() {
+					super.run();
+					evaluateWin(tempTile);
+					evaluateNotWin(lastTile);
+				}
+			});
+			
+			//Sleeping the current thread for just a moment just in case
+			try {
+				Thread.sleep(50);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			if (tempTile == null)
 				tempTile = deck.draw();
 			updateGameStats();
 			refreshHandUi();
+			activatePlayerButtons();
 		}
 	}
 	
@@ -482,6 +549,7 @@ public class Game extends Activity {
 
 		@Override
 		public void onClick(View v) {
+			deactivatePlayerButtons();
 			if (currentPlayer != 0) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(Game.this);
 				builder.setTitle("Player: " + currentPlayer + ", Suit: " + suit + 
@@ -505,9 +573,7 @@ public class Game extends Activity {
 			deactivateButton(skipButton);
 			deactivateButton(tripleButton);
 			deactivateButton(winButton);
-			deactivatePlayerButtons();
 
-			System.out.println("Player " + currentPlayer + " has taken their turn!");
 			currentPlayer = (currentPlayer + 1) %4;
 			
 			PerformTurnThread t = new PerformTurnThread();
@@ -535,17 +601,30 @@ public class Game extends Activity {
 				float x = Math.abs(event.getX()),y = Math.abs(event.getY());
 				double dist = Math.sqrt( Math.pow(x, 2) + Math.pow(y, 2) );
 				if (dist < 300) {
+					Player p = players.get(currentPlayer), 
+							prev = players.get((currentPlayer + 3) % 4);
 					//This is the code that will actually execute the function.
 					//However, it is only used in the case of the human player
 					//since we will be automatically be doing this for the bots
 					String functText = temp.getText() + "";
 					if (functText.equalsIgnoreCase("double")) {
 						//call double on current player
+						p.callFunction(funct, prev.useLastDiscard());
 					} else if (functText.equalsIgnoreCase("triple")) {
 						//call triple on current player
+						p.callFunction(funct, prev.useLastDiscard());
 					} else if (functText.equalsIgnoreCase("eat")) {
 						//call eat on current player
+						p.callFunction(funct, prev.useLastDiscard());
 					}
+					
+					refreshHandUi();
+					deactivateButton(doubleButton);
+					deactivateButton(eatButton);
+					deactivateButton(skipButton);
+					deactivateButton(tripleButton);
+					deactivateButton(winButton);
+					activatePlayerButtons();
 
 					AlertDialog.Builder builder = new AlertDialog.Builder(Game.this);
 					builder.setTitle("Action performed: " + funct)
@@ -568,28 +647,7 @@ public class Game extends Activity {
 			performTurn();
 		}
 	}//End PerformTurnThread
-	
-	private class UpdateViewsThread extends Thread {
-		boolean eval = false, gameStat = false;
-		String s = "";
-		public UpdateViewsThread(String str) {
-			if (str.equals("eval")) {
-				eval = true; gameStat = false;
-			} else {
-				eval = false; gameStat = true;
-				s = str;
-			}
-		}
-		@Override
-		public void run() {
-			super.run();
-			if (gameStat)
-				gameStats.setText(s);
-			else if (eval)
-				evaluateHand(tempTile);
-		}
-	}//End UpdateTextViewThread
-	
+
 	private class DiscardObserver implements Observer {
 
 		@Override
