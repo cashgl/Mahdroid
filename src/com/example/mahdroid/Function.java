@@ -1,13 +1,10 @@
 package com.example.mahdroid;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Function {
-	private static List<Integer> locationDouble = new LinkedList<Integer>();
 	private static List<Integer> locationTriple = new LinkedList<Integer>();
-	private static int doubleCount;	//how many doubles
 	private static int tripleCount;	//how many triples
 
 	public static int eat(Hand hand, Tile t) {
@@ -73,24 +70,37 @@ public class Function {
 	}
 
 	public static int dou(Hand hand, Tile t) {
-		doubleCount = 0;
+		int doubleCount = 0;
 		for (int i = 0; i < hand.getActiveSize() - 1; i++) {
 			if (hand.tileAt(i).getSuit() == t.getSuit() && 
 				hand.tileAt(i + 1).getSuit() == t.getSuit() && 
 				hand.tileAt(i).getValue() == t.getValue() && 
 				hand.tileAt(i + 1).getValue() == t.getValue()){
 				doubleCount++;
-				locationDouble.add(i);
-				//System.out.println(hand.tileAt(i) + " " + hand.tileAt(i+1) + " " + t);
 			}
 		}
 		return doubleCount;
 	}
 
-	public static void performDou(Hand hand, int i) {
+	public static void performDou(Hand hand, Tile t, int num) {
+		int current = 0;
+		for (int i = 0; i < hand.getActiveSize() - 1; i++) {
+			if (hand.tileAt(i).getSuit() == t.getSuit() && 
+				hand.tileAt(i + 1).getSuit() == t.getSuit() && 
+				hand.tileAt(i).getValue() == t.getValue() && 
+				hand.tileAt(i + 1).getValue() == t.getValue()){
+				//if (current == num) {
+					hand.add(t);
+					hand.functionedTiles(i, i+2);
+				//} else
+					//current++;
+			}
+		}
+		
+		/*
 		//System.out.println("Location: " + locationDouble.get(where));
 		hand.functionedTiles(locationDouble.get(i), locationDouble.get(i)+2);
-		//System.out.println(hand.toString());
+		//System.out.println(hand.toString());*/
 	}
 
 	public static int triple(Hand hand, Tile t) {

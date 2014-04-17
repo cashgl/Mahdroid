@@ -620,6 +620,9 @@ public class Game extends Activity {
 					} else if (functText.equalsIgnoreCase("eat")) {
 						//call eat on current player
 						p.callFunction(funct, prev.useLastDiscard());
+					} else if (functText.equalsIgnoreCase("skip")) {
+						tempTile = deck.draw();
+						refreshHandUi(currentPlayer);
 					}
 
 					AlertDialog.Builder builder = new AlertDialog.Builder(Game.this);
