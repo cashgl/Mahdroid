@@ -33,17 +33,6 @@ public class Function {
 		return eatCount;
 	}
 
-<<<<<<< HEAD
-	public static void performEat(Hand hand, Tile t, int i) {
-		//System.out.println("Hand before: " + hand.toString());
-		//System.out.println("PerformEat executed");
-		hand.add(t);
-		//System.out.println("Hand after add: " + hand.toString());
-		//System.out.println("i: "  + i);
-		//System.out.println("Location: " + locationEat.get(i));
-		hand.functionedTiles(locationEat.get(i), locationEat.get(i)+2);
-		//System.out.println("Hand after: " +  hand.toString());
-=======
 	public static void performEat(Hand hand, Tile t, int num) { 
 		int current = 1;
 		for (int i = 0; i < hand.getActiveSize()-1; i++) {
@@ -78,7 +67,6 @@ public class Function {
 					current++;
 			}
 		}
->>>>>>> 44af7f1a1573557baedceab65af0a2fa31628fd0
 	}
 
 	public static int dou(Hand hand, Tile t) {
@@ -94,10 +82,6 @@ public class Function {
 		return doubleCount;
 	}
 
-<<<<<<< HEAD
-	public static void performDou(Hand hand, Tile t, int i) {
-		hand.add(t);
-=======
 	public static void performDou(Hand hand, Tile t, int num) {
 		int current = 0;
 		for (int i = 0; i < hand.getActiveSize() - 1; i++) {
@@ -112,12 +96,6 @@ public class Function {
 					//current++;
 			}
 		}
-		
-		/*
->>>>>>> 44af7f1a1573557baedceab65af0a2fa31628fd0
-		//System.out.println("Location: " + locationDouble.get(where));
-		hand.functionedTiles(locationDouble.get(i), locationDouble.get(i)+2);
-		//System.out.println(hand.toString());*/
 	}
 
 	public static int triple(Hand hand, Tile t) {
