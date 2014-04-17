@@ -131,10 +131,15 @@ public class Function {
 		return eatCount;
 	}
 
-	public static void performEat(Hand hand, int i) {
-		//System.out.println("Location: " + locationEat.get(where));
+	public static void performEat(Hand hand, Tile t, int i) {
+		//System.out.println("Hand before: " + hand.toString());
+		//System.out.println("PerformEat executed");
+		hand.add(t);
+		//System.out.println("Hand after add: " + hand.toString());
+		//System.out.println("i: "  + i);
+		//System.out.println("Location: " + locationEat.get(i));
 		hand.functionedTiles(locationEat.get(i), locationEat.get(i)+2);
-		//System.out.println(hand.toString());
+		//System.out.println("Hand after: " +  hand.toString());
 	}
 
 	public static int dou(Hand hand, Tile t) {
@@ -152,7 +157,8 @@ public class Function {
 		return doubleCount;
 	}
 
-	public static void performDou(Hand hand, int i) {
+	public static void performDou(Hand hand, Tile t, int i) {
+		hand.add(t);
 		//System.out.println("Location: " + locationDouble.get(where));
 		hand.functionedTiles(locationDouble.get(i), locationDouble.get(i)+2);
 		//System.out.println(hand.toString());
@@ -174,7 +180,8 @@ public class Function {
 			return tripleCount;
 	}
 
-	public static void performTriple(Hand hand, int i) {
+	public static void performTriple(Hand hand, Tile t, int i) {
+		hand.add(t);
 		//System.out.println("Location: " + locationTriple.get(where));
 		hand.functionedTiles(locationTriple.get(i), locationTriple.get(i)+3);
 		//System.out.println(hand.toString());
