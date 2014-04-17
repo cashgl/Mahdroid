@@ -462,6 +462,8 @@ public class Game extends Activity {
 					}
 					if (tempTile != null) 
 						setTileView(tempTileButton, tempTile);
+					else if (p.seeTileAt(13) != null)
+						setTileView(tempTileButton, p.seeTileAt(13));
 					else
 						setTileView(tempTileButton, null);
 
@@ -525,7 +527,8 @@ public class Game extends Activity {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				if (tempTile == null)
+				if (tempTile == null  && !eatButton.isEnabled() && !doubleButton.isEnabled() &&
+						!tripleButton.isEnabled())
 					tempTile = deck.draw();
 				updateGameStats();
 				refreshHandUi(currentPlayer);
@@ -624,16 +627,19 @@ public class Game extends Activity {
 
 					AlertDialog ad = builder.create();
 					ad.show();
+					
+					refreshHandUi(currentPlayer);
+					deactivateButton(doubleButton);
+					deactivateButton(eatButton);
+					deactivateButton(skipButton);
+					deactivateButton(tripleButton);
+					deactivateButton(winButton);
+					activatePlayerButtons();
+					
 				}
 				break;
 			}
-			refreshHandUi(currentPlayer);
-			deactivateButton(doubleButton);
-			deactivateButton(eatButton);
-			deactivateButton(skipButton);
-			deactivateButton(tripleButton);
-			deactivateButton(winButton);
-			activatePlayerButtons();
+			
 			return true;
 		}
 

@@ -131,9 +131,9 @@ public class Function {
 		return eatCount;
 	}
 
-	public static void performEat(Hand hand, int where) {
+	public static void performEat(Hand hand, int i) {
 		//System.out.println("Location: " + locationEat.get(where));
-		hand.functionedTiles(locationEat.get(where), locationEat.get(where)+2);
+		hand.functionedTiles(locationEat.get(i), locationEat.get(i)+2);
 		//System.out.println(hand.toString());
 	}
 

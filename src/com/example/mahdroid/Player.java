@@ -143,13 +143,13 @@ public class Player extends Observable{
 		//System.out.println("Player-callFunction numTriple: " + numTriple);
 		
 		if (numEat != 0){
-			randomEat = rand.nextInt(numEat);
+			randomEat = rand.nextInt(numEat)+1;
 		}
 		if (numDouble != 0){
-			randomDouble = rand.nextInt(numDouble);
+			randomDouble = rand.nextInt(numDouble)+1;
 		}
 		if (numTriple != 0){
-			randomTriple = rand.nextInt(numTriple);
+			randomTriple = rand.nextInt(numTriple)+1;
 		}
 		
 		if (function.equals("e")) {
