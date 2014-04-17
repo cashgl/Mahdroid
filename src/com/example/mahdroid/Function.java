@@ -152,9 +152,9 @@ public class Function {
 		return doubleCount;
 	}
 
-	public static void performDou(Hand hand, int where) {
+	public static void performDou(Hand hand, int i) {
 		//System.out.println("Location: " + locationDouble.get(where));
-		hand.functionedTiles(locationDouble.get(where), locationDouble.get(where)+2);
+		hand.functionedTiles(locationDouble.get(i), locationDouble.get(i)+2);
 		//System.out.println(hand.toString());
 	}
 
@@ -174,9 +174,9 @@ public class Function {
 			return tripleCount;
 	}
 
-	public static void performTriple(Hand hand, int where) {
+	public static void performTriple(Hand hand, int i) {
 		//System.out.println("Location: " + locationTriple.get(where));
-		hand.functionedTiles(locationTriple.get(where), locationTriple.get(where)+3);
+		hand.functionedTiles(locationTriple.get(i), locationTriple.get(i)+3);
 		//System.out.println(hand.toString());
 	}
 
