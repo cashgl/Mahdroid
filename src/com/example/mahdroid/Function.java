@@ -16,43 +16,117 @@ public class Function {
 	public static int eat(Hand hand, Tile t) {
 		eatCount = 0;
 		for (int i = 0; i < hand.getActiveSize() - 1; i++) {
-			// eg. when u have 3 & 4 and discard is 5, then 5 will be added to
-			// the end
-			if (hand.tileAt(i).getSuit() == t.getSuit() && 
-				hand.tileAt(i).getValue() + 1 == hand.tileAt(i + 1).getValue() && 
-				hand.tileAt(i + 1).getValue() + 1 == t.getValue()){
-				eatCount++;
-				locationEat.add(i);
-				//System.out.println(hand.tileAt(i) + " " + hand.tileAt(i+1) + " " + t);			
-			}				
-			// eg. when u have 3 & 4 and discard is 2, then 2 will be added to
-			// the front
-			if (hand.tileAt(i).getSuit() == t.getSuit() && 
-				hand.tileAt(i).getValue() - 1 == t.getValue() && 
-				hand.tileAt(i).getValue() + 1 == hand.tileAt(i + 1).getValue()){
-				eatCount++;
-				locationEat.add(i);
-				//System.out.println(t + " " + hand.tileAt(i) + " " + hand.tileAt(i+1));
-			}
-			// eg. when u have 3 & 5 and discard is 4, then 4 will be added in
-			// between
-			if (hand.tileAt(i).getSuit() == t.getSuit() && 
-				hand.tileAt(i).getValue() + 1 == t.getValue() && 
-				hand.tileAt(i).getValue() + 2 == hand.tileAt(i + 1).getValue()){
-				eatCount++;
-				locationEat.add(i);
-				//System.out.println(hand.tileAt(i) + " " + t + " " + hand.tileAt(i+1));
+			if (i <= hand.getActiveSize() - 4){
+				// eg. when u have 3 & 4 and discard is 5, then 5 will be added to
+				// the end
+				if (hand.tileAt(i).getSuit() == t.getSuit() && 
+					hand.tileAt(i).getValue() + 1 == hand.tileAt(i + 1).getValue() && 
+					hand.tileAt(i + 1).getValue() + 1 == t.getValue()){
+					eatCount++;
+					locationEat.add(i);
+					//System.out.println(hand.tileAt(i) + " " + hand.tileAt(i+1) + " " + t);			
+				}				
+				// eg. when u have 3 & 4 and discard is 2, then 2 will be added to
+				// the front
+				if (hand.tileAt(i).getSuit() == t.getSuit() && 
+					hand.tileAt(i).getValue() - 1 == t.getValue() && 
+					hand.tileAt(i).getValue() + 1 == hand.tileAt(i + 1).getValue()){
+					eatCount++;
+					locationEat.add(i);
+					//System.out.println(t + " " + hand.tileAt(i) + " " + hand.tileAt(i+1));
 				}
-			// eg. when u have 3 & 5 and discard is 4, then 4 will be added in
-			// between
-			if (hand.tileAt(i).getSuit() == t.getSuit() && 
-				hand.tileAt(i).getValue() + 1 == t.getValue() && 
-				hand.tileAt(i).getValue() + 2 == hand.tileAt(i + 2).getValue()){
-				eatCount++;
-				locationEat.add(i);
-				//System.out.println(hand.tileAt(i) + " " + t + " " + hand.tileAt(i+2));
-			}
-		}
+				// eg. when u have 3 & 5 and discard is 4, then 4 will be added in
+				// between
+				if (hand.tileAt(i).getSuit() == t.getSuit() && 
+					hand.tileAt(i).getValue() + 1 == t.getValue() && 
+					hand.tileAt(i).getValue() + 2 == hand.tileAt(i + 1).getValue()){
+					eatCount++;
+					locationEat.add(i);
+					//System.out.println(hand.tileAt(i) + " " + t + " " + hand.tileAt(i+1));
+				}
+				// eg. when u have 3 & 5 and discard is 4, then 4 will be added in
+				// between
+				if (hand.tileAt(i).getSuit() == t.getSuit() && 
+					hand.tileAt(i).getValue() + 1 == t.getValue() && 
+					hand.tileAt(i).getValue() + 2 == hand.tileAt(i + 2).getValue()){
+					eatCount++;
+					locationEat.add(i);
+					//System.out.println(hand.tileAt(i) + " " + t + " " + hand.tileAt(i+2));
+				}
+				if (hand.tileAt(i).getSuit() == t.getSuit() && 
+					hand.tileAt(i).getValue() + 1 == t.getValue() && 
+					hand.tileAt(i).getValue() + 2 == hand.tileAt(i + 3).getValue()){
+					eatCount++;
+					locationEat.add(i);
+					//System.out.println(hand.tileAt(i) + " " + t + " " + hand.tileAt(i+2));
+				}
+			}//end if
+			else if (i == hand.getActiveSize() - 3){
+				// eg. when u have 3 & 4 and discard is 5, then 5 will be added to
+				// the end
+				if (hand.tileAt(i).getSuit() == t.getSuit() && 
+					hand.tileAt(i).getValue() + 1 == hand.tileAt(i + 1).getValue() && 
+					hand.tileAt(i + 1).getValue() + 1 == t.getValue()){
+					eatCount++;
+					locationEat.add(i);
+					//System.out.println(hand.tileAt(i) + " " + hand.tileAt(i+1) + " " + t);			
+				}				
+				// eg. when u have 3 & 4 and discard is 2, then 2 will be added to
+				// the front
+				if (hand.tileAt(i).getSuit() == t.getSuit() && 
+					hand.tileAt(i).getValue() - 1 == t.getValue() && 
+					hand.tileAt(i).getValue() + 1 == hand.tileAt(i + 1).getValue()){
+					eatCount++;
+					locationEat.add(i);
+					//System.out.println(t + " " + hand.tileAt(i) + " " + hand.tileAt(i+1));
+				}
+				// eg. when u have 3 & 5 and discard is 4, then 4 will be added in
+				// between
+				if (hand.tileAt(i).getSuit() == t.getSuit() && 
+					hand.tileAt(i).getValue() + 1 == t.getValue() && 
+					hand.tileAt(i).getValue() + 2 == hand.tileAt(i + 1).getValue()){
+					eatCount++;
+					locationEat.add(i);
+					//System.out.println(hand.tileAt(i) + " " + t + " " + hand.tileAt(i+1));
+				}
+				if (hand.tileAt(i).getSuit() == t.getSuit() && 
+					hand.tileAt(i).getValue() + 1 == t.getValue() && 
+					hand.tileAt(i).getValue() + 2 == hand.tileAt(i + 2).getValue()){
+					eatCount++;
+					locationEat.add(i);
+					//System.out.println(hand.tileAt(i) + " " + t + " " + hand.tileAt(i+1));
+				}
+			}//end else if
+			else {
+				// eg. when u have 3 & 4 and discard is 5, then 5 will be added to
+				// the end
+				if (hand.tileAt(i).getSuit() == t.getSuit() && 
+					hand.tileAt(i).getValue() + 1 == hand.tileAt(i + 1).getValue() && 
+					hand.tileAt(i + 1).getValue() + 1 == t.getValue()){
+					eatCount++;
+					locationEat.add(i);
+					//System.out.println(hand.tileAt(i) + " " + hand.tileAt(i+1) + " " + t);			
+				}				
+				// eg. when u have 3 & 4 and discard is 2, then 2 will be added to
+				// the front
+				if (hand.tileAt(i).getSuit() == t.getSuit() && 
+					hand.tileAt(i).getValue() - 1 == t.getValue() && 
+					hand.tileAt(i).getValue() + 1 == hand.tileAt(i + 1).getValue()){
+					eatCount++;
+					locationEat.add(i);
+					//System.out.println(t + " " + hand.tileAt(i) + " " + hand.tileAt(i+1));
+				}
+				// eg. when u have 3 & 5 and discard is 4, then 4 will be added in
+				// between
+				if (hand.tileAt(i).getSuit() == t.getSuit() && 
+					hand.tileAt(i).getValue() + 1 == t.getValue() && 
+					hand.tileAt(i).getValue() + 2 == hand.tileAt(i + 1).getValue()){
+					eatCount++;
+					locationEat.add(i);
+					//System.out.println(hand.tileAt(i) + " " + t + " " + hand.tileAt(i+1));
+				}
+			}//end else
+		}//end for
 			
 		return eatCount;
 	}
