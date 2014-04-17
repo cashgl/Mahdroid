@@ -277,7 +277,7 @@ public class Game extends Activity {
 		Player p = players.get(0);
 		for (int i = 0; i < p.getActiveSize(); i++)
 			playerButtons.get(i).setClickable(true);
-		for (int i = p.getActiveSize(); i < p.getTotalSize(); i++)
+		for (int i = p.getActiveSize(); i < playerButtons.size(); i++)
 			playerButtons.get(i).setClickable(false);
 		tempTileButton.setClickable(true);
 	}
@@ -295,6 +295,8 @@ public class Game extends Activity {
 		if (tempTile != null && i == 13) {
 			p.discardTile(tempTile);
 			tempTile = null;
+		} else if (tempTile == null && i < activeHandSize) {
+			p.discardTile(i);
 		} else if (i < activeHandSize) {
 			p.discardTile(i);
 			p.addToHand(tempTile);

@@ -153,7 +153,7 @@ public class Player extends Observable{
 		}
 		
 		if (function.equals("e")) {
-			Function.performEat(hand, randomEat);
+			Function.performEat(hand, t, randomEat);
 		}
 		else if (function.equals("d")){
 			Function.performDou(hand, randomDouble);
