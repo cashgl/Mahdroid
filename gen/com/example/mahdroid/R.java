@@ -39,7 +39,7 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f090050;
+        public static final int action_settings=0x7f090051;
         public static final int bot2Discard_Button2=0x7f090049;
         public static final int botDiscard1=0x7f090047;
         public static final int botDiscard2=0x7f090045;
@@ -94,7 +94,8 @@ public final class R {
         public static final int eatButton=0x7f09003e;
         public static final int functionButtons=0x7f09003c;
         public static final int gameStats=0x7f09004b;
-        public static final int goToInstructions=0x7f09004f;
+        public static final int gameTitle=0x7f09004e;
+        public static final int goToInstructions=0x7f090050;
         public static final int lineBot1=0x7f090002;
         public static final int lineBot2=0x7f09002d;
         public static final int lineBot3=0x7f090001;
@@ -115,7 +116,7 @@ public final class R {
         public static final int playerTile9=0x7f09000c;
         public static final int playerTileTemp=0x7f090010;
         public static final int skipButton=0x7f09003d;
-        public static final int startGame=0x7f09004e;
+        public static final int startGame=0x7f09004f;
         public static final int textView1=0x7f090044;
         public static final int tripleButton=0x7f090040;
         public static final int webView1=0x7f09004d;

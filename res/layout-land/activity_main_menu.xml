@@ -6,28 +6,31 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/light_blue"
     tools:context=".MainMenu" >
 
     <TextView
-        android:id="@+id/textView1"
-        android:textSize="30sp"
+        android:id="@+id/gameTitle"
+        android:textSize="50sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:layout_marginTop="75dp"
+        android:layout_marginBottom="25dp"
         android:text="@string/mainTitle" />
 
     <Button
         android:id="@+id/startGame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
-        android:layout_centerHorizontal="true"
+        android:layout_alignLeft="@+id/goToInstructions"
+        android:layout_alignRight="@+id/goToInstructions"
+        android:layout_below="@+id/gameTitle"
         android:text="@string/startGame" />
 
     <Button
         android:id="@+id/goToInstructions"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/startGame"
         android:layout_centerHorizontal="true"
