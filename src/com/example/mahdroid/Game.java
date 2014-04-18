@@ -229,7 +229,7 @@ public class Game extends Activity {
 						tb = bot3Buttons.get(i);
 					tb.setText("");
 					tb.setBackgroundColor(getResources().getColor(R.color.grey));
-					tb.setClickable(false);
+					tb.setEnabled(false);
 				}
 			}
 			setTileView(tempTileButton, tempTile);
@@ -274,18 +274,31 @@ public class Game extends Activity {
 	}
 
 	private void activatePlayerButtons() {
-		Player p = players.get(0);
-		for (int i = 0; i < p.getActiveSize(); i++)
-			playerButtons.get(i).setClickable(true);
-		for (int i = p.getActiveSize(); i < playerButtons.size(); i++)
-			playerButtons.get(i).setClickable(false);
-		tempTileButton.setClickable(true);
+		runOnUiThread(new Thread() {
+			@Override
+			public void run() {
+				super.run();
+				Player p = players.get(0);
+				for (int i = 0; i < p.getActiveSize(); i++)
+					playerButtons.get(i).setEnabled(true);
+				for (int i = p.getActiveSize(); i < playerButtons.size(); i++)
+					playerButtons.get(i).setEnabled(false);
+				tempTileButton.setEnabled(true);
+			}
+		});
 	}
 
 	private void deactivatePlayerButtons() {
-		for (int i = 0; i <= 12; i++) 
-			playerButtons.get(i).setClickable(false);
-		tempTileButton.setClickable(false);
+		runOnUiThread(new Thread() {
+			@Override
+			public void run() {
+				super.run();
+				for (int i = 0; i < playerButtons.size(); i++) 
+					playerButtons.get(i).setEnabled(false);
+				tempTileButton.setEnabled(false);
+			}
+		});
+		
 	}
 
 	private void discardTile(int i) {
@@ -401,7 +414,9 @@ public class Game extends Activity {
 			direction = "North";
 		else
 			direction = "West";
-		final String s = String.format("Current Player: %s        Round: %d", direction, currentRound);
+		final String s = String.format("Current Player: %-13s " +
+				"Tiles Remaining: %-8d        " +
+				"Round: %d", direction, deck.getSize(), currentRound);
 
 		runOnUiThread(new Thread() {
 			@Override
@@ -413,7 +428,44 @@ public class Game extends Activity {
 
 	}
 
+	private void setFunctionedTileView(Button b, Tile t) {
+		if (t != null) {
+			if (t.getSuit() == 0) {
+				//b.setBackgroundColor(Color.rgb(184,247,247)); //Faded cyan
+				b.setTextColor(Color.CYAN);
+				b.setBackgroundColor(Color.DKGRAY);
+			}
+			else if (t.getSuit() == 1) {
+				//b.setBackgroundColor(Color.rgb(241,245,148)); //Faded yellow
+				b.setTextColor(Color.YELLOW);
+				b.setBackgroundColor(Color.DKGRAY);
+			}
+			else if (t.getSuit() == 2) {
+				//b.setBackgroundColor(Color.rgb(161,247,156)); //Faded green
+				b.setTextColor(Color.GREEN);
+				b.setBackgroundColor(Color.DKGRAY);
+			}
+			else if (t.getSuit() == 3) {
+				//b.setBackgroundColor(Color.rgb(244,142,148)); //Faded red
+				b.setTextColor(Color.RED);
+				b.setBackgroundColor(Color.DKGRAY);
+			}
+			else if (t.getSuit() == 4)
+				b.setBackgroundColor(Color.GRAY);
+			b.setText("" + t.getValue());
+			b.setVisibility(View.VISIBLE);
+			
+			if (playerButtons.contains(b) || tempTileButton.equals(b))
+				b.setOnClickListener(new TileValueListener(t.getSuit(),t.getValue()));
+		} else {
+			b.setBackgroundColor(Color.GRAY);
+			b.setText("-");
+			b.setVisibility(View.INVISIBLE);
+		}
+	}
+
 	private void setTileView(Button b, Tile t) {
+		b.setTextColor(Color.BLACK);
 		if (t != null) {
 			if (t.getSuit() == 0) 
 				b.setBackgroundColor(Color.CYAN);
@@ -457,13 +509,20 @@ public class Game extends Activity {
 					buttons = bot3Buttons;
 
 				if (currPlayer == 0) {
-					for (int i = 0; i < buttons.size(); i++) {
+					for (int i = 0; i < p.getActiveSize(); i++) {
 						b = buttons.get(i);
 						t = p.seeTileAt(i);
 						setTileView(b, t);
 					}
+					for (int i = p.getActiveSize(); i < buttons.size(); i++) {
+						b = buttons.get(i);
+						t = p.seeTileAt(i);
+						setFunctionedTileView(b, t);
+					}
 					if (tempTile != null) 
 						setTileView(tempTileButton, tempTile);
+					else if (p.getTotalSize() == 14)
+						setFunctionedTileView(tempTileButton, p.seeTileAt(13));
 					else if (p.seeTileAt(13) != null)
 						setTileView(tempTileButton, p.seeTileAt(13));
 					else
@@ -530,11 +589,14 @@ public class Game extends Activity {
 					e.printStackTrace();
 				}
 				if (tempTile == null  && !eatButton.isEnabled() && !doubleButton.isEnabled() &&
-						!tripleButton.isEnabled())
+						!tripleButton.isEnabled()) {
 					tempTile = deck.draw();
+					activatePlayerButtons();
+				} else {
+					deactivatePlayerButtons();
+				}
 				updateGameStats();
 				refreshHandUi(currentPlayer);
-				activatePlayerButtons();
 			}
 			Thread.sleep(250);
 		} catch (InterruptedException e) {
@@ -552,33 +614,30 @@ public class Game extends Activity {
 
 		@Override
 		public void onClick(View v) {
-			deactivatePlayerButtons();
-			deactivateButton(doubleButton);
-			deactivateButton(eatButton);
-			deactivateButton(skipButton);
-			deactivateButton(tripleButton);
-			deactivateButton(winButton);
-			
-			if (currentPlayer != 0) {
-				AlertDialog.Builder builder = new AlertDialog.Builder(Game.this);
-				builder.setTitle("Player: " + currentPlayer + ", Suit: " + suit + 
-						", Value: " + value);
-				builder.setPositiveButton("OK", null);
+			try {
+				v.setEnabled(false);
+				deactivatePlayerButtons();
+				deactivateButton(doubleButton);
+				deactivateButton(eatButton);
+				deactivateButton(skipButton);
+				deactivateButton(tripleButton);
+				deactivateButton(winButton);
 
-				AlertDialog ad = builder.create();
-				ad.show();
+				//Finds the index of the button pressed so we can discard the
+				//correct tile in the Hand
+				if (v.equals(tempTileButton))
+					discardTile(13);
+				else
+					discardTile(playerButtons.indexOf((Button) v));
+
+				refreshHandUi(currentPlayer);
+
+				Thread.sleep(20);
+
+				currentPlayer = (currentPlayer + 1) %4;
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
-
-			//Finds the index of the button pressed so we can discard the
-			//correct tile in the Hand
-			if (v.equals(tempTileButton))
-				discardTile(13);
-			else
-				discardTile(playerButtons.indexOf((Button) v));
-
-			refreshHandUi(currentPlayer);
-			
-			currentPlayer = (currentPlayer + 1) %4;
 
 			PerformTurnThread t = new PerformTurnThread();
 			t.start();
@@ -607,6 +666,11 @@ public class Game extends Activity {
 				if (dist < 300) {
 					Player p = players.get(currentPlayer), 
 							prev = players.get((currentPlayer + 3) % 4);
+					
+					
+					
+					
+					
 					//This is the code that will actually execute the function.
 					//However, it is only used in the case of the human player
 					//since we will be automatically be doing this for the bots
@@ -620,31 +684,29 @@ public class Game extends Activity {
 					} else if (functText.equalsIgnoreCase("eat")) {
 						//call eat on current player
 						p.callFunction(funct, prev.useLastDiscard());
-					} else if (functText.equalsIgnoreCase("skip")) {
+					} 
+					
+					activatePlayerButtons();
+					
+					//Disables the TempTileButton so that when you discard,
+					//you don't accidentally discard a functioned tile
+					tempTileButton.setEnabled(false);
+					if (functText.equalsIgnoreCase("skip")) {
 						tempTile = deck.draw();
+						tempTileButton.setEnabled(true);
 						refreshHandUi(currentPlayer);
 					}
 
-					AlertDialog.Builder builder = new AlertDialog.Builder(Game.this);
-					builder.setTitle("Action performed: " + funct)
-					.setMessage(dist + "");
-					builder.setPositiveButton("OK", null);
-
-					AlertDialog ad = builder.create();
-					ad.show();
-					
 					refreshHandUi(currentPlayer);
 					deactivateButton(doubleButton);
 					deactivateButton(eatButton);
 					deactivateButton(skipButton);
 					deactivateButton(tripleButton);
 					deactivateButton(winButton);
-					activatePlayerButtons();
-					
 				}
 				break;
 			}
-			
+
 			return true;
 		}
 
