@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -523,16 +524,38 @@ public class Game extends Activity {
 			//Refreshes game stats so the human knows which player's turn it is
 			updateGameStats();
 			Thread.sleep(2000);
-			String handEval = evaluateWin(players.get((currentPlayer + 3)%4).lastDiscard(),
+			Player p = players.get(currentPlayer);
+			Tile lastDiscard = players.get((currentPlayer + 3)%4).lastDiscard();
+			
+			String handEval = evaluateNotWin(lastDiscard, 
 					currentPlayer);
-			//TODO String handEval = evaluateHand(tempTile);
-
-			//Selects a random card to discard
+			Log.d("Hand Eval", "Player " + currentPlayer + ", " + handEval);
 			Random rand = new Random();
-			int r = rand.nextInt(14);
-
-			tempTile = deck.draw();
+			int r;
+			if (handEval.length() > 1) {
+				r = rand.nextInt(handEval.length());
+				if (handEval.charAt(r) == 's') {
+					tempTile = deck.draw();
+					
+				} else {
+					p.callFunction(handEval.charAt(r)+"", lastDiscard);
+				}
+					
+			}
+			else {
+				tempTile = deck.draw();
+			}
+			
+			//Selects a random card to discard
+			r = rand.nextInt(p.getActiveSize() + 1);
+			if (r == p.getActiveSize())
+				r = 13;
 			discardTile(r);
+			refreshHandUi(currentPlayer);
+			//handEval = evaluateWin(tempTile,currentPlayer);
+			
+			
+			
 
 			Thread.sleep(250);
 			currentPlayer = (currentPlayer + 1) %4;

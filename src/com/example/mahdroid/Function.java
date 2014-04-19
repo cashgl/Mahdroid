@@ -219,7 +219,7 @@ public class Function {
 
 	// helper method for win()
 	public static boolean check1(Hand activeHand, Tile t) {
-		System.out.println("Check 1 executd");
+		//System.out.println("Check 1 executd");
 		Hand checkHand = new Hand();
 		boolean result;
 		boolean specialCaseResult;
