@@ -51,7 +51,7 @@ public class Game extends Activity {
 
 		//The common 14th tile used by the current player
 		tempTile = deck.draw();
-		evaluateWin(tempTile);
+		evaluateWin(tempTile, currentPlayer);
 
 		deactivateButton(doubleButton);
 		deactivateButton(eatButton);
@@ -317,9 +317,9 @@ public class Game extends Activity {
 		}
 	}
 
-	private String evaluateWin(Tile t) {
-		String handEval = players.get(currentPlayer).evaluate(t);
-		if (currentPlayer == 0) {
+	private String evaluateWin(Tile t, int currPlayer) {
+		String handEval = players.get(currPlayer).evaluate(t);
+		if (currPlayer == 0) {
 			if (handEval.contains("w")) 
 				activateButton(winButton);
 			else
@@ -330,11 +330,11 @@ public class Game extends Activity {
 		return handEval;
 	}
 
-	private String evaluateNotWin(Tile t) {
-		String handEval = players.get(currentPlayer).evaluate(t);
-		if (currentPlayer == 0) {
-			handEval = players.get(currentPlayer).evaluate(t);
-			handEval = players.get(currentPlayer).evaluate(t); //This needs to be deleted
+	private String evaluateNotWin(Tile t, int currPlayer) {
+		String handEval = players.get(currPlayer).evaluate(t);
+		if (currPlayer == 0) {
+			handEval = players.get(currPlayer).evaluate(t);
+			handEval = players.get(currPlayer).evaluate(t); //This needs to be deleted
 			//Activates the eat button if hand has eat
 			if (handEval.contains("e"))
 				activateButton(eatButton);	
@@ -363,47 +363,6 @@ public class Game extends Activity {
 		}
 		return handEval;
 	}
-	private String evaluateeHand(Tile t) {
-		String handEval = players.get(currentPlayer).evaluate(t);
-		if (currentPlayer == 0) {
-			if (handEval.contains("w")) 
-				activateButton(winButton);
-			else
-				deactivateButton(winButton);
-
-			handEval = players.get(currentPlayer).evaluate(t);
-			handEval = players.get(currentPlayer).evaluate(t); //This needs to be deleted
-			//Activates the eat button if hand has eat
-			if (handEval.contains("e"))
-				activateButton(eatButton);	
-			else
-				deactivateButton(eatButton);
-			//Activates the double button if the hand has double
-			if (handEval.contains("d"))
-				activateButton(doubleButton);
-			else
-				deactivateButton(doubleButton);
-			//Activates the triple button if the hand has triple
-			if (handEval.contains("t")) 
-				activateButton(tripleButton);
-			else
-				deactivateButton(tripleButton);
-			//Activates the skip button if any of the functions are available, else not
-			if (handEval.contains("e") || handEval.contains("d") || handEval.contains("t"))
-				activateButton(skipButton);
-			else
-				deactivateButton(skipButton);
-		} else {
-			deactivateButton(doubleButton);
-			deactivateButton(eatButton);
-			deactivateButton(skipButton);
-			deactivateButton(tripleButton);
-			deactivateButton(winButton);
-		}
-
-		return handEval;
-	}
-
 	private void updateGameStats() {
 		String direction = "";
 		if (currentPlayer == 0)
@@ -456,7 +415,7 @@ public class Game extends Activity {
 			b.setVisibility(View.VISIBLE);
 			
 			if (playerButtons.contains(b) || tempTileButton.equals(b))
-				b.setOnClickListener(new TileValueListener(t.getSuit(),t.getValue()));
+				b.setOnClickListener(new TileValueListener());
 		} else {
 			b.setBackgroundColor(Color.GRAY);
 			b.setText("-");
@@ -480,7 +439,7 @@ public class Game extends Activity {
 			b.setText("" + t.getValue());
 			b.setVisibility(View.VISIBLE);
 			if (playerButtons.contains(b) || tempTileButton.equals(b))
-				b.setOnClickListener(new TileValueListener(t.getSuit(),t.getValue()));
+				b.setOnClickListener(new TileValueListener());
 		} else {
 			b.setBackgroundColor(Color.GRAY);
 			b.setText("-");
@@ -529,7 +488,17 @@ public class Game extends Activity {
 						setTileView(tempTileButton, null);
 
 				} else {
-					for (int i = 0; i < buttons.size(); i++) {
+					for (int i = 0; i < p.getActiveSize(); i++) {
+						b = buttons.get(i);
+						b.setBackgroundColor(getResources().getColor(R.color.grey));
+						b.setText("");
+					}
+					for (int i = p.getActiveSize(); i < buttons.size(); i++) {
+						b = buttons.get(i);
+						t = p.seeTileAt(i);
+						setFunctionedTileView(b, t);
+					}
+					/*for (int i = 0; i < buttons.size(); i++) {
 						b = buttons.get(i);
 						if (i < p.getActiveSize()) {
 							t = p.seeTileAt(i);
@@ -542,7 +511,7 @@ public class Game extends Activity {
 							t = null;
 							setTileView(b, t);
 						}
-					}
+					}*/
 				}
 			}
 		});
@@ -554,7 +523,8 @@ public class Game extends Activity {
 			//Refreshes game stats so the human knows which player's turn it is
 			updateGameStats();
 			Thread.sleep(2000);
-			//String handEval = evaluateHand(players.get((currentPlayer + 3)%4).lastDiscard());
+			String handEval = evaluateWin(players.get((currentPlayer + 3)%4).lastDiscard(),
+					currentPlayer);
 			//TODO String handEval = evaluateHand(tempTile);
 
 			//Selects a random card to discard
@@ -577,8 +547,8 @@ public class Game extends Activity {
 					@Override
 					public void run() {
 						super.run();
-						evaluateWin(tempTile);
-						evaluateNotWin(lastTile);
+						evaluateWin(tempTile, currentPlayer);
+						evaluateNotWin(lastTile, currentPlayer);
 					}
 				});
 
@@ -605,13 +575,6 @@ public class Game extends Activity {
 	}
 
 	private class TileValueListener implements OnClickListener {
-		int suit, value;
-
-		public TileValueListener(int s, int v) {
-			suit = s;
-			value = v;
-		}
-
 		@Override
 		public void onClick(View v) {
 			try {
@@ -691,13 +654,19 @@ public class Game extends Activity {
 					//Disables the TempTileButton so that when you discard,
 					//you don't accidentally discard a functioned tile
 					tempTileButton.setEnabled(false);
-					if (functText.equalsIgnoreCase("skip")) {
+					if (functText.equals("triple")) {
+						tempTile = deck.draw();
+						tempTileButton.setEnabled(true);
+						refreshHandUi(currentPlayer);
+					}
+					else if (functText.equalsIgnoreCase("skip")) {
 						tempTile = deck.draw();
 						tempTileButton.setEnabled(true);
 						refreshHandUi(currentPlayer);
 					}
 
-					refreshHandUi(currentPlayer);
+					if (!functText.equals("triple") || !functText.equals("skip"))
+						refreshHandUi(currentPlayer);
 					deactivateButton(doubleButton);
 					deactivateButton(eatButton);
 					deactivateButton(skipButton);
@@ -706,7 +675,6 @@ public class Game extends Activity {
 				}
 				break;
 			}
-
 			return true;
 		}
 

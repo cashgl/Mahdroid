@@ -1,11 +1,7 @@
 package com.example.mahdroid;
 
-import java.util.LinkedList;
-import java.util.List;
 
 public class Function {
-	private static List<Integer> locationTriple = new LinkedList<Integer>();
-	private static int tripleCount;	//how many triples
 
 	public static int eat(Hand hand, Tile t) {
 		int eatCount = 0;
@@ -17,19 +13,19 @@ public class Function {
 				eatCount++;
 			}
 			else if ( hand.tileAt(i).getSuit() == t.getSuit() &&
-						hand.tileAt(i+1).getSuit() == t.getSuit() &&
-						hand.tileAt(i).getValue()+1 == t.getValue() &&
-						hand.tileAt(i+1).getValue()-1 == t.getValue()) {
+					hand.tileAt(i+1).getSuit() == t.getSuit() &&
+					hand.tileAt(i).getValue()+1 == t.getValue() &&
+					hand.tileAt(i+1).getValue()-1 == t.getValue()) {
 				eatCount++;
 			}
 			else if (hand.tileAt(i).getSuit() == t.getSuit() &&
-						hand.tileAt(i+1).getSuit() == t.getSuit() &&
-						hand.tileAt(i).getValue()+2 == t.getValue() &&
-						hand.tileAt(i+1).getValue()+1 == t.getValue()) {
+					hand.tileAt(i+1).getSuit() == t.getSuit() &&
+					hand.tileAt(i).getValue()+2 == t.getValue() &&
+					hand.tileAt(i+1).getValue()+1 == t.getValue()) {
 				eatCount++;
 			}
 		}
-			
+
 		return eatCount;
 	}
 
@@ -47,9 +43,9 @@ public class Function {
 					current++;
 			}
 			else if ( hand.tileAt(i).getSuit() == t.getSuit() &&
-						hand.tileAt(i+1).getSuit() == t.getSuit() &&
-						hand.tileAt(i).getValue()+1 == t.getValue() &&
-						hand.tileAt(i+1).getValue()-1 == t.getValue()) {
+					hand.tileAt(i+1).getSuit() == t.getSuit() &&
+					hand.tileAt(i).getValue()+1 == t.getValue() &&
+					hand.tileAt(i+1).getValue()-1 == t.getValue()) {
 				if (current == num) {
 					hand.add(t);
 					hand.functionedTiles(i, i+2);
@@ -57,9 +53,9 @@ public class Function {
 					current++;
 			}
 			else if (hand.tileAt(i).getSuit() == t.getSuit() &&
-						hand.tileAt(i+1).getSuit() == t.getSuit() &&
-						hand.tileAt(i).getValue()+2 == t.getValue() &&
-						hand.tileAt(i+1).getValue()+1 == t.getValue()) {
+					hand.tileAt(i+1).getSuit() == t.getSuit() &&
+					hand.tileAt(i).getValue()+2 == t.getValue() &&
+					hand.tileAt(i+1).getValue()+1 == t.getValue()) {
 				if (current == num) {
 					hand.add(t);
 					hand.functionedTiles(i, i+2);
@@ -73,9 +69,9 @@ public class Function {
 		int doubleCount = 0;
 		for (int i = 0; i < hand.getActiveSize() - 1; i++) {
 			if (hand.tileAt(i).getSuit() == t.getSuit() && 
-				hand.tileAt(i + 1).getSuit() == t.getSuit() && 
-				hand.tileAt(i).getValue() == t.getValue() && 
-				hand.tileAt(i + 1).getValue() == t.getValue()){
+					hand.tileAt(i + 1).getSuit() == t.getSuit() && 
+					hand.tileAt(i).getValue() == t.getValue() && 
+					hand.tileAt(i + 1).getValue() == t.getValue()){
 				doubleCount++;
 			}
 		}
@@ -83,57 +79,62 @@ public class Function {
 	}
 
 	public static void performDou(Hand hand, Tile t, int num) {
-		int current = 0;
+		int current = 1;
 		for (int i = 0; i < hand.getActiveSize() - 1; i++) {
 			if (hand.tileAt(i).getSuit() == t.getSuit() && 
-				hand.tileAt(i + 1).getSuit() == t.getSuit() && 
-				hand.tileAt(i).getValue() == t.getValue() && 
-				hand.tileAt(i + 1).getValue() == t.getValue()){
-				//if (current == num) {
+					hand.tileAt(i + 1).getSuit() == t.getSuit() && 
+					hand.tileAt(i).getValue() == t.getValue() && 
+					hand.tileAt(i + 1).getValue() == t.getValue()){
+				if (current == num) {
 					hand.add(t);
 					hand.functionedTiles(i, i+2);
-				//} else
-					//current++;
+				} else
+					current++;
 			}
 		}
 	}
 
 	public static int triple(Hand hand, Tile t) {
-		tripleCount = 0;
+		int tripleCount = 0;
 		for (int i = 0; i < hand.getActiveSize() - 2; i++) {
 			if (hand.tileAt(i).getSuit() == t.getSuit() && 
-				hand.tileAt(i).getSuit() == hand.tileAt(i+2).getSuit() && 
-				hand.tileAt(i).getValue() == t.getValue() &&
-				hand.tileAt(i).getValue() == hand.tileAt(i+2).getValue()){
+					hand.tileAt(i).getSuit() == hand.tileAt(i+2).getSuit() && 
+					hand.tileAt(i).getValue() == t.getValue() &&
+					hand.tileAt(i).getValue() == hand.tileAt(i+2).getValue()){
 				tripleCount++;
-				locationTriple.add(i);
-				//System.out.println(hand.tileAt(i) + " " + hand.tileAt(i+1) + " " + 
-					//hand.tileAt(i+2) + " " + t);	
 			}
 		}
-			return tripleCount;
+		return tripleCount;
 	}
 
-	public static void performTriple(Hand hand, Tile t, int i) {
-		hand.add(t);
-		//System.out.println("Location: " + locationTriple.get(where));
-		hand.functionedTiles(locationTriple.get(i), locationTriple.get(i)+3);
-		//System.out.println(hand.toString());
+	public static void performTriple(Hand hand, Tile t, int num) {
+		int current = 0;
+		for (int i = 0; i < hand.getActiveSize() - 2; i++) {
+			if (hand.tileAt(i).getSuit() == t.getSuit() && 
+					hand.tileAt(i).getSuit() == hand.tileAt(i+2).getSuit() && 
+					hand.tileAt(i).getValue() == t.getValue() &&
+					hand.tileAt(i).getValue() == hand.tileAt(i+2).getValue()){
+				if (current == num) 
+					hand.functionedTiles(i, i+2);
+				else
+					current++;
+			}
+		}
 	}
 
 	// This method is for one of the winning hand patterns
 	public static boolean douWin(Hand hand, Tile t) {
 		// when hand size = 1
 		if (hand.getActiveSize() == 1 && 
-			hand.tileAt(0).getSuit() == t.getSuit() && 
-			hand.tileAt(0).getValue() == t.getValue())
-				return true;
+				hand.tileAt(0).getSuit() == t.getSuit() && 
+				hand.tileAt(0).getValue() == t.getValue())
+			return true;
 		if (hand.getActiveSize() == 4) {
 			if (hand.tileAt(0).getSuit() == t.getSuit() && 
-				hand.tileAt(0).getValue() == t.getValue() || 
-				hand.tileAt(2).getSuit() == t.getSuit() && 
-				hand.tileAt(2).getValue() == t.getValue()){
-					return true;
+					hand.tileAt(0).getValue() == t.getValue() || 
+					hand.tileAt(2).getSuit() == t.getSuit() && 
+					hand.tileAt(2).getValue() == t.getValue()){
+				return true;
 			}
 		}
 		return false;
@@ -146,10 +147,10 @@ public class Function {
 		boolean specialCaseResult;
 		// special case(1 1 2 2), win on 1 or 2
 		if (activeHand.getActiveSize() == 4 && 
-			activeHand.tileAt(0).getSuit() == activeHand.tileAt(1).getSuit() && 
-			activeHand.tileAt(2).getSuit() == activeHand.tileAt(3).getSuit() && 
-			activeHand.tileAt(0).getValue() == activeHand.tileAt(1).getValue() && 
-			activeHand.tileAt(2).getValue() == activeHand.tileAt(3).getValue()) {
+				activeHand.tileAt(0).getSuit() == activeHand.tileAt(1).getSuit() && 
+				activeHand.tileAt(2).getSuit() == activeHand.tileAt(3).getSuit() && 
+				activeHand.tileAt(0).getValue() == activeHand.tileAt(1).getValue() && 
+				activeHand.tileAt(2).getValue() == activeHand.tileAt(3).getValue()) {
 			specialCaseResult = douWin(activeHand, t);
 			if (specialCaseResult){
 				return true;
@@ -166,7 +167,7 @@ public class Function {
 		// remove the pair
 		for (int i = 0; i < checkHand.getActiveSize() - 1; i++) {
 			if (checkHand.tileAt(i).getSuit() == checkHand.tileAt(i + 1).getSuit() && 
-				checkHand.tileAt(i).getValue() == checkHand.tileAt(i + 1).getValue()) {
+					checkHand.tileAt(i).getValue() == checkHand.tileAt(i + 1).getValue()) {
 				//System.out.println("Removed pair: " + checkHand.removeAt(i));
 				//System.out.println("Removed pair: " + checkHand.removeAt(i));
 				checkHand.removeAt(i);
@@ -177,9 +178,9 @@ public class Function {
 		// remove the triple
 		for (int i = 0; i < checkHand.getActiveSize() - 2; i++) {
 			if (checkHand.tileAt(i).getSuit() == checkHand.tileAt(i + 1).getSuit() && 
-				checkHand.tileAt(i + 1).getSuit() == checkHand.tileAt(i + 2).getSuit() && 
-				checkHand.tileAt(i).getValue() == checkHand.tileAt(i + 1).getValue() && 
-				checkHand.tileAt(i + 1).getValue() == checkHand.tileAt(i + 2).getValue()) {
+					checkHand.tileAt(i + 1).getSuit() == checkHand.tileAt(i + 2).getSuit() && 
+					checkHand.tileAt(i).getValue() == checkHand.tileAt(i + 1).getValue() && 
+					checkHand.tileAt(i + 1).getValue() == checkHand.tileAt(i + 2).getValue()) {
 				//System.out.println("Removed triple: " + checkHand.removeAt(i));
 				//System.out.println("Removed triple: " + checkHand.removeAt(i));
 				//System.out.println("Removed triple: " + checkHand.removeAt(i));
@@ -191,11 +192,11 @@ public class Function {
 		// remove the four
 		for (int i = 0; i < checkHand.getActiveSize() - 3; i++) {
 			if (checkHand.tileAt(i).getSuit() == checkHand.tileAt(i + 1).getSuit() && 
-				checkHand.tileAt(i + 1).getSuit() == checkHand.tileAt(i + 2).getSuit() && 
-				checkHand.tileAt(i + 2).getSuit() == checkHand.tileAt(i + 3).getSuit() && 
-				checkHand.tileAt(i).getValue() == checkHand.tileAt(i + 1).getValue() && 
-				checkHand.tileAt(i + 1).getValue() == checkHand.tileAt(i + 2).getValue() && 
-				checkHand.tileAt(i + 2).getValue() == checkHand.tileAt(i + 3).getValue()) {
+					checkHand.tileAt(i + 1).getSuit() == checkHand.tileAt(i + 2).getSuit() && 
+					checkHand.tileAt(i + 2).getSuit() == checkHand.tileAt(i + 3).getSuit() && 
+					checkHand.tileAt(i).getValue() == checkHand.tileAt(i + 1).getValue() && 
+					checkHand.tileAt(i + 1).getValue() == checkHand.tileAt(i + 2).getValue() && 
+					checkHand.tileAt(i + 2).getValue() == checkHand.tileAt(i + 3).getValue()) {
 				//System.out.println("Removed four: " + checkHand.removeAt(i));
 				//System.out.println("Removed four: " + checkHand.removeAt(i));
 				//System.out.println("Removed four: " + checkHand.removeAt(i));
@@ -206,16 +207,16 @@ public class Function {
 				checkHand.removeAt(i);
 			}
 		}
-			
+
 		result = runCheck(checkHand);
-		
+
 		if (result == true) {
 			return true;
 		} else{
 			return false;
 		}
 	}
-		
+
 	// helper method for win()
 	public static boolean check1(Hand activeHand, Tile t) {
 		System.out.println("Check 1 executd");
@@ -224,10 +225,10 @@ public class Function {
 		boolean specialCaseResult;
 		// special case(1 1 2 2), win on 1 or 2
 		if (activeHand.getActiveSize() == 4 && 
-			activeHand.tileAt(0).getSuit() == activeHand.tileAt(1).getSuit() && 
-			activeHand.tileAt(2).getSuit() == activeHand.tileAt(3).getSuit() && 
-			activeHand.tileAt(0).getValue() == activeHand.tileAt(1).getValue() && 
-			activeHand.tileAt(2).getValue() == activeHand.tileAt(3).getValue()) {
+				activeHand.tileAt(0).getSuit() == activeHand.tileAt(1).getSuit() && 
+				activeHand.tileAt(2).getSuit() == activeHand.tileAt(3).getSuit() && 
+				activeHand.tileAt(0).getValue() == activeHand.tileAt(1).getValue() && 
+				activeHand.tileAt(2).getValue() == activeHand.tileAt(3).getValue()) {
 			specialCaseResult = douWin(activeHand, t);
 			if (specialCaseResult){
 				return true;
@@ -244,9 +245,9 @@ public class Function {
 		// remove the triple
 		for (int i = 0; i < checkHand.getActiveSize() - 2; i++) {
 			if (checkHand.tileAt(i).getSuit() == checkHand.tileAt(i + 1).getSuit() && 
-				checkHand.tileAt(i + 1).getSuit() == checkHand.tileAt(i + 2).getSuit() && 
-				checkHand.tileAt(i).getValue() == checkHand.tileAt(i + 1).getValue() && 
-				checkHand.tileAt(i + 1).getValue() == checkHand.tileAt(i + 2).getValue()) {
+					checkHand.tileAt(i + 1).getSuit() == checkHand.tileAt(i + 2).getSuit() && 
+					checkHand.tileAt(i).getValue() == checkHand.tileAt(i + 1).getValue() && 
+					checkHand.tileAt(i + 1).getValue() == checkHand.tileAt(i + 2).getValue()) {
 				//System.out.println("Removed triple: " + checkHand.removeAt(i));
 				//System.out.println("Removed triple: " + checkHand.removeAt(i));
 				//System.out.println("Removed triple: " + checkHand.removeAt(i));
@@ -258,11 +259,11 @@ public class Function {
 		// remove the four
 		for (int i = 0; i < checkHand.getActiveSize() - 3; i++) {
 			if (checkHand.tileAt(i).getSuit() == checkHand.tileAt(i + 1).getSuit() && 
-				checkHand.tileAt(i + 1).getSuit() == checkHand.tileAt(i + 2).getSuit() && 
-				checkHand.tileAt(i + 2).getSuit() == checkHand.tileAt(i + 3).getSuit() && 
-				checkHand.tileAt(i).getValue() == checkHand.tileAt(i + 1).getValue() && 
-				checkHand.tileAt(i + 1).getValue() == checkHand.tileAt(i + 2).getValue() && 
-				checkHand.tileAt(i + 2).getValue() == checkHand.tileAt(i + 3).getValue()) {
+					checkHand.tileAt(i + 1).getSuit() == checkHand.tileAt(i + 2).getSuit() && 
+					checkHand.tileAt(i + 2).getSuit() == checkHand.tileAt(i + 3).getSuit() && 
+					checkHand.tileAt(i).getValue() == checkHand.tileAt(i + 1).getValue() && 
+					checkHand.tileAt(i + 1).getValue() == checkHand.tileAt(i + 2).getValue() && 
+					checkHand.tileAt(i + 2).getValue() == checkHand.tileAt(i + 3).getValue()) {
 				//System.out.println("Removed four: " + checkHand.removeAt(i));
 				//System.out.println("Removed four: " + checkHand.removeAt(i));
 				//System.out.println("Removed four: " + checkHand.removeAt(i));
@@ -276,7 +277,7 @@ public class Function {
 		// remove the pair
 		for (int i = 0; i < checkHand.getActiveSize() - 1; i++) {
 			if (checkHand.tileAt(i).getSuit() == checkHand.tileAt(i + 1).getSuit() && 
-				checkHand.tileAt(i).getValue() == checkHand.tileAt(i + 1).getValue()) {
+					checkHand.tileAt(i).getValue() == checkHand.tileAt(i + 1).getValue()) {
 				//System.out.println("Removed pair: " + checkHand.removeAt(i));
 				//System.out.println("Removed pair: " + checkHand.removeAt(i));
 				checkHand.removeAt(i);
@@ -284,16 +285,16 @@ public class Function {
 				break;
 			}
 		}
-			
+
 		result = runCheck(checkHand);
-		
+
 		if (result == true) {
 			return true;
 		} else{
 			return false;
 		}
 	}
-		
+
 	// helper method for win() special win case(7 pairs)
 	public static boolean check2(Hand activeHand, Tile t) {
 		Hand checkHand = new Hand();
@@ -306,10 +307,10 @@ public class Function {
 		// remove the pair
 		for (int i = 0; i < checkHand.getActiveSize() - 1; i++) {
 			if (checkHand.tileAt(i).getSuit() == checkHand.tileAt(i + 1).getSuit() && 
-				checkHand.tileAt(i).getValue() == checkHand.tileAt(i + 1).getValue()) {
+					checkHand.tileAt(i).getValue() == checkHand.tileAt(i + 1).getValue()) {
 			}
 		}
-		
+
 		if (checkHand.getActiveSize() == 0) {
 			return true;
 		} else{
@@ -320,9 +321,9 @@ public class Function {
 	public static boolean runCheck(Hand activeHand) {
 		int i = 0;
 		if (activeHand.tileAt(i).getSuit() != activeHand.tileAt(i + 1).getSuit() || 
-			activeHand.tileAt(i + 1).getSuit() != activeHand.tileAt(i + 2).getSuit() || 
-			activeHand.tileAt(i).getValue() + 1 != activeHand.tileAt(i + 1).getValue() || 
-			activeHand.tileAt(i + 1).getValue() + 1 != activeHand.tileAt(i + 2).getValue()) {
+				activeHand.tileAt(i + 1).getSuit() != activeHand.tileAt(i + 2).getSuit() || 
+				activeHand.tileAt(i).getValue() + 1 != activeHand.tileAt(i + 1).getValue() || 
+				activeHand.tileAt(i + 1).getValue() + 1 != activeHand.tileAt(i + 2).getValue()) {
 			return false;
 		} 
 		else {
