@@ -38,7 +38,6 @@ public class Function {
 					hand.tileAt(i+1).getSuit() == t.getSuit() &&
 					hand.tileAt(i).getValue()-1 == t.getValue() &&
 					hand.tileAt(i+1).getValue()-2 == t.getValue()) {
-				Log.d("function", hand.toString() + " T: (" + t.getSuit() + "," + t.getValue() + ")");
 				if (current == num) {
 					hand.add(t);
 					hand.functionedTiles(i, i+2);
@@ -49,7 +48,6 @@ public class Function {
 					hand.tileAt(i+1).getSuit() == t.getSuit() &&
 					hand.tileAt(i).getValue()+1 == t.getValue() &&
 					hand.tileAt(i+1).getValue()-1 == t.getValue()) {
-				Log.d("function", hand.toString() + " T: (" + t.getSuit() + "," + t.getValue() + ")");
 				if (current == num) {
 					hand.add(t);
 					hand.functionedTiles(i, i+2);
@@ -60,7 +58,6 @@ public class Function {
 					hand.tileAt(i+1).getSuit() == t.getSuit() &&
 					hand.tileAt(i).getValue()+2 == t.getValue() &&
 					hand.tileAt(i+1).getValue()+1 == t.getValue()) {
-				Log.d("function", hand.toString() + " T: (" + t.getSuit() + "," + t.getValue() + ")");
 				if (current == num) {
 					hand.add(t);
 					if (hand.tileAt(i+2).equals(hand.tileAt(i+1))) {

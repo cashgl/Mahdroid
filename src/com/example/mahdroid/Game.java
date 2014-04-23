@@ -85,6 +85,8 @@ public class Game extends Activity {
 		temp.setText("" + discardHeight);
 		botDiscard2Params.height = discardHeight;
 		playerDiscardParams.height = discardHeight;
+		
+		
 	}
 
 	@Override
@@ -319,7 +321,10 @@ public class Game extends Activity {
 	}
 
 	private String evaluateWin(Tile t, int currPlayer) {
-		String handEval = players.get(currPlayer).evaluate(t);
+		Log.d("win", ""+currPlayer);
+		/*Player p = players.get(currPlayer);
+		String handEval = p.evaluate(t);
+		
 		if (currPlayer == 0) {
 			if (handEval.contains("w")) 
 				activateButton(winButton);
@@ -327,13 +332,15 @@ public class Game extends Activity {
 				deactivateButton(winButton);
 		}
 		else
-			deactivateButton(winButton);
+			deactivateButton(winButton);*/
+		String handEval = "";
 		return handEval;
 	}
 
 	private String evaluateNotWin(Tile t, int currPlayer) {
 		String handEval = players.get(currPlayer).evaluate(t);
 		if (currPlayer == 0) {
+			Log.d("eval", handEval);
 			handEval = players.get(currPlayer).evaluate(t);
 			handEval = players.get(currPlayer).evaluate(t); //This needs to be deleted
 			//Activates the eat button if hand has eat
@@ -568,8 +575,8 @@ public class Game extends Activity {
 					@Override
 					public void run() {
 						super.run();
-						evaluateWin(tempTile, currentPlayer);
-						evaluateNotWin(lastTile, currentPlayer);
+						evaluateWin(tempTile, 0);
+						evaluateNotWin(lastTile, 0);
 					}
 				});
 
