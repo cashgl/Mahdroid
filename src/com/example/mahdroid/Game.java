@@ -529,18 +529,16 @@ public class Game extends Activity {
 			
 			String handEval = evaluateNotWin(lastDiscard, 
 					currentPlayer);
-			Log.d("Hand Eval", "Player " + currentPlayer + ", " + handEval);
+
 			Random rand = new Random();
 			int r;
 			if (handEval.length() > 1) {
 				r = rand.nextInt(handEval.length());
 				if (handEval.charAt(r) == 's') {
 					tempTile = deck.draw();
-					
 				} else {
 					p.callFunction(handEval.charAt(r)+"", lastDiscard);
 				}
-					
 			}
 			else {
 				tempTile = deck.draw();
@@ -576,11 +574,8 @@ public class Game extends Activity {
 				});
 
 				//Sleeping the current thread for just a moment just in case
-				try {
-					Thread.sleep(50);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+				Thread.sleep(50);
+				
 				if (tempTile == null  && !eatButton.isEnabled() && !doubleButton.isEnabled() &&
 						!tripleButton.isEnabled()) {
 					tempTile = deck.draw();

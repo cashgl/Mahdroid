@@ -46,16 +46,13 @@ public class Deck {
 	 * @return an individual Tile
 	 */
 	public Tile draw(){
-		this.size--;
-		return deck.poll();
-	}
-
-	/**
-	 * This shuffles all the tiles after each round
-	 */
-	public void shuffle(){
-		
-		//Do to save on memory / garbage collection
+		Tile t = deck.peek();
+		if (t != null) {
+			this.size--;
+			return deck.poll();
+		}
+		else
+			return t;
 	}
 	
 	/**

@@ -121,7 +121,7 @@ public class Hand {
 		StringBuilder s = new StringBuilder();
 		for (int i = 0; i < this.activeSize; i++) {
 			Tile temp = activeHand.get(i);
-			s.append("Suit: " + temp.getSuit() + ", Value: " + temp.getValue() + "\n");
+			s.append("(" + temp.getSuit() + "," + temp.getValue() + ") ");
 		}
 		return s.toString();
 	}
