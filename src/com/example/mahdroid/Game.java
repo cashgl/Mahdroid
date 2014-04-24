@@ -321,9 +321,7 @@ public class Game extends Activity {
 	}
 
 	private String evaluateWin(Tile t, int currPlayer) {
-		Log.d("win", ""+currPlayer);
-		/*Player p = players.get(currPlayer);
-		String handEval = p.evaluate(t);
+		String handEval = players.get(currPlayer).evaluate(t);
 		
 		if (currPlayer == 0) {
 			if (handEval.contains("w")) 
@@ -332,8 +330,8 @@ public class Game extends Activity {
 				deactivateButton(winButton);
 		}
 		else
-			deactivateButton(winButton);*/
-		String handEval = "";
+			deactivateButton(winButton);
+
 		return handEval;
 	}
 
@@ -559,8 +557,6 @@ public class Game extends Activity {
 			refreshHandUi(currentPlayer);
 			//handEval = evaluateWin(tempTile,currentPlayer);
 			
-			
-			
 
 			Thread.sleep(250);
 			currentPlayer = (currentPlayer + 1) %4;
@@ -575,7 +571,7 @@ public class Game extends Activity {
 					@Override
 					public void run() {
 						super.run();
-						evaluateWin(tempTile, 0);
+						evaluateWin(lastTile, 0); 
 						evaluateNotWin(lastTile, 0);
 					}
 				});
@@ -583,10 +579,18 @@ public class Game extends Activity {
 				//Sleeping the current thread for just a moment just in case
 				Thread.sleep(50);
 				
+				//As long as the function tiles aren't enabled and temp tile isn't null
 				if (tempTile == null  && !eatButton.isEnabled() && !doubleButton.isEnabled() &&
 						!tripleButton.isEnabled()) {
+					//Draw from the deck
 					tempTile = deck.draw();
+					//Let the player's tiles be active
 					activatePlayerButtons();
+					//Now, evaluate for win
+					runOnUiThread(new Thread() { @Override public void run() { super.run();
+							if (tempTile != null)
+								evaluateWin(tempTile, 0); }});
+					
 				} else {
 					deactivatePlayerButtons();
 				}
@@ -654,9 +658,6 @@ public class Game extends Activity {
 				if (dist < 300) {
 					Player p = players.get(currentPlayer), 
 							prev = players.get((currentPlayer + 3) % 4);
-					
-					
-					
 					
 					
 					//This is the code that will actually execute the function.

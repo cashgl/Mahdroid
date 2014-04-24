@@ -38,11 +38,12 @@ public class Function {
 					hand.tileAt(i+1).getSuit() == t.getSuit() &&
 					hand.tileAt(i).getValue()-1 == t.getValue() &&
 					hand.tileAt(i+1).getValue()-2 == t.getValue()) {
-				if (current == num) {
-					hand.add(t);
-					hand.functionedTiles(i, i+2);
+				hand.add(t);
+				if (hand.tileAt(i).equals(hand.tileAt(i+1))) {
+					hand.functionedTiles(i, i+1);
+					hand.functionedTiles(i+1, i+1);
 				} else
-					current++;
+					hand.functionedTiles(i, i+2);
 			}
 			else if ( hand.tileAt(i).getSuit() == t.getSuit() &&
 					hand.tileAt(i+1).getSuit() == t.getSuit() &&
