@@ -315,10 +315,16 @@ public class Function {
 		for (int i = 0; i < checkHand.getActiveSize() - 1; i++) {
 			if (checkHand.tileAt(i).getSuit() == checkHand.tileAt(i + 1).getSuit() && 
 					checkHand.tileAt(i).getValue() == checkHand.tileAt(i + 1).getValue()) {
+				//System.out.println("Removed pair: " + checkHand.removeAt(i));
+				//System.out.println("Removed pair: " + checkHand.removeAt(i));
+				checkHand.removeAt(i);
+				checkHand.removeAt(i);
 			}
+			else 
+				runCheck(checkHand);
 		}
 
-		if (checkHand.getActiveSize() == 0) {
+		if (checkHand.getActiveSize() == 0 || checkHand.getActiveSize() == 2 || checkHand.getActiveSize() == 4) {
 			return true;
 		} else{
 			return false;
