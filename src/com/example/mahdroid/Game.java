@@ -72,21 +72,6 @@ public class Game extends Activity {
 			setTileView(tempTileButton, tempTile);
 			updateGameStats();
 		}
-
-		//DONT TOUCH THIS!!!
-		//I'm trying to figure out the discard piles
-		Button temp = (Button) findViewById(R.id.bot2Discard_Button2);
-
-		LayoutParams botDiscard1Params = (LayoutParams) findViewById(R.id.botDiscard1).getLayoutParams(),
-				botDiscard2Params = (LayoutParams) findViewById(R.id.botDiscard2).getLayoutParams(),
-				playerDiscardParams = (LayoutParams) findViewById(R.id.playerDiscard).getLayoutParams();
-
-		int discardHeight = botDiscard1Params.height;
-		temp.setText("" + discardHeight);
-		botDiscard2Params.height = discardHeight;
-		playerDiscardParams.height = discardHeight;
-		
-		
 	}
 
 	@Override
@@ -301,7 +286,7 @@ public class Game extends Activity {
 				tempTileButton.setEnabled(false);
 			}
 		});
-		
+
 	}
 
 	private void discardTile(int i) {
@@ -322,7 +307,8 @@ public class Game extends Activity {
 
 	private String evaluateWin(Tile t, int currPlayer) {
 		String handEval = players.get(currPlayer).evaluate(t);
-		
+		Log.d("win", handEval);
+
 		if (currPlayer == 0) {
 			if (handEval.contains("w")) 
 				activateButton(winButton);
@@ -419,7 +405,7 @@ public class Game extends Activity {
 				b.setBackgroundColor(Color.GRAY);
 			b.setText("" + t.getValue());
 			b.setVisibility(View.VISIBLE);
-			
+
 			if (playerButtons.contains(b) || tempTileButton.equals(b))
 				b.setOnClickListener(new TileValueListener());
 		} else {
@@ -528,35 +514,45 @@ public class Game extends Activity {
 		try {
 			//Refreshes game stats so the human knows which player's turn it is
 			updateGameStats();
-			Thread.sleep(2000);
+			Thread.sleep(1975);
 			Player p = players.get(currentPlayer);
 			Tile lastDiscard = players.get((currentPlayer + 3)%4).lastDiscard();
-			
+
 			String handEval = evaluateNotWin(lastDiscard, 
 					currentPlayer);
 
 			Random rand = new Random();
 			int r;
+			//If skip isn't the only function available:
 			if (handEval.length() > 1) {
 				r = rand.nextInt(handEval.length());
+				//Picks a random function to execute
 				if (handEval.charAt(r) == 's') {
 					tempTile = deck.draw();
 				} else {
 					p.callFunction(handEval.charAt(r)+"", lastDiscard);
 				}
 			}
+			//If we don't execute a function, just draw a tile
 			else {
 				tempTile = deck.draw();
 			}
-			
+
 			//Selects a random card to discard
-			r = rand.nextInt(p.getActiveSize() + 1);
-			if (r == p.getActiveSize())
-				r = 13;
+			/*if (tempTile == null)
+				r = p.getActiveSize();
+			else {*/
+				r = rand.nextInt(p.getActiveSize() + 1);
+				if (r == p.getActiveSize())
+					r = 13;
+			//}
+			//Discards a tile regardless of if we did a function or not
 			discardTile(r);
+
+			Thread.sleep(25);
 			refreshHandUi(currentPlayer);
 			//handEval = evaluateWin(tempTile,currentPlayer);
-			
+
 
 			Thread.sleep(250);
 			currentPlayer = (currentPlayer + 1) %4;
@@ -578,7 +574,7 @@ public class Game extends Activity {
 
 				//Sleeping the current thread for just a moment just in case
 				Thread.sleep(50);
-				
+
 				//As long as the function tiles aren't enabled and temp tile isn't null
 				if (tempTile == null  && !eatButton.isEnabled() && !doubleButton.isEnabled() &&
 						!tripleButton.isEnabled()) {
@@ -588,9 +584,9 @@ public class Game extends Activity {
 					activatePlayerButtons();
 					//Now, evaluate for win
 					runOnUiThread(new Thread() { @Override public void run() { super.run();
-							if (tempTile != null)
-								evaluateWin(tempTile, 0); }});
-					
+					if (tempTile != null)
+						evaluateWin(tempTile, 0); }});
+
 				} else {
 					deactivatePlayerButtons();
 				}
@@ -658,8 +654,8 @@ public class Game extends Activity {
 				if (dist < 300) {
 					Player p = players.get(currentPlayer), 
 							prev = players.get((currentPlayer + 3) % 4);
-					
-					
+
+
 					//This is the code that will actually execute the function.
 					//However, it is only used in the case of the human player
 					//since we will be automatically be doing this for the bots
@@ -674,9 +670,9 @@ public class Game extends Activity {
 						//call eat on current player
 						p.callFunction(funct, prev.useLastDiscard());
 					} 
-					
+
 					activatePlayerButtons();
-					
+
 					//Disables the TempTileButton so that when you discard,
 					//you don't accidentally discard a functioned tile
 					tempTileButton.setEnabled(false);

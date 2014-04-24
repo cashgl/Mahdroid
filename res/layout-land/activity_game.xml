@@ -512,81 +512,38 @@
 
     <RelativeLayout
         android:id="@+id/discards"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/playerHand"
         android:layout_below="@+id/lineBot2"
-        android:layout_toRightOf="@+id/lineBot3"
         android:layout_toLeftOf="@+id/lineBot1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_toRightOf="@+id/lineBot3" >
 
-        <RelativeLayout
-            android:id="@+id/playerDiscard"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/textView1"
-            android:layout_alignLeft="@+id/botDiscard2"
-            android:layout_alignRight="@+id/botDiscard2"
-            android:background="@color/light_red" >
-
-            <Button
-                android:id="@+id/button3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Button" />
-
-        </RelativeLayout>
-        
         <RelativeLayout
             android:id="@+id/botDiscard2"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/botDiscard1"
-            android:layout_toRightOf="@+id/botDiscard3"
-            android:layout_marginBottom="3dp"
-            android:background="@color/light_green" >
-
-            <Button
-                android:id="@+id/bot2Discard_Button2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Button" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/botDiscard1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/botDiscard3"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="3dp"
-            android:background="@color/light_pink" >
-
-            <Button
-                android:id="@+id/button1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Button" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/botDiscard3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/gameStats"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="3dp"
+            android:layout_marginBottom="3dp"
             android:background="@color/light_blue" >
 
             <Button
-                android:id="@+id/button4"
-                android:layout_width="wrap_content"
+                android:id="@+id/bot2Discard_Button2"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:background="@color/grey"
+                android:layout_centerHorizontal="true"
+                android:text="" />
+
+            <TextView
+                android:layout_width="100dp"
+                android:textSize="25sp"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/bot2Discard_Button2"
+                android:layout_centerVertical="true"
+                android:text="Discard:" />
 
         </RelativeLayout>
 
@@ -599,7 +556,6 @@
             android:layout_alignParentRight="true"
             android:gravity="center_horizontal"
             android:text="TextView" />
-
     </RelativeLayout>
 
 </RelativeLayout>
