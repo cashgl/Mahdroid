@@ -320,11 +320,16 @@ public class Function {
 				checkHand.removeAt(i);
 				checkHand.removeAt(i);
 			}
-			else 
+			else {
 				runCheck(checkHand);
+				if (checkHand.getActiveSize() < 6){
+					return false;
+				}
+			}
+			i = i - 1;
 		}
 
-		if (checkHand.getActiveSize() == 0 || checkHand.getActiveSize() == 2 || checkHand.getActiveSize() == 4) {
+		if (checkHand.getActiveSize() == 0) {
 			return true;
 		} else{
 			return false;
