@@ -39,7 +39,7 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f09004a;
+        public static final int action_settings=0x7f09004b;
         public static final int bot2Discard_Button2=0x7f090044;
         public static final int botDiscard2=0x7f090043;
         public static final int botHand1=0x7f090011;
@@ -88,12 +88,13 @@ public final class R {
         public static final int doubleButton=0x7f09003f;
         public static final int eatButton=0x7f09003e;
         public static final int functionButtons=0x7f09003c;
-        public static final int gameStats=0x7f090045;
-        public static final int gameTitle=0x7f090047;
-        public static final int goToInstructions=0x7f090049;
+        public static final int gameStats=0x7f090046;
+        public static final int gameTitle=0x7f090048;
+        public static final int goToInstructions=0x7f09004a;
         public static final int lineBot1=0x7f090002;
         public static final int lineBot2=0x7f09002d;
         public static final int lineBot3=0x7f090001;
+        public static final int newRnd=0x7f090045;
         public static final int playerHand=0x7f090000;
         public static final int playerTile0=0x7f090003;
         public static final int playerTile1=0x7f090004;
@@ -110,9 +111,9 @@ public final class R {
         public static final int playerTile9=0x7f09000c;
         public static final int playerTileTemp=0x7f090010;
         public static final int skipButton=0x7f09003d;
-        public static final int startGame=0x7f090048;
+        public static final int startGame=0x7f090049;
         public static final int tripleButton=0x7f090040;
-        public static final int webView1=0x7f090046;
+        public static final int webView1=0x7f090047;
         public static final int winButton=0x7f090041;
     }
     public static final class layout {
@@ -128,6 +129,7 @@ public final class R {
         public static final int action_settings=0x7f050001;
         public static final int addButtonName=0x7f050005;
         public static final int app_name=0x7f050000;
+        public static final int discard=0x7f05000b;
         public static final int goToInstructions=0x7f050004;
         public static final int hello_world=0x7f05000a;
         public static final int mainTitle=0x7f050002;
@@ -159,12 +161,13 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f070007;
+        public static final int AppBaseTheme=0x7f070008;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f070008;
+        public static final int AppTheme=0x7f070009;
         public static final int bot2Button=0x7f070002;
+        public static final int discardButton=0x7f070007;
         public static final int line_divider_horiz=0x7f070006;
         public static final int line_divider_vert=0x7f070005;
         public static final int line_horiz=0x7f070004;

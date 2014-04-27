@@ -7,6 +7,7 @@ import java.util.Random;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -16,16 +17,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Game extends Activity {
 
 	ArrayList<Button> playerButtons, bot1Buttons, bot2Buttons, bot3Buttons;
 	ArrayList<Player> players;
-	Player player, bot1, bot2, bot3;
 	Deck deck;
 	Tile tempTile;
 	Button eatButton, doubleButton, tripleButton, winButton, 
@@ -33,6 +32,8 @@ public class Game extends Activity {
 	TextView gameStats;
 	int currentRound, currentPlayer;
 	boolean hasWon;
+	
+	Button newRoundButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +60,9 @@ public class Game extends Activity {
 		deactivateButton(skipButton);
 		deactivateButton(tripleButton);
 
-		ViewGroup linearlayout = (ViewGroup) findViewById(R.id.botDiscard2);
-		Button bt = new Button(this);
-		bt.setText("Hi!");
+		//ViewGroup linearlayout = (ViewGroup) findViewById(R.id.botDiscard2);
+		//Button bt = new Button(this);
+		//bt.setText("Hi!");
 		//linearlayout.addView(bt);
 
 		if (currentPlayer != 0) {
@@ -72,6 +73,17 @@ public class Game extends Activity {
 			setTileView(tempTileButton, tempTile);
 			updateGameStats();
 		}
+		
+		newRoundButton = (Button) findViewById(R.id.newRnd);
+		newRoundButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				if (currentPlayer == 0)
+					newRound();
+				
+			}
+		});
 	}
 
 	@Override
@@ -100,16 +112,12 @@ public class Game extends Activity {
 			players = null;
 		players = new ArrayList<Player>();
 		players.add(new Player(deck));
-		player = players.get(0);
 
 		players.add(new Player(deck));
-		bot1 = players.get(1);
 
 		players.add(new Player(deck));
-		bot2 = players.get(2);
 
 		players.add(new Player(deck));
-		bot3 = players.get(3);
 
 		for (int i = 0; i <= 3; i++) {
 			players.get(i).addObserver(new DiscardObserver());
@@ -121,10 +129,10 @@ public class Game extends Activity {
 
 	private void setupHands() {
 		//This associates the value of the hands
-		if (player.getActiveSize() == 0 &&
-				bot1.getActiveSize() == 0 &&
-				bot2.getActiveSize() == 0 &&
-				bot3.getActiveSize() == 0) {
+		if (players.get(0).getActiveSize() == 0 &&
+				players.get(1).getActiveSize() == 0 &&
+				players.get(2).getActiveSize() == 0 &&
+				players.get(3).getActiveSize() == 0) {
 			for (int i = 0; i <= 3; i++) {
 				for (int j = 0; j <= 12; j++) {
 					players.get(i).drawTile();
@@ -243,6 +251,55 @@ public class Game extends Activity {
 		skipButton.setOnTouchListener(functionOnTouch);
 
 		gameStats = (TextView) findViewById(R.id.gameStats);
+	}
+
+	private void newRound() {
+		currentRound++;
+		resetGame();
+		
+		hasWon = false;
+		deck = new Deck();
+		
+		setupPlayers();
+
+		currentPlayer = randomPlayer();
+
+		//The common 14th tile used by the current player
+		tempTile = deck.draw();
+		evaluateWin(tempTile, currentPlayer);
+
+		deactivateButton(doubleButton);
+		deactivateButton(eatButton);
+		deactivateButton(skipButton);
+		deactivateButton(tripleButton);
+		
+		if (currentPlayer != 0) {
+			deactivatePlayerButtons();
+			PerformTurnThread t = new PerformTurnThread();
+			t.start();
+		} else {
+			setTileView(tempTileButton, tempTile);
+			updateGameStats();
+		}
+		
+		updateGameStats();
+	}
+
+	private void resetGame() {
+		playerButtons = null; bot1Buttons = null; 
+		bot2Buttons = null; bot3Buttons = null;
+
+		for (int i = 0; i < 4; i++) {
+			players.set(i, null);
+		}
+
+		deck = null;
+
+		players = null;
+		tempTile = null;
+		
+		setTileView(discardButton, null);
+
 	}
 
 	private int randomPlayer() {
@@ -542,9 +599,9 @@ public class Game extends Activity {
 			/*if (tempTile == null)
 				r = p.getActiveSize();
 			else {*/
-				r = rand.nextInt(p.getActiveSize() + 1);
-				if (r == p.getActiveSize())
-					r = 13;
+			r = rand.nextInt(p.getActiveSize() + 1);
+			if (r == p.getActiveSize())
+				r = 13;
 			//}
 			//Discards a tile regardless of if we did a function or not
 			discardTile(r);
@@ -655,40 +712,71 @@ public class Game extends Activity {
 					Player p = players.get(currentPlayer), 
 							prev = players.get((currentPlayer + 3) % 4);
 
-
 					//This is the code that will actually execute the function.
 					//However, it is only used in the case of the human player
 					//since we will be automatically be doing this for the bots
 					String functText = temp.getText() + "";
-					if (functText.equalsIgnoreCase("double")) {
-						//call double on current player
-						p.callFunction(funct, prev.useLastDiscard());
-					} else if (functText.equalsIgnoreCase("triple")) {
-						//call triple on current player
-						p.callFunction(funct, prev.useLastDiscard());
-					} else if (functText.equalsIgnoreCase("eat")) {
-						//call eat on current player
-						p.callFunction(funct, prev.useLastDiscard());
-					} 
+					if (functText.equalsIgnoreCase("win!")) {
+						Builder alertDialogBuilder = new Builder(Game.this);
+						// set title
+						alertDialogBuilder.setTitle("Congratulations! You won!");
 
-					activatePlayerButtons();
+						// set dialog message
+						alertDialogBuilder
+						.setMessage("Do you want to start another round?")
+						.setCancelable(false)
+						.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,int id) {
+								// if this button is clicked, close
+								// current activity
+								newRound();
+							}
+						})
+						.setNegativeButton("No",new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,int id) {
+								// if this button is clicked, just close
+								// the dialog box and do nothing
+								dialog.cancel();
+							}
+						});
 
-					//Disables the TempTileButton so that when you discard,
-					//you don't accidentally discard a functioned tile
-					tempTileButton.setEnabled(false);
-					if (functText.equals("triple")) {
-						tempTile = deck.draw();
-						tempTileButton.setEnabled(true);
-						refreshHandUi(currentPlayer);
+						// create alert dialog
+						AlertDialog alertDialog = alertDialogBuilder.create();
+
+						// show it
+						alertDialog.show();
+					} else {
+						if (functText.equalsIgnoreCase("double")) {
+							//call double on current player
+							p.callFunction(funct, prev.useLastDiscard());
+						} else if (functText.equalsIgnoreCase("triple")) {
+							//call triple on current player
+							p.callFunction(funct, prev.useLastDiscard());
+						} else if (functText.equalsIgnoreCase("eat")) {
+							//call eat on current player
+							p.callFunction(funct, prev.useLastDiscard());
+						} 
+
+						activatePlayerButtons();
+
+						//Disables the TempTileButton so that when you discard,
+						//you don't accidentally discard a functioned tile
+						tempTileButton.setEnabled(false);
+						if (functText.equals("triple")) {
+							tempTile = deck.draw();
+							tempTileButton.setEnabled(true);
+							refreshHandUi(currentPlayer);
+						}
+						else if (functText.equalsIgnoreCase("skip")) {
+							tempTile = deck.draw();
+							tempTileButton.setEnabled(true);
+							refreshHandUi(currentPlayer);
+						}
+
+						if (!functText.equals("triple") || !functText.equals("skip"))
+							refreshHandUi(currentPlayer);
 					}
-					else if (functText.equalsIgnoreCase("skip")) {
-						tempTile = deck.draw();
-						tempTileButton.setEnabled(true);
-						refreshHandUi(currentPlayer);
-					}
 
-					if (!functText.equals("triple") || !functText.equals("skip"))
-						refreshHandUi(currentPlayer);
 					deactivateButton(doubleButton);
 					deactivateButton(eatButton);
 					deactivateButton(skipButton);

@@ -525,7 +525,7 @@
             android:layout_height="50dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
             android:layout_marginBottom="3dp"
             android:background="@color/light_blue" >
 
@@ -543,7 +543,15 @@
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@+id/bot2Discard_Button2"
                 android:layout_centerVertical="true"
-                android:text="Discard:" />
+                android:text="@string/discard" />
+
+            <Button
+                android:id="@+id/newRnd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:text="New" />
 
         </RelativeLayout>
 
