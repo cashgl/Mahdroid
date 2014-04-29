@@ -314,20 +314,44 @@ public class Function {
 		// remove the pair
 		for (int i = 0; i < checkHand.getActiveSize() - 1; i++) {
 			if (checkHand.tileAt(i).getSuit() == checkHand.tileAt(i + 1).getSuit() && 
-					checkHand.tileAt(i).getValue() == checkHand.tileAt(i + 1).getValue()) {
-				//System.out.println("Removed pair: " + checkHand.removeAt(i));
-				//System.out.println("Removed pair: " + checkHand.removeAt(i));
+				checkHand.tileAt(i).getValue() == checkHand.tileAt(i + 1).getValue()) {
 				checkHand.removeAt(i);
 				checkHand.removeAt(i);
-			}
+				i = i - 1;
+			}//end if
 			else {
-				runCheck(checkHand);
 				if (checkHand.getActiveSize() < 6){
 					return false;
 				}
-			}
-			i = i - 1;
-		}
+				runCheck(checkHand);
+				if (checkHand.getActiveSize() == 6){
+					i = 0;
+					if (checkHand.tileAt(i).getSuit() == checkHand.tileAt(i+1).getSuit() &&
+						checkHand.tileAt(i+1).getSuit() == checkHand.tileAt(i+3).getSuit() &&
+						checkHand.tileAt(i).getValue()+1== checkHand.tileAt(i+1).getValue() &&
+						checkHand.tileAt(i+1).getValue()+1 == checkHand.tileAt(i+3).getValue() &&
+						checkHand.tileAt(i+2).getSuit() == checkHand.tileAt(i+4).getSuit() &&
+						checkHand.tileAt(i+4).getSuit() == checkHand.tileAt(i+5).getSuit() &&
+						checkHand.tileAt(i+2).getValue()+1 == checkHand.tileAt(i+4).getValue() &&
+						checkHand.tileAt(i+4).getValue()+1 == checkHand.tileAt(i+5).getValue()){
+							return true;
+					}//end if
+					else if (checkHand.tileAt(i).getSuit() == checkHand.tileAt(i+2).getSuit() &&
+							 checkHand.tileAt(i+2).getSuit() == checkHand.tileAt(i+4).getSuit() &&
+							 checkHand.tileAt(i).getValue()+1== checkHand.tileAt(i+2).getValue() &&
+						     checkHand.tileAt(i+2).getValue()+1 == checkHand.tileAt(i+4).getValue() &&
+							 checkHand.tileAt(i+1).getSuit() == checkHand.tileAt(i+3).getSuit() &&
+						     checkHand.tileAt(i+3).getSuit() == checkHand.tileAt(i+5).getSuit() &&
+							 checkHand.tileAt(i+1).getValue()+1 == checkHand.tileAt(i+3).getValue() &&
+							 checkHand.tileAt(i+3).getValue()+1 == checkHand.tileAt(i+5).getValue()){
+							 	return true;
+					}//end else if
+					else {
+						return false;
+					}//end else
+				}//end if
+			}//end else
+		}//end for
 
 		if (checkHand.getActiveSize() == 0) {
 			return true;
