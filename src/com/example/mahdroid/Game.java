@@ -31,8 +31,8 @@ public class Game extends Activity {
 	skipButton, tempTileButton, discardButton;
 	TextView gameStats;
 	int currentRound, currentPlayer;
-	boolean hasWon;
-	
+	boolean roundEnded, hasWon;
+
 	Button newRoundButton;
 
 	@Override
@@ -41,9 +41,13 @@ public class Game extends Activity {
 		setContentView(R.layout.activity_game);
 
 		currentRound = 1; //Shows that the initial is the current round
+		roundEnded = false;
 		hasWon = false;
 
 		deck = new Deck(); //Sets up the deck everyone will use
+
+		for (int i = 0; i < 68; i++)
+			tempTile = deck.draw();
 
 		//Randomly generates a player to start the game
 		currentPlayer = randomPlayer();
@@ -52,7 +56,7 @@ public class Game extends Activity {
 		setupPlayers();
 
 		//The common 14th tile used by the current player
-		tempTile = deck.draw();
+		drawTile();
 		evaluateWin(tempTile, currentPlayer);
 
 		deactivateButton(doubleButton);
@@ -73,15 +77,15 @@ public class Game extends Activity {
 			setTileView(tempTileButton, tempTile);
 			updateGameStats();
 		}
-		
+
 		newRoundButton = (Button) findViewById(R.id.newRnd);
 		newRoundButton.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				if (currentPlayer == 0)
 					newRound();
-				
+
 			}
 		});
 	}
@@ -256,23 +260,23 @@ public class Game extends Activity {
 	private void newRound() {
 		currentRound++;
 		resetGame();
-		
-		hasWon = false;
+
+		roundEnded = false;
 		deck = new Deck();
-		
+
 		setupPlayers();
 
 		currentPlayer = randomPlayer();
 
 		//The common 14th tile used by the current player
-		tempTile = deck.draw();
+		drawTile();
 		evaluateWin(tempTile, currentPlayer);
 
 		deactivateButton(doubleButton);
 		deactivateButton(eatButton);
 		deactivateButton(skipButton);
 		deactivateButton(tripleButton);
-		
+
 		if (currentPlayer != 0) {
 			deactivatePlayerButtons();
 			PerformTurnThread t = new PerformTurnThread();
@@ -281,7 +285,7 @@ public class Game extends Activity {
 			setTileView(tempTileButton, tempTile);
 			updateGameStats();
 		}
-		
+
 		updateGameStats();
 	}
 
@@ -297,7 +301,7 @@ public class Game extends Activity {
 
 		players = null;
 		tempTile = null;
-		
+
 		setTileView(discardButton, null);
 
 	}
@@ -359,6 +363,14 @@ public class Game extends Activity {
 			p.discardTile(i);
 			p.addToHand(tempTile);
 			tempTile = null;
+		}
+	}
+
+	private void drawTile() {
+		tempTile = deck.draw();
+
+		if (deck.getSize() <= 0) {
+			roundEnded = true;
 		}
 	}
 
@@ -568,92 +580,125 @@ public class Game extends Activity {
 	}
 
 	private void performTurn() {
-		try {
-			//Refreshes game stats so the human knows which player's turn it is
-			updateGameStats();
-			Thread.sleep(1975);
-			Player p = players.get(currentPlayer);
-			Tile lastDiscard = players.get((currentPlayer + 3)%4).lastDiscard();
-
-			String handEval = evaluateNotWin(lastDiscard, 
-					currentPlayer);
-
-			Random rand = new Random();
-			int r;
-			//If skip isn't the only function available:
-			if (handEval.length() > 1) {
-				r = rand.nextInt(handEval.length());
-				//Picks a random function to execute
-				if (handEval.charAt(r) == 's') {
-					tempTile = deck.draw();
-				} else {
-					p.callFunction(handEval.charAt(r)+"", lastDiscard);
-				}
-			}
-			//If we don't execute a function, just draw a tile
-			else {
-				tempTile = deck.draw();
-			}
-
-			//Selects a random card to discard
-			/*if (tempTile == null)
-				r = p.getActiveSize();
-			else {*/
-			r = rand.nextInt(p.getActiveSize() + 1);
-			if (r == p.getActiveSize())
-				r = 13;
-			//}
-			//Discards a tile regardless of if we did a function or not
-			discardTile(r);
-
-			Thread.sleep(25);
-			refreshHandUi(currentPlayer);
-			//handEval = evaluateWin(tempTile,currentPlayer);
-
-
-			Thread.sleep(250);
-			currentPlayer = (currentPlayer + 1) %4;
-			//Starts performTurn with the next player again
-			if (currentPlayer == 2 || currentPlayer == 3) {
-				performTurn();
-			} 
-			//If it is bot 3, we make the buttons clickable for the human player again
-			else if (currentPlayer == 0) {
-				final Tile lastTile = players.get(3).lastDiscard();
-				runOnUiThread(new Thread() {
-					@Override
-					public void run() {
-						super.run();
-						evaluateWin(lastTile, 0); 
-						evaluateNotWin(lastTile, 0);
-					}
-				});
-
-				//Sleeping the current thread for just a moment just in case
-				Thread.sleep(50);
-
-				//As long as the function tiles aren't enabled and temp tile isn't null
-				if (tempTile == null  && !eatButton.isEnabled() && !doubleButton.isEnabled() &&
-						!tripleButton.isEnabled()) {
-					//Draw from the deck
-					tempTile = deck.draw();
-					//Let the player's tiles be active
-					activatePlayerButtons();
-					//Now, evaluate for win
-					runOnUiThread(new Thread() { @Override public void run() { super.run();
-					if (tempTile != null)
-						evaluateWin(tempTile, 0); }});
-
-				} else {
-					deactivatePlayerButtons();
-				}
+		if (!roundEnded) {
+			try {
+				//Refreshes game stats so the human knows which player's turn it is
 				updateGameStats();
-				refreshHandUi(currentPlayer);
+				Thread.sleep(1975);
+				Player p = players.get(currentPlayer);
+				Tile lastDiscard = players.get((currentPlayer + 3)%4).lastDiscard();
+
+				String handEval = evaluateNotWin(lastDiscard, 
+						currentPlayer);
+
+				Random rand = new Random();
+				int r;
+				//If skip isn't the only function available:
+				if (handEval.length() > 1) {
+					r = rand.nextInt(handEval.length());
+					//Picks a random function to execute
+					if (handEval.charAt(r) == 's') {
+						drawTile();
+					} else {
+						p.callFunction(handEval.charAt(r)+"", lastDiscard);
+					}
+				}
+				//If we don't execute a function, just draw a tile
+				else {
+					drawTile();
+				}
+
+				if (!roundEnded) {
+					//Selects a random card to discard
+					/*if (tempTile == null)
+					r = p.getActiveSize();
+				else {*/
+					r = rand.nextInt(p.getActiveSize() + 1);
+					if (r == p.getActiveSize())
+						r = 13;
+					//}
+					//Discards a tile regardless of if we did a function or not
+					discardTile(r);
+
+					Thread.sleep(25);
+					refreshHandUi(currentPlayer);
+					//handEval = evaluateWin(tempTile,currentPlayer);
+
+
+					Thread.sleep(250);
+					currentPlayer = (currentPlayer + 1) %4;
+					//Starts performTurn with the next player again
+					if (currentPlayer == 2 || currentPlayer == 3) {
+						performTurn();
+					} 
+					//If it is bot 3, we make the buttons clickable for the human player again
+					else if (currentPlayer == 0) {
+						final Tile lastTile = players.get(3).lastDiscard();
+						runOnUiThread(new Thread() {
+							@Override
+							public void run() {
+								super.run();
+								evaluateWin(lastTile, 0); 
+								evaluateNotWin(lastTile, 0);
+							}
+						});
+
+						//Sleeping the current thread for just a moment just in case
+						Thread.sleep(50);
+
+						//As long as the function tiles aren't enabled and temp tile isn't null
+						if (tempTile == null  && !eatButton.isEnabled() && !doubleButton.isEnabled() &&
+								!tripleButton.isEnabled()) {
+							//Draw from the deck
+							drawTile();
+							//Let the player's tiles be active
+							activatePlayerButtons();
+							//Now, evaluate for win
+							runOnUiThread(new Thread() { @Override public void run() { super.run();
+							if (tempTile != null)
+								evaluateWin(tempTile, 0); }});
+
+						} else {
+							deactivatePlayerButtons();
+						}
+						updateGameStats();
+						refreshHandUi(currentPlayer);
+					}
+				}
+				Thread.sleep(250);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
-			Thread.sleep(250);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+
+		} //End if(!roundEnded)
+		System.out.println(roundEnded);
+		if (roundEnded) {
+
+			Builder alertDialogBuilder = new Builder(Game.this);
+			// set title
+			alertDialogBuilder.setTitle("Round Over: ran out of tiles");
+
+			// set dialog message
+			alertDialogBuilder
+			.setMessage("Do you want to start another round?")
+			.setCancelable(false)
+			.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog,int id) {
+					// if this button is clicked, close
+					// current activity
+					newRound();
+				}
+			})
+			.setNegativeButton("No",new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog,int id) {
+					// if this button is clicked, just close
+					// the dialog box and do nothing
+					dialog.cancel();
+				}
+			});
+
+		} //End if(roundEnded)
+
 	}
 
 	private class TileValueListener implements OnClickListener {
@@ -717,6 +762,7 @@ public class Game extends Activity {
 					//since we will be automatically be doing this for the bots
 					String functText = temp.getText() + "";
 					if (functText.equalsIgnoreCase("win!")) {
+						roundEnded = true;
 						Builder alertDialogBuilder = new Builder(Game.this);
 						// set title
 						alertDialogBuilder.setTitle("Congratulations! You won!");
@@ -763,12 +809,12 @@ public class Game extends Activity {
 						//you don't accidentally discard a functioned tile
 						tempTileButton.setEnabled(false);
 						if (functText.equals("triple")) {
-							tempTile = deck.draw();
+							drawTile();
 							tempTileButton.setEnabled(true);
 							refreshHandUi(currentPlayer);
 						}
 						else if (functText.equalsIgnoreCase("skip")) {
-							tempTile = deck.draw();
+							drawTile();
 							tempTileButton.setEnabled(true);
 							refreshHandUi(currentPlayer);
 						}
