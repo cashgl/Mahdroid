@@ -38,12 +38,19 @@ public class Function {
 					hand.tileAt(i+1).getSuit() == t.getSuit() &&
 					hand.tileAt(i).getValue()-1 == t.getValue() &&
 					hand.tileAt(i+1).getValue()-2 == t.getValue()) {
-				hand.add(t);
-				if (hand.tileAt(i).equals(hand.tileAt(i+1))) {
-					hand.functionedTiles(i, i+1);
-					hand.functionedTiles(i+1, i+1);
+				if (current == num) {
+					hand.add(t);
+					if (hand.tileAt(i).equals(hand.tileAt(i+1))) {
+						hand.functionedTiles(i, i+1);
+						hand.functionedTiles(i+1, i+1);
+					} 
+					else if (hand.tileAt(i+1).equals(hand.tileAt(i+2))) {
+						hand.functionedTiles(i, i+1);
+						hand.functionedTiles(i+1, i+1);
+					} else
+						hand.functionedTiles(i, i+2);
 				} else
-					hand.functionedTiles(i, i+2);
+					current++;
 			}
 			else if ( hand.tileAt(i).getSuit() == t.getSuit() &&
 					hand.tileAt(i+1).getSuit() == t.getSuit() &&
@@ -314,7 +321,7 @@ public class Function {
 		// remove the pair
 		for (int i = 0; i < checkHand.getActiveSize() - 1; i++) {
 			if (checkHand.tileAt(i).getSuit() == checkHand.tileAt(i + 1).getSuit() && 
-				checkHand.tileAt(i).getValue() == checkHand.tileAt(i + 1).getValue()) {
+					checkHand.tileAt(i).getValue() == checkHand.tileAt(i + 1).getValue()) {
 				checkHand.removeAt(i);
 				checkHand.removeAt(i);
 				i = i - 1;
@@ -327,24 +334,24 @@ public class Function {
 				if (checkHand.getActiveSize() == 6){
 					i = 0;
 					if (checkHand.tileAt(i).getSuit() == checkHand.tileAt(i+1).getSuit() &&
-						checkHand.tileAt(i+1).getSuit() == checkHand.tileAt(i+3).getSuit() &&
-						checkHand.tileAt(i).getValue()+1== checkHand.tileAt(i+1).getValue() &&
-						checkHand.tileAt(i+1).getValue()+1 == checkHand.tileAt(i+3).getValue() &&
-						checkHand.tileAt(i+2).getSuit() == checkHand.tileAt(i+4).getSuit() &&
-						checkHand.tileAt(i+4).getSuit() == checkHand.tileAt(i+5).getSuit() &&
-						checkHand.tileAt(i+2).getValue()+1 == checkHand.tileAt(i+4).getValue() &&
-						checkHand.tileAt(i+4).getValue()+1 == checkHand.tileAt(i+5).getValue()){
-							return true;
+							checkHand.tileAt(i+1).getSuit() == checkHand.tileAt(i+3).getSuit() &&
+							checkHand.tileAt(i).getValue()+1== checkHand.tileAt(i+1).getValue() &&
+							checkHand.tileAt(i+1).getValue()+1 == checkHand.tileAt(i+3).getValue() &&
+							checkHand.tileAt(i+2).getSuit() == checkHand.tileAt(i+4).getSuit() &&
+							checkHand.tileAt(i+4).getSuit() == checkHand.tileAt(i+5).getSuit() &&
+							checkHand.tileAt(i+2).getValue()+1 == checkHand.tileAt(i+4).getValue() &&
+							checkHand.tileAt(i+4).getValue()+1 == checkHand.tileAt(i+5).getValue()){
+						return true;
 					}//end if
 					else if (checkHand.tileAt(i).getSuit() == checkHand.tileAt(i+2).getSuit() &&
-							 checkHand.tileAt(i+2).getSuit() == checkHand.tileAt(i+4).getSuit() &&
-							 checkHand.tileAt(i).getValue()+1== checkHand.tileAt(i+2).getValue() &&
-						     checkHand.tileAt(i+2).getValue()+1 == checkHand.tileAt(i+4).getValue() &&
-							 checkHand.tileAt(i+1).getSuit() == checkHand.tileAt(i+3).getSuit() &&
-						     checkHand.tileAt(i+3).getSuit() == checkHand.tileAt(i+5).getSuit() &&
-							 checkHand.tileAt(i+1).getValue()+1 == checkHand.tileAt(i+3).getValue() &&
-							 checkHand.tileAt(i+3).getValue()+1 == checkHand.tileAt(i+5).getValue()){
-							 	return true;
+							checkHand.tileAt(i+2).getSuit() == checkHand.tileAt(i+4).getSuit() &&
+							checkHand.tileAt(i).getValue()+1== checkHand.tileAt(i+2).getValue() &&
+							checkHand.tileAt(i+2).getValue()+1 == checkHand.tileAt(i+4).getValue() &&
+							checkHand.tileAt(i+1).getSuit() == checkHand.tileAt(i+3).getSuit() &&
+							checkHand.tileAt(i+3).getSuit() == checkHand.tileAt(i+5).getSuit() &&
+							checkHand.tileAt(i+1).getValue()+1 == checkHand.tileAt(i+3).getValue() &&
+							checkHand.tileAt(i+3).getValue()+1 == checkHand.tileAt(i+5).getValue()){
+						return true;
 					}//end else if
 					else {
 						return false;
