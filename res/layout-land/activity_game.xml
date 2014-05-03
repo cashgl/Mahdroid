@@ -531,9 +531,9 @@
 
             <Button
                 android:id="@+id/bot2Discard_Button2"
-                android:layout_width="50dp"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
-                android:background="@color/grey"
+                android:background="@color/light_blue"
                 android:layout_centerHorizontal="true"
                 android:text="" />
 
@@ -549,9 +549,11 @@
                 android:id="@+id/newRnd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:text="New" />
+                android:layout_toRightOf="@+id/bot2Discard_Button2"
+                android:background="@color/light_blue"
+                android:text="Start New Round" />
 
         </RelativeLayout>
 
@@ -564,6 +566,7 @@
             android:layout_alignParentRight="true"
             android:gravity="center_horizontal"
             android:text="TextView" />
+
     </RelativeLayout>
 
 </RelativeLayout>

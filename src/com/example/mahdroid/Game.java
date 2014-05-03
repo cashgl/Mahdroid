@@ -46,9 +46,6 @@ public class Game extends Activity {
 
 		deck = new Deck(); //Sets up the deck everyone will use
 
-		for (int i = 0; i < 68; i++)
-			tempTile = deck.draw();
-
 		//Randomly generates a player to start the game
 		currentPlayer = randomPlayer();
 
@@ -64,11 +61,6 @@ public class Game extends Activity {
 		deactivateButton(skipButton);
 		deactivateButton(tripleButton);
 
-		//ViewGroup linearlayout = (ViewGroup) findViewById(R.id.botDiscard2);
-		//Button bt = new Button(this);
-		//bt.setText("Hi!");
-		//linearlayout.addView(bt);
-
 		if (currentPlayer != 0) {
 			deactivatePlayerButtons();
 			PerformTurnThread t = new PerformTurnThread();
@@ -79,6 +71,7 @@ public class Game extends Activity {
 		}
 
 		newRoundButton = (Button) findViewById(R.id.newRnd);
+		newRoundButton.setVisibility(View.INVISIBLE);
 		newRoundButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -258,6 +251,7 @@ public class Game extends Activity {
 	}
 
 	private void newRound() {
+		newRoundButton.setVisibility(View.INVISIBLE);
 		currentRound++;
 		resetGame();
 
@@ -286,6 +280,8 @@ public class Game extends Activity {
 			updateGameStats();
 		}
 
+		if (currentPlayer == 0)
+			activatePlayerButtons();
 		updateGameStats();
 	}
 
@@ -376,7 +372,6 @@ public class Game extends Activity {
 
 	private String evaluateWin(Tile t, int currPlayer) {
 		String handEval = players.get(currPlayer).evaluate(t);
-		Log.d("win", handEval);
 
 		if (currPlayer == 0) {
 			if (handEval.contains("w")) 
@@ -393,7 +388,6 @@ public class Game extends Activity {
 	private String evaluateNotWin(Tile t, int currPlayer) {
 		String handEval = players.get(currPlayer).evaluate(t);
 		if (currPlayer == 0) {
-			Log.d("eval", handEval);
 			handEval = players.get(currPlayer).evaluate(t);
 			handEval = players.get(currPlayer).evaluate(t); //This needs to be deleted
 			//Activates the eat button if hand has eat
@@ -434,6 +428,7 @@ public class Game extends Activity {
 			direction = "North";
 		else
 			direction = "West";
+		final String dir = direction;
 		final String s = String.format("Current Player: %-13s " +
 				"Tiles Remaining: %-8d        " +
 				"Round: %d", direction, deck.getSize(), currentRound);
@@ -442,7 +437,12 @@ public class Game extends Activity {
 			@Override
 			public void run() {
 				super.run();
-				gameStats.setText(s);
+				if (hasWon)
+					gameStats.setText(dir + " has won!");
+				else if (roundEnded && deck.getSize() <= 0)
+					gameStats.setText("No more tiles in the deck!");
+				else
+					gameStats.setText(s);
 			}
 		});
 
@@ -580,7 +580,8 @@ public class Game extends Activity {
 	}
 
 	private void performTurn() {
-		if (!roundEnded) {
+		//
+		if (!roundEnded && !hasWon) {
 			try {
 				//Refreshes game stats so the human knows which player's turn it is
 				updateGameStats();
@@ -608,31 +609,37 @@ public class Game extends Activity {
 					drawTile();
 				}
 
-				if (!roundEnded) {
+				//
+				if (!roundEnded && !hasWon) {
 					//Selects a random card to discard
-					/*if (tempTile == null)
-					r = p.getActiveSize();
-				else {*/
 					r = rand.nextInt(p.getActiveSize() + 1);
 					if (r == p.getActiveSize())
 						r = 13;
-					//}
+
 					//Discards a tile regardless of if we did a function or not
 					discardTile(r);
 
 					Thread.sleep(25);
 					refreshHandUi(currentPlayer);
-					//handEval = evaluateWin(tempTile,currentPlayer);
-
+					
+					handEval = evaluateWin(tempTile,currentPlayer);
+					if (handEval.contains("w"))
+						hasWon = true;
+					
+					handEval = evaluateWin(lastDiscard, currentPlayer);
+					if (handEval.contains("w"))
+						hasWon = true;
+					
+					updateGameStats();
 
 					Thread.sleep(250);
 					currentPlayer = (currentPlayer + 1) %4;
 					//Starts performTurn with the next player again
-					if (currentPlayer == 2 || currentPlayer == 3) {
+					if ((currentPlayer == 2 || currentPlayer == 3) && !hasWon) {
 						performTurn();
 					} 
 					//If it is bot 3, we make the buttons clickable for the human player again
-					else if (currentPlayer == 0) {
+					else if (currentPlayer == 0 && !hasWon) {
 						final Tile lastTile = players.get(3).lastDiscard();
 						runOnUiThread(new Thread() {
 							@Override
@@ -669,35 +676,36 @@ public class Game extends Activity {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-
 		} //End if(!roundEnded)
-		System.out.println(roundEnded);
+
 		if (roundEnded) {
-
-			Builder alertDialogBuilder = new Builder(Game.this);
-			// set title
-			alertDialogBuilder.setTitle("Round Over: ran out of tiles");
-
-			// set dialog message
-			alertDialogBuilder
-			.setMessage("Do you want to start another round?")
-			.setCancelable(false)
-			.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog,int id) {
-					// if this button is clicked, close
-					// current activity
-					newRound();
-				}
-			})
-			.setNegativeButton("No",new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog,int id) {
-					// if this button is clicked, just close
-					// the dialog box and do nothing
-					dialog.cancel();
+			runOnUiThread(new Thread() {
+				@Override
+				public void run() {
+					super.run();
+					deactivatePlayerButtons();
+					newRoundButton.setVisibility(View.VISIBLE);
+					currentPlayer = 0;
+					updateGameStats();
 				}
 			});
+			
+			return;
 
 		} //End if(roundEnded)
+		
+		if (hasWon) {
+			runOnUiThread(new Thread() {
+				@Override
+				public void run() {
+					super.run();
+					deactivatePlayerButtons();
+					newRoundButton.setVisibility(View.VISIBLE);
+					currentPlayer = 0;
+					updateGameStats();
+				}
+			});
+		} //End if(hasWon)
 
 	}
 
@@ -763,34 +771,10 @@ public class Game extends Activity {
 					String functText = temp.getText() + "";
 					if (functText.equalsIgnoreCase("win!")) {
 						roundEnded = true;
-						Builder alertDialogBuilder = new Builder(Game.this);
-						// set title
-						alertDialogBuilder.setTitle("Congratulations! You won!");
-
-						// set dialog message
-						alertDialogBuilder
-						.setMessage("Do you want to start another round?")
-						.setCancelable(false)
-						.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog,int id) {
-								// if this button is clicked, close
-								// current activity
-								newRound();
-							}
-						})
-						.setNegativeButton("No",new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog,int id) {
-								// if this button is clicked, just close
-								// the dialog box and do nothing
-								dialog.cancel();
-							}
-						});
-
-						// create alert dialog
-						AlertDialog alertDialog = alertDialogBuilder.create();
-
-						// show it
-						alertDialog.show();
+						
+						gameStats.setText("Congratulations! You won!");
+						newRoundButton.setVisibility(View.VISIBLE);
+						
 					} else {
 						if (functText.equalsIgnoreCase("double")) {
 							//call double on current player
@@ -821,6 +805,9 @@ public class Game extends Activity {
 
 						if (!functText.equals("triple") || !functText.equals("skip"))
 							refreshHandUi(currentPlayer);
+						
+						if (evaluateWin(tempTile, currentPlayer).contains("w"))
+							activateButton(winButton);
 					}
 
 					deactivateButton(doubleButton);
