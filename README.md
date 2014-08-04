@@ -3,4 +3,4 @@ Mahdroid
 
 Capstone Project
 
-![Screenshot](https://drive.google.com/file/d/0ByJasLhe2h59QkhyV2V2U3B3bHM/edit?usp=sharing)
+![Screenshot](https://www.dropbox.com/s/p9qog2o3qluks1u/Screenshot_2014-05-02-14-56-30.png)
